@@ -1,217 +1,445 @@
 # Manufacturing Application Platform - Architecture Evolution
 
-This document describes how the manufacturing application environment evolved from standalone engineering tools into a centrally hosted internal application platform, and the next enterprise-infrastructure step that would make the platform more resilient and easier to operate.
+This document describes how a set of manufacturing engineering tools evolved from local Python scripts into a managed internal application platform, and the next infrastructure step that would turn that platform into a more conventional enterprise intranet service.
 
-The diagrams are intentionally generic. Employer names, internal hostnames, network paths, database object names, credentials, and private infrastructure details are omitted.
+The progression matters because the platform was not designed top-down. Each architectural step appeared only after the previous delivery model exposed a new constraint.
+
+The diagrams are intentionally generic. Employer names, private hostnames, network paths, database object names, credentials, internal URLs, and other private infrastructure details are omitted.
 
 ## Architecture at a glance
 
-The platform can be understood as three generations:
+The actual evolution is best understood as six stages:
 
-1. **Standalone engineering tools** - applications run on individual engineering workstations.
-2. **Managed internal application platform** - shared delivery, a common portal, centrally hosted browser applications, shared configuration, health checks, and recovery tooling.
-3. **Enterprise intranet platform** - stable internal DNS, HTTPS, enterprise authentication, reverse-proxy routing, multiple application servers, and automated failover.
+1. **Local `.py` engineering tools** - Python scripts and applications run directly on the developer's workstation.
+2. **Packaged `.exe` applications** - Python applications are frozen into user-runnable bundles so other engineers do not need a development environment.
+3. **Versioned launcher distribution** - batch launchers, version pointers, and versioned network packages make upgrades repeatable.
+4. **Common application portal** - one portal discovers, installs, updates, documents, and launches multiple applications.
+5. **Central server hosting** - selected Dash applications move from per-user execution to centrally hosted WSGI services with shared refresh, health, logging, and recovery behavior.
+6. **Enterprise intranet platform** - stable internal DNS, reverse-proxy routing, HTTPS, enterprise identity, multiple application hosts, and automatic failover become infrastructure responsibilities.
 
 ```mermaid
 flowchart LR
-    A[Standalone engineering tools] --> B[Versioned application delivery]
-    B --> C[Common application portal]
-    C --> D[Central Dash / WSGI hosting]
-    D --> E[Health checks and recovery]
-    E --> F[Internal DNS and reverse proxy]
-    F --> G[HTTPS and enterprise identity]
-    G --> H[Multiple app servers and failover]
+    A[Local Python .py tools] --> B[Packaged .exe applications]
+    B --> C[Versioned launcher distribution]
+    C --> D[Common application portal]
+    D --> E[Central Dash / WSGI server hosting]
+    E --> F[Enterprise intranet platform]
 ```
 
-The important point is that the application-development stack does not need to be replaced as the infrastructure matures. Python, pandas, Dash, Plotly, and SQL-backed domain logic can remain intact while the hosting, identity, routing, and availability layers become more enterprise-like.
+The application-development stack does not need to be discarded as the infrastructure matures. Python, pandas, Dash, Plotly, and SQL-backed manufacturing logic can remain the application layer while delivery, routing, identity, security, and availability improve around it.
 
 ---
 
-## Generation 1 - Standalone engineering applications
+# Stage 1 - Local Python engineering tools
 
-The earliest tools were designed to solve specific engineering problems quickly.
+The earliest applications were built to answer immediate manufacturing questions quickly.
 
 ```mermaid
 flowchart LR
-    U[Engineer workstation] --> APP[Python application]
-    APP --> ANALYTICS[pandas / engineering logic]
+    DEV[Engineering workstation] --> PY[Python .py application]
+    PY --> ANALYTICS[pandas / engineering logic]
     ANALYTICS --> DB[(Manufacturing database)]
 ```
 
 Typical characteristics:
 
-- Python executed directly on the engineer's workstation.
-- Desktop UI or locally hosted Dash application.
-- Direct database access from the application.
-- Application-specific configuration.
-- Manual or semi-manual distribution.
-- Each installed copy effectively became its own deployment.
+- `.py` files run directly from an engineering workstation.
+- Python and dependencies are installed on the development machine.
+- Desktop UI or locally hosted Dash is appropriate because the developer is also the primary user.
+- The application connects directly to manufacturing data sources.
+- Configuration is application specific.
+- Deployment is not yet a separate engineering problem.
 
-This was a productive discovery model. It kept iteration fast while the engineering requirements were still changing.
+### Why this was the right first architecture
 
-The limitation appeared when other users wanted the same tool. Copying applications created version drift, update coordination, and support overhead.
+At this stage the important question is whether the engineering workflow is useful, not whether the application has enterprise infrastructure.
+
+Direct Python execution provides the shortest path between:
+
+```text
+manufacturing problem
+        |
+        v
+SQL / process investigation
+        |
+        v
+Python logic
+        |
+        v
+working engineering tool
+```
+
+### What exposed the next constraint
+
+Once other engineers wanted to use the same application, direct `.py` execution became inconvenient:
+
+- users should not need Python installed;
+- dependency versions should not vary by workstation;
+- launch instructions should not require development knowledge;
+- the developer should not have to reproduce an environment manually for each user.
+
+That led to packaged applications.
 
 ---
 
-## Generation 2A - Managed desktop delivery
+# Stage 2 - Packaged executable applications
 
-The first platform step was not central hosting. It was **repeatable software delivery**.
+The next step separated **application development** from **application use**.
+
+```mermaid
+flowchart LR
+    SRC[Python source] --> FREEZE[Application packaging / freezing]
+    FREEZE --> EXE[Executable application bundle]
+    EXE --> USER[Engineer workstation]
+    EXE --> DB[(Manufacturing database)]
+```
+
+Python applications were packaged into standalone Windows application bundles, typically exposing an `.exe` entry point.
+
+The bundle can contain the Python runtime and required libraries, allowing an engineer to launch the application without maintaining a development environment.
+
+### What this solved
+
+- Users no longer needed Python or IDE setup.
+- The tested dependency set traveled with the release.
+- Applications behaved more like normal Windows programs.
+- New tools could be shared with substantially less setup knowledge.
+- Desktop applications remained practical for workflows that benefit from local execution.
+
+### What it did not solve
+
+Packaging solves **how someone runs an application**, but not **how every installed copy stays current**.
+
+Once several users had local application copies, a new question appeared:
+
+> How do users reliably receive the approved version without manually copying every release?
+
+That led to version-controlled distribution.
+
+---
+
+# Stage 3 - Versioned launcher and network distribution
+
+The third stage introduced a simple internal release-management pattern.
 
 ```mermaid
 flowchart TD
     SHARE[Central application repository]
-    SHARE --> MANIFEST[Application manifest]
-    SHARE --> VERSION[Version pointer]
-    SHARE --> PACKAGE[Versioned package]
+    SHARE --> PTR[Version pointer]
+    SHARE --> ZIP[Versioned application package]
 
-    MANIFEST --> PORTAL[Application portal]
-    VERSION --> PORTAL
-    PACKAGE --> PORTAL
+    PTR --> LAUNCH[Batch / launcher logic]
+    ZIP --> LAUNCH
 
-    PORTAL --> CACHE[Local application cache]
-    CACHE --> EXE[Packaged Python application]
+    LAUNCH --> LOCAL[Local application folder]
+    LOCAL --> EXE[Current executable]
     EXE --> DB[(Manufacturing database)]
 ```
 
-The portal model separates **distribution** from **execution**:
+A central location owns the approved release while the application still executes locally.
 
-1. The portal discovers available applications.
-2. It resolves the current approved version.
-3. It copies the versioned package locally.
-4. It extracts and launches the local executable.
-5. Future launches can check whether an update is required.
+A typical release flow is conceptually:
 
-This preserves the strengths of desktop applications while adding centralized release control.
+```text
+latest_version.txt
+        |
+        v
+versioned_application_package.zip
+        |
+        v
+launcher checks current version
+        |
+        v
+copy / extract locally
+        |
+        v
+launch current executable
+```
 
-### Why this mattered
+The specific filenames are unimportant. The architectural change is that **version resolution became centralized**.
 
-- One location for application discovery.
-- Repeatable installs on new computers.
-- Central version ownership.
-- Local execution performance.
-- Reduced risk of users running stale copies from arbitrary folders.
-- Documentation and application metadata can travel with the release system.
+### Why local copy rather than running from the network share
+
+The network repository becomes the source of truth for releases, but local execution preserves:
+
+- predictable runtime performance;
+- less sensitivity to transient share latency;
+- a clean separation between release storage and application execution;
+- the ability to stage and validate a package before launch.
+
+### What this solved
+
+- Repeatable application updates.
+- A single approved release pointer.
+- Less manual copying of application folders.
+- Clearer rollback/version history.
+- Consistent launch behavior across users.
+
+### What exposed the next constraint
+
+As the number of applications increased, separate launchers and release locations became another discovery problem.
+
+Users now needed to know:
+
+- which applications existed;
+- where to find each launcher;
+- which tool solved which problem;
+- whether an application was installed/current;
+- where documentation lived.
+
+That led to a common application portal.
 
 ---
 
-## Generation 2B - Current shared application platform
+# Stage 4 - Common application portal
 
-Applications that benefit from centralized execution can move from per-user execution to a shared server model.
+The release mechanism itself became an application.
+
+```mermaid
+flowchart TD
+    REPO[Central application repository]
+    REPO --> MANIFEST[Application manifest]
+    REPO --> VERSION[Per-app version pointers]
+    REPO --> PACKAGES[Versioned packages]
+    REPO --> DOCS[Documentation]
+
+    MANIFEST --> PORTAL[Common application portal]
+    VERSION --> PORTAL
+    PACKAGES --> PORTAL
+    DOCS --> PORTAL
+
+    PORTAL --> APP1[Application A local install]
+    PORTAL --> APP2[Application B local install]
+    PORTAL --> APP3[Application C local install]
+```
+
+Instead of requiring one launcher per application to be discovered independently, the portal provides one common entry point.
+
+The portal can:
+
+1. read centralized application metadata;
+2. show available applications and descriptions;
+3. determine the approved package version;
+4. copy and extract packages to a local application cache;
+5. detect whether the current version is already installed;
+6. launch the correct executable;
+7. expose manuals or supporting documentation;
+8. support bulk installation/update behavior.
+
+### Architectural significance
+
+This is the point where individual applications start becoming an **application ecosystem**.
+
+Before the portal:
+
+```text
+App A launcher
+App B launcher
+App C launcher
+App D launcher
+```
+
+After the portal:
+
+```text
+             Common Application Portal
+              /        |        \
+             /         |         \
+          App A      App B      App C
+```
+
+### What this solved
+
+- One application-discovery surface.
+- Common release behavior.
+- Centralized update logic.
+- Consistent local installation locations.
+- Documentation discovery.
+- Easier onboarding of new applications.
+
+### What exposed the next constraint
+
+The portal improved distribution, but many analytical applications were still being copied and executed independently on each user's workstation.
+
+For data-heavy browser applications, this created duplicated work:
+
+```text
+User A -> local app -> SQL query + calculations
+User B -> local app -> same SQL query + calculations
+User C -> local app -> same SQL query + calculations
+```
+
+For shared dashboards, the next logical step was to run the application once and let many users connect to it.
+
+---
+
+# Stage 5 - Central application server hosting
+
+Selected Dash applications moved from **software distribution** to **software hosting**.
+
+Instead of every user running the same analytical application locally:
+
+```mermaid
+flowchart TD
+    U1[User A browser] --> HOST[Central application server]
+    U2[User B browser] --> HOST
+    U3[User C browser] --> HOST
+
+    HOST --> PORTAL[Common portal / dispatcher]
+    PORTAL --> A1[Yield analytics]
+    PORTAL --> A2[Process analytics]
+    PORTAL --> A3[Operational workflow]
+    PORTAL --> A4[Supporting tools]
+
+    A1 --> DB[(Manufacturing database)]
+    A2 --> DB
+    A3 --> DB
+    A4 --> DB
+
+    CFG[Shared configuration / state] --> HOST
+    OPS[Health / logs / restart / watchdog] --> HOST
+```
+
+This does not eliminate desktop applications. It creates a **hybrid delivery model**:
+
+- applications that are naturally local can still be distributed through the portal;
+- shared analytical Dash applications can run centrally and be opened in a browser.
+
+## What changed technically
+
+Applications designed to own their own listener have to become mountable services.
+
+The server architecture introduced patterns such as:
+
+- exposing the underlying WSGI application;
+- separating application construction from process startup;
+- mounting applications under stable paths;
+- managing Dash callback and asset prefixes for mounted deployment;
+- using a production-style Windows WSGI host such as Waitress;
+- isolating application import failures;
+- central health endpoints;
+- deterministic launcher/restart behavior;
+- runtime logging;
+- watchdog/recovery tooling;
+- explicit control of background refresh services.
+
+## Why central hosting matters
+
+The shared server changes the cost model of common analysis.
+
+### Distributed model
+
+```text
+20 users
+   x
+same SQL/query/transformation workload
+   =
+repeated database and CPU work
+```
+
+### Central model
+
+```text
+shared refresh / cache / prepared state
+                |
+                v
+        many browser users
+```
+
+This can provide:
+
+- centralized refresh cycles;
+- common in-memory analytical state;
+- one application upgrade instead of many local upgrades;
+- fewer duplicate heavy queries;
+- simpler browser access;
+- common operational logging;
+- clearer support ownership.
+
+## Current architecture
+
+The current public architecture is best represented as a hybrid platform:
 
 ```mermaid
 flowchart TD
     USERS[Manufacturing users]
 
     USERS --> PORTAL[Common application portal]
-    USERS --> BROWSER[Web browser]
+    USERS --> BROWSER[Browser]
 
-    subgraph Desktop[Managed desktop applications]
-        DIST[Versioned application repository]
+    subgraph Desktop[Managed desktop delivery]
+        DIST[Versioned package repository]
         CACHE[Local application cache]
-        APP1[Packaged Python application]
+        EXE[Packaged Python application]
         DIST --> PORTAL
         PORTAL --> CACHE
-        CACHE --> APP1
+        CACHE --> EXE
     end
 
-    subgraph SharedHost[Shared application server]
-        HOST[Waitress WSGI host]
-        DISPATCH[Path dispatcher / portal integration]
-        YIELD[Yield analytics]
-        PROCESS[Process analytics]
-        OPS[Operational workflow]
-        SUPPORT[Supporting tools]
+    subgraph Server[Central browser application hosting]
+        WSGI[Waitress WSGI host]
+        DISPATCH[Portal / path dispatcher]
+        DASH1[Dash application A]
+        DASH2[Dash application B]
+        DASH3[Dash application C]
 
-        HOST --> DISPATCH
-        DISPATCH --> YIELD
-        DISPATCH --> PROCESS
-        DISPATCH --> OPS
-        DISPATCH --> SUPPORT
+        WSGI --> DISPATCH
+        DISPATCH --> DASH1
+        DISPATCH --> DASH2
+        DISPATCH --> DASH3
     end
 
-    BROWSER --> HOST
+    BROWSER --> WSGI
 
-    APP1 --> DB[(Manufacturing database)]
-    YIELD --> DB
-    PROCESS --> DB
-    OPS --> DB
-    SUPPORT --> DB
+    EXE --> DB[(Manufacturing database)]
+    DASH1 --> DB
+    DASH2 --> DB
+    DASH3 --> DB
 
-    CFG[Shared configuration and application state]
-    CFG --> APP1
-    CFG --> SharedHost
-
-    HEALTH[Health check / watchdog / restart tooling] --> HOST
+    CFG[Shared configuration] --> EXE
+    CFG --> Server
+    HEALTH[Health / logs / restart / watchdog] --> WSGI
 ```
 
-This is the current architectural direction represented by the public case study.
+### Current strengths
 
-The key changes are architectural rather than cosmetic:
+- Rapid Python development is preserved.
+- Desktop and browser applications can coexist.
+- Users have a common discovery surface.
+- Shared dashboards can centralize expensive work.
+- Application releases and configuration are more controlled.
+- Health and recovery become explicit operational concepts.
 
-- Applications can expose their WSGI servers instead of assuming they own a listener.
-- A common dispatcher can mount multiple browser applications under stable paths.
-- A shared Waitress host provides production-style Windows WSGI hosting.
-- Health endpoints and scripted restart behavior create a defined operational contract.
-- Application import failures can be isolated so one bad mount does not hide the status of healthy applications.
-- Shared configuration reduces drift between application instances.
+### Current limitations
 
-### Current architecture: strengths
+The application layer has matured faster than the surrounding enterprise infrastructure.
 
-- Fast Python development is preserved.
-- Users receive a common entry point.
-- Shared browser applications eliminate repeated per-user data processing.
-- Desktop applications can still exist when local execution is the better fit.
-- Application health and recovery become explicit instead of relying on a developer terminal session.
+Remaining limitations include:
 
-### Current architecture: remaining limitations
+- users can still be exposed to a physical server-oriented address;
+- a single central server can remain a single point of failure;
+- TLS termination is not part of the verified public architecture;
+- enterprise authentication is not yet the verified application front door;
+- network-level health routing and automatic failover are not yet implemented public claims.
 
-The current model still has infrastructure-level constraints:
-
-- A server hostname or application-specific route is still tied closely to the hosting machine.
-- A single application host can remain a single point of failure.
-- Authentication and authorization are still primarily application-owned concerns.
-- TLS termination, stable service naming, load distribution, and automatic failover are not yet part of the verified public architecture.
+Those constraints define the next stage.
 
 ---
 
-## Current versus target architecture
+# Stage 6 - Target enterprise intranet platform
 
-| Capability | Current platform | Target enterprise platform |
-| --- | --- | --- |
-| Application language | Python | Python |
-| Analytical UI | Dash / Plotly | Dash / Plotly |
-| Data processing | pandas / SQL | pandas / SQL |
-| Desktop applications | Supported through managed packages | Retained where useful |
-| Browser hosting | Central WSGI host | Central WSGI hosts behind reverse proxy |
-| Application discovery | Common portal | Common portal |
-| User-facing address | Host/path oriented | Stable internal service name |
-| Routing | Application/dispatcher routing | Reverse proxy routing |
-| Encryption | Environment dependent | HTTPS |
-| Authentication | Application/local mechanisms | Enterprise identity / Windows authentication |
-| Authorization | Application configuration | Enterprise groups plus application roles |
-| Application servers | Primarily single shared host | Multiple equivalent hosts |
-| Failure recovery | Health check and restart tooling | Health checks plus automatic failover |
-| Configuration | Shared files/configuration | Shared configuration / centralized state |
-| Monitoring | Application logs and health | Central health, logs, and infrastructure monitoring |
-
----
-
-## Generation 3 - Target enterprise intranet architecture
-
-The next step is to separate the **service identity** from the **physical application server**.
-
-Users should access one stable internal address rather than knowing which machine currently runs the application.
+The target architecture separates **the identity of the service** from **the physical machine currently serving it**.
 
 ```mermaid
 flowchart TD
     USER[Manufacturing workstations]
-    USER --> URL[Internal application URL]
+    USER --> URL[Stable internal application URL]
 
     URL --> DNS[Internal DNS]
     DNS --> EDGE[Reverse proxy / load balancer]
 
-    ID[Enterprise identity provider / Active Directory] --> EDGE
     TLS[Internal TLS certificate] --> EDGE
+    ID[Enterprise identity / Active Directory] --> EDGE
 
     EDGE --> A[Application server A]
     EDGE --> B[Application server B]
@@ -240,36 +468,39 @@ flowchart TD
     CFG --> B
 ```
 
-### Stable internal DNS
+The Python/Dash application layer remains largely the same. The enterprise infrastructure is added around it.
 
-Instead of teaching users a server name, port, or physical host, IT can provide a stable intranet name.
+## Stable internal DNS
 
-Conceptually:
+Users should not need to know the physical hostname of an application server.
+
+A stable internal DNS alias provides a permanent intranet identity:
 
 ```text
 internal-apps.company.local
         |
-        +--> reverse proxy / load balancer
+        v
+reverse proxy / load balancer
 ```
 
-The physical server can then change without changing the user-facing address.
+If the physical server changes, IT updates DNS or the routing target rather than retraining users or changing bookmarks.
 
-### Reverse proxy
+## Reverse proxy
 
-A reverse proxy such as IIS or Nginx becomes the front door for the applications.
+A reverse proxy such as IIS or Nginx becomes the user-facing front door.
 
 Conceptually:
 
 ```text
-/internal/yield    -> application service 1
-/internal/process  -> application service 2
-/internal/spc      -> application service 3
-/internal/defects  -> application service 4
+/yield    -> internal Dash service
+/process  -> internal Dash service
+/spc      -> internal Dash service
+/defects  -> internal Dash service
 ```
 
-The actual backend services can continue listening on internal-only ports. Users no longer need to know those ports.
+Backend applications can continue listening on internal ports. Users interact only with the stable application URL.
 
-### HTTPS
+## HTTPS
 
 The reverse proxy can terminate HTTPS using an internally trusted TLS certificate.
 
@@ -279,11 +510,11 @@ flowchart LR
     PROXY --> APP[Internal Python / Dash service]
 ```
 
-The Dash application itself does not need to own certificate handling.
+This keeps certificate management in the infrastructure layer instead of reimplementing TLS in each Dash application.
 
-### Enterprise authentication
+## Enterprise authentication
 
-Windows-integrated or enterprise identity can move authentication out of individual applications.
+Windows-integrated authentication or another enterprise identity provider can move authentication out of individual applications.
 
 ```mermaid
 sequenceDiagram
@@ -293,21 +524,30 @@ sequenceDiagram
     participant AD as Enterprise identity
     participant App as Python application
 
-    User->>Browser: Open internal app
+    User->>Browser: Open internal application
     Browser->>Proxy: Request
-    Proxy->>AD: Validate identity
+    Proxy->>AD: Validate corporate identity
     AD-->>Proxy: Authenticated identity
     Proxy->>App: Forward authenticated request
     App-->>Browser: Authorized application response
 ```
 
-Applications can then focus on authorization rules such as engineer, operator, administrator, or read-only roles rather than implementing login systems independently.
+The application can then focus on role-based behavior rather than maintaining a separate login system.
 
-### Clean failover
+Potential roles might conceptually include:
 
-The current central-server model can still create a single point of failure.
+- application users;
+- engineers;
+- application administrators;
+- read-only production users.
 
-#### Current
+The exact enterprise group structure remains an infrastructure/security decision.
+
+## Clean failover
+
+Central hosting reduces duplicated execution, but one application server can still be a single point of failure.
+
+### Current single-host model
 
 ```mermaid
 flowchart LR
@@ -316,11 +556,11 @@ flowchart LR
     A -. unavailable .-> OUT[Applications unavailable]
 ```
 
-#### Target
+### Target multi-host model
 
 ```mermaid
 flowchart LR
-    U[Users] --> LB[Load balancer]
+    U[Users] --> LB[Load balancer / reverse proxy]
     LB --> A[Application server A]
     LB --> B[Application server B]
     A --> DB[(Database)]
@@ -329,137 +569,174 @@ flowchart LR
     B --> CFG
 ```
 
-A health check allows the infrastructure layer to determine whether a host is ready to serve requests. If one host becomes unavailable, new traffic can be sent to the healthy host.
+Health checks let the infrastructure layer decide whether a host is ready to receive traffic.
 
-The application design becomes failover-friendly when persistent configuration and manufacturing data are not trapped on one server's local disk.
+If one host fails:
+
+```text
+Server A: unhealthy
+Server B: healthy
+        |
+        v
+new traffic -> Server B
+```
+
+Failover becomes practical because manufacturing data and authoritative configuration are not trapped exclusively on one application's local disk.
 
 ---
 
-## Milestone timeline
+# Current versus target architecture
 
-The dates below are intentionally generalized for a public portfolio. They describe the order in which the architecture matured without publishing private operational dates or internal infrastructure details.
+| Capability | Current platform | Target enterprise platform |
+| --- | --- | --- |
+| Application language | Python | Python |
+| Analytical UI | Dash / Plotly | Dash / Plotly |
+| Data processing | pandas / SQL | pandas / SQL |
+| Desktop applications | Versioned packaged applications | Retained where useful |
+| Desktop distribution | Common portal + versioned local install | Retained where useful |
+| Browser hosting | Central WSGI host | Equivalent WSGI hosts behind reverse proxy |
+| Application discovery | Common portal | Common portal |
+| User-facing address | Host/path oriented | Stable internal DNS name |
+| Routing | WSGI dispatcher / application paths | Reverse proxy routing |
+| Encryption | Environment dependent | HTTPS |
+| Authentication | Application/local mechanisms | Enterprise identity / Windows authentication |
+| Authorization | Application configuration | Enterprise groups + application roles |
+| Shared analytical refresh | Supported by centrally hosted apps | Supported |
+| Application servers | Primarily single shared host | Multiple equivalent hosts |
+| Failure recovery | Health checks + scripted restart/watchdog | Health checks + automatic traffic failover |
+| Configuration | Shared files/configuration | Shared configuration / persistent state |
+| Monitoring | Application logs and health | Central application + infrastructure monitoring |
+
+---
+
+# Milestone timeline
+
+The public portfolio intentionally uses approximate periods rather than private operational dates. The purpose is to document the sequence of engineering changes without publishing employer infrastructure history.
 
 | Approximate period | Milestone | Status |
 | --- | --- | --- |
-| Early 2026 | Standalone Python engineering applications used to solve focused manufacturing problems | Implemented |
-| First half 2026 | Direct SQL-backed analysis evolves into reusable desktop and Dash tools | Implemented |
-| Mid 2026 | Versioned local application bundles and repeatable deployment become necessary as users increase | Implemented |
-| Mid 2026 | Common application portal centralizes discovery, version resolution, installation, update, and launch behavior | Implemented |
-| Summer 2026 | Shared browser applications begin moving toward central server execution | Implemented |
-| Summer 2026 | WSGI composition, stable mounted paths, Waitress hosting, health checks, logging, and restart/watchdog tooling mature | Implemented |
-| Current public state | Hybrid model supports centrally hosted browser applications and managed desktop applications | Implemented |
-| Next infrastructure phase | Stable internal DNS and reverse proxy | Planned |
-| Next infrastructure phase | HTTPS with internally trusted certificate | Planned |
+| Early 2026 | Local `.py` engineering tools used to solve focused manufacturing problems | Implemented |
+| Early-to-mid 2026 | Python applications packaged into user-runnable Windows application bundles | Implemented |
+| Mid 2026 | Version pointers and versioned network packages support repeatable launcher-driven updates | Implemented |
+| Mid 2026 | Common application portal centralizes discovery, installation, update, documentation, and launch behavior | Implemented |
+| Summer 2026 | Selected shared Dash applications begin moving from local execution to central server hosting | Implemented |
+| Summer 2026 | Mounted WSGI composition, Waitress hosting, health checks, runtime logging, restart, and watchdog behavior mature | Implemented |
+| Current public state | Hybrid platform supports both centrally hosted browser applications and managed local executables | Implemented |
+| Next infrastructure phase | Stable internal DNS name and reverse-proxy front door | Planned |
+| Next infrastructure phase | HTTPS with an internally trusted certificate | Planned |
 | Next infrastructure phase | Enterprise / Active Directory authentication and group-based access | Planned |
-| Later phase | Secondary application host, health-based routing, and automatic failover | Planned |
-| Later phase | Centralized infrastructure monitoring and more formal release/rollback controls | Planned |
+| Later infrastructure phase | Secondary application server and health-based routing | Planned |
+| Later infrastructure phase | Automatic failover and centralized infrastructure monitoring | Planned |
 
 ---
 
-## Platform maturity curve
+# The architecture as a maturity curve
 
 ```text
-Standalone Python tools
+1. Local .py engineering tools
         |
+        |  Problem: other users need the application
         v
-Reusable SQL + pandas analysis
+2. Packaged .exe application bundles
         |
+        |  Problem: installed copies need repeatable updates
         v
-Dash and desktop engineering applications
+3. Version pointer + network package + launcher
         |
+        |  Problem: too many independent apps and launchers
         v
-Versioned application packages
+4. Common application portal
         |
+        |  Problem: shared dashboards duplicate execution and database work
         v
-Common application portal
+5. Central Dash / WSGI application server
         |
+        |  Problem: service naming, security, identity, and availability
         v
-Central application server
+6. Enterprise intranet platform                         [planned]
         |
-        v
-Mounted WSGI applications
-        |
-        v
-Health checks + logs + restart/watchdog
-        |
-        v
-Stable internal DNS                 [planned]
-        |
-        v
-Reverse proxy + HTTPS               [planned]
-        |
-        v
-Enterprise authentication           [planned]
-        |
-        v
-Multiple application servers        [planned]
-        |
-        v
-Automatic failover                  [planned]
-        |
-        v
-Enterprise internal application platform
+        +--> stable internal DNS
+        +--> IIS / Nginx reverse proxy
+        +--> HTTPS
+        +--> enterprise authentication
+        +--> multiple application hosts
+        +--> health-based routing / automatic failover
 ```
+
+This is the core story of the platform: **every new architecture was a response to a concrete limitation of the previous one.**
 
 ---
 
-## Why the architecture changed
-
-Each step was driven by a new constraint rather than by a desire to adopt more technology.
+# Why the architecture changed
 
 | Stage | New problem | Architectural response |
 | --- | --- | --- |
-| One engineer, one problem | Analysis needed to exist quickly | Python, SQL, pandas |
-| Repeated use | Manual analysis no longer scaled | Dash / reusable applications |
-| More users | Copies became difficult to distribute | Versioned releases and portal |
-| More shared use | Every workstation repeated the same work | Central server hosting |
-| Multiple browser apps | Separate ports and startup logic became fragmented | WSGI composition and common portal |
-| Operational support | A running script was not enough | Health checks, logs, restart, watchdog |
-| Service identity | Users should not care which server runs the app | Internal DNS and reverse proxy |
-| Security | Identity should not be reinvented in every app | HTTPS and enterprise authentication |
-| Availability | One server should not stop the platform | Multiple hosts and automatic failover |
+| Local engineering analysis | A manufacturing question needed a fast solution | Python + SQL + pandas |
+| Other engineers need the tool | Users should not maintain a Python environment | Packaged executable application |
+| More installed users | Manual copying creates version drift | Versioned packages + launcher |
+| More applications | Users need one discovery/update surface | Common application portal |
+| More shared browser use | Per-user execution repeats the same processing | Central server hosting |
+| Shared service support | A running script is not an operational contract | WSGI host + health + logs + restart/watchdog |
+| Stable service identity | Users should not care which physical server runs the app | Internal DNS + reverse proxy |
+| Security and identity | Login/security should not be reinvented per application | HTTPS + enterprise authentication |
+| Availability | One host should not stop the platform | Multiple hosts + automatic failover |
 
-This progression is the core engineering story: **the infrastructure evolved only when real usage exposed the next constraint.**
+The progression is deliberately incremental. A working manufacturing application does not need to be rewritten simply because the deployment environment becomes more sophisticated.
 
 ---
 
-## Separation of responsibilities
+# Separation of responsibilities
 
-A mature version of the platform keeps responsibilities explicit.
+A mature platform keeps the layers explicit.
 
 | Layer | Responsibility |
 | --- | --- |
 | Python | Manufacturing logic and application behavior |
 | pandas | Data transformation and analytical preparation |
 | SQL | Manufacturing source data and database-side filtering |
-| Dash / Plotly | Interactive analytical user interface |
-| WSGI / Waitress | Python web application execution |
-| Portal / dispatcher | Application discovery and mounting |
+| Dash / Plotly | Interactive analytical UI |
+| Application packaging | Local executable distribution where required |
+| Version repository | Approved release packages and version pointers |
+| Application portal | Discovery, installation, updates, launch, documentation |
+| WSGI / Waitress | Central Python web-application execution |
+| WSGI dispatcher | Mounted application routing inside the Python service |
 | Reverse proxy | User-facing routing and TLS termination |
 | Internal DNS | Stable service name |
 | Enterprise identity | Authentication |
 | Application roles | Authorization |
 | Load balancer | Host selection and failover |
-| Shared storage/configuration | Common persistent application state |
-| Monitoring | Health, logs, resource and service visibility |
+| Shared configuration | Common application rules and persistent state |
+| Monitoring | Health, logs, resource, and service visibility |
 
-This separation is why the existing Python applications do not need to be rewritten in a different frontend framework merely to gain enterprise infrastructure characteristics.
+This separation explains why gaining enterprise infrastructure characteristics does **not** require replacing the existing Python/Dash stack with a completely different frontend architecture.
 
 ---
 
-## Public evidence boundary
+# Public evidence boundary
 
-The current repository supports the architecture through central application access, WSGI composition, Waitress hosting, shared configuration patterns, health checking, logging, and restart/recovery tooling.
+The public portfolio supports the implemented evolution through:
 
-The following are presented only as the **sensible next evolution**, not as completed production claims:
+- local Python engineering tooling;
+- packaged application delivery;
+- versioned application bundles;
+- centralized application metadata and portal-driven installation/update behavior;
+- Dash/Plotly browser applications;
+- WSGI composition and mounted application paths;
+- Waitress hosting;
+- shared configuration patterns;
+- health checking;
+- logging;
+- deterministic restart/recovery tooling.
 
-- IIS or Nginx reverse-proxy deployment
-- stable enterprise DNS alias
-- HTTPS/TLS termination
-- Active Directory or other enterprise SSO
-- multiple active application servers
-- load-balanced automatic failover
-- zero-downtime deployment
-- container or Kubernetes orchestration
+The following remain presented only as the **sensible next infrastructure evolution**, not as completed production claims:
 
-That distinction is deliberate. The goal of this portfolio is to explain real engineering progression without claiming infrastructure that was not part of the verified implementation.
+- IIS or Nginx reverse-proxy deployment;
+- stable enterprise DNS alias;
+- HTTPS/TLS termination;
+- Active Directory or other enterprise SSO;
+- multiple active application servers;
+- load-balanced automatic failover;
+- zero-downtime deployment;
+- container or Kubernetes orchestration.
+
+That distinction is intentional. The portfolio documents real engineering progression while clearly separating verified implementation from proposed enterprise infrastructure.
