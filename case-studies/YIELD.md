@@ -1,321 +1,131 @@
 # Manufacturing Yield Platform
 
-**Role in portfolio:** technical flagship
+**What I built:** A multi-level manufacturing Yield investigation system that moves from factory-level trends to the exact wafer, inspection, and test evidence behind a result.
 
-**Public implementation:** [manufacturing-analytics-platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform)
+**What it demonstrates:** Python/SQL application architecture, manufacturing data modeling, performance optimization, targeted retrieval, caching, reliability engineering, and production delivery.
 
-**Evidence status:** runnable clean-room analogue with synthetic data
+**Runnable public implementation:** [manufacturing-analytics-platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform)
 
 ## Problem
 
-Yield investigation spans different grains and time scales. A factory-level trend
-can point to a product, operation, tool, defect family, or individual wafer, but the
-supporting records are not naturally shaped for interactive analysis. Querying all
-high-volume inspection detail for every page load is slow and wasteful; aggregating
-everything in advance removes the detail needed for root-cause work.
+Yield investigation spans several data grains and time scales. A factory-level trend may point to a product, operation, tool, defect family, or individual wafer, but the supporting records are not naturally shaped for interactive analysis. Querying all high-volume inspection and test detail on every page load is slow and wasteful; aggregating everything in advance removes the detail needed for root-cause work.
 
-The application must preserve a consistent yield denominator, expose data
-freshness, remain useful during a transient source failure, and let an engineer
-move from overview to evidence without changing tools.
+The application therefore had to solve two problems at once: define trustworthy manufacturing populations and make them fast enough to investigate interactively.
 
-## First solution
+## How the system evolved
 
-The initial useful shape was a Python application that queried source data,
-transformed records with pandas, and displayed interactive Plotly figures. It
-proved the investigation workflow and clarified the manufacturing relationships:
-work order to lot, lot to wafer, wafer through operations and tools, then
-inspection/test results to yield and defect classifications.
+The first useful version was a Python application that queried source data, transformed records with pandas, and displayed interactive Plotly figures. It proved the investigation workflow and clarified the relationships between work orders, wafers, process operations, inspection/test results, Yield populations, and defect classifications.
 
-## Limitation
-
-The same synchronous path was doing too much: retrieving broad history,
-reconstructing analytical facts, and serving browser requests. Startup and refresh
-cost grew with history, duplicate sessions repeated work, and source availability
-was coupled to page availability.
-
-## Iteration
-
-The design separated source access, transformation, cache publication, service
-logic, and presentation. Reusable historical facts moved to validated Parquet
-snapshots. High-volume detail stayed behind a targeted on-demand query boundary.
-Background preload and refresh replaced user-triggered full recomputation, while a
-last-known-good snapshot kept the analytical surface available when refresh failed.
-
-## Next problem
-
-Caching improves latency only if readers never observe a partial publication and
-if freshness is understandable. The next work was therefore operational rather
-than visual: snapshot validation, atomic publication, bounded caches, explicit
-health/freshness state, structured logs, and tests for calculation and cache
-contracts.
-
-## Mature state
-
-```mermaid
-flowchart LR
-    S[(SQL Server-compatible source)] -->|parameterized, bounded queries| A[pyodbc access boundary]
-    A --> T[pandas transformations]
-    T --> P[validated Parquet snapshots]
-    P --> C[in-memory preload and cache]
-    C --> V[service and view models]
-    V --> D[Dash / Plotly investigation UI]
-    D -->|selected wafer or cohort| Q[targeted detail read]
-    Q -->|predicate-filtered Parquet| P
-    R[background refresh] --> A
-    R -->|publish on success| P
-    R -->|retain on failure| L[last-known-good state]
-    L --> C
-```
-
-## Evolution
+As history and adoption grew, the same synchronous path became a bottleneck. Broad retrieval, analytical reconstruction, and browser requests were competing for the same startup and refresh path. I separated those responsibilities into source access, transformation, prepared data publication, shared cache/preload, service logic, and targeted detail retrieval.
 
 ```mermaid
 flowchart LR
     V0[SQL and pandas analysis] -->|repetition| V1[Interactive Dash workflow]
     V1 -->|shared use| V2[Hosted application]
     V2 -->|startup and source load| V3[Preload and bounded caches]
-    V3 -->|history scale| V4[Prepared Parquet facts plus targeted detail]
+    V3 -->|history scale| V4[Prepared facts plus targeted detail]
     V4 -->|source failures| V5[Refresh status and last-known-good service]
 ```
 
-The current public application is table-first. Its landing view is a period-based
-Yield matrix whose rows state their population and denominator. Selecting a period
-cell and choosing **Enhance** opens the exact selected population as a Pareto, a
-full-range time trend, and a physical-wafer scatter. Selecting a wafer retrieves
-only its chip or Sorting detail. The same investigation exposes lineage, supports
-an exact-population export, and includes Sorting parameter analysis. Refresh status
-and last-known-good behavior remain visible while the current screen stays usable.
-All displayed records are generated from a reproducible seed; a synthetic source
-adapter replaces private infrastructure without changing the analytical contracts.
+## Architecture
 
-## Selected Engineering Challenges
+```mermaid
+flowchart LR
+    S[(SQL Server-compatible source)] -->|parameterized bounded queries| A[pyodbc access boundary]
+    A --> T[pandas transformations]
+    T --> P[validated Parquet snapshots]
+    P --> C[in-memory preload and cache]
+    C --> V[service and view models]
+    V --> D[Dash / Plotly investigation UI]
+    D -->|selected wafer or cohort| Q[targeted detail read]
+    Q -->|predicate-filtered read| P
+    R[background refresh] --> A
+    R -->|publish on success| P
+    R -->|retain on failure| L[last-known-good state]
+    L --> C
+```
 
-### Challenge: Raw records were not the engineering population
+The common path uses prepared facts for fast exploration. High-volume chip and Sorting detail stays behind a targeted retrieval boundary and is loaded only for the selected physical wafer or scoped investigation. Refresh builds a new generation separately, validates it, and publishes it only after the complete snapshot is ready.
 
-**What was happening**
+## Selected engineering challenges
 
-The Yield rows came from manufacturing, inspection, chip, Sorting, and
-qualification records. Those sources used different identifiers, dates, and grains.
-A database row could represent a wafer event, an inspected site, a chip result, or
-a qualification result; none of those row counts automatically defined the correct
-Yield denominator.
+### Defining the real manufacturing population
 
-**Why the earlier approach became insufficient**
+The source records came from manufacturing, inspection, chip, Sorting, and qualification data with different identifiers, dates, and grains. A database row could represent a wafer event, an inspected site, a chip result, or a qualification result, so source-row count could not be treated as the Yield denominator.
 
-Joining on whichever identifier looked similar could duplicate a physical wafer or
-combine results that belonged to different populations. Applying one date rule to
-every stage could also place a valid result in the wrong reporting period.
+I normalized identities with explicit precedence, assigned the date owned by each manufacturing stage, and built a stated population and numerator/denominator for every displayed row. Final chip Yield was formed from the complete physical-wafer cohort required by that calculation rather than from whichever rows happened to join cleanly.
 
-**Engineering change**
+**Engineering concepts:** ETL, identity normalization, explicit analytical grain, cohort definition, traceability.
 
-I retrieved the required source records, normalized their identities with explicit
-precedence, assigned the date owned by each manufacturing stage, and built a stated
-population and numerator/denominator for every displayed row. Final chip Yield was
-formed only from the complete physical-wafer cohort required by that calculation.
+### Restricting expensive investigations before retrieval
 
-**Why it worked**
+An engineer may select a small Yield population while the underlying inspection history spans a much larger dataset. Filtering only after a broad query still pays the database and transfer cost.
 
-The table stopped treating source-row count as manufacturing truth. Every result
-could be traced back to the records and inclusion rules that produced it.
+I first resolve the selected manufacturing population, then pass the relevant work-order/family keys into the expensive retrieval path. Detailed failure data is therefore scoped at the source or persisted-detail boundary before the application performs classification and display aggregation.
 
-**Software concept**
+**Engineering concepts:** query scoping, set-based filtering, predicate reduction, population-scoped retrieval.
 
-This is ETL with identity normalization, explicit analytical grain, and cohort or
-population definition.
+### Moving repeated work out of the click path
 
-### Challenge: A broad Pareto investigation moved too much data
+As the application gained history and users, opening the application or changing common filters repeatedly rebuilt data that was shared across sessions and views.
 
-**What was happening**
+I moved common retrieval and transformation into refresh-time preparation. Completed Yield facts, trends, and frequently reused Pareto data are published once and reused across browser interactions. Callbacks select from completed state instead of rebuilding the same manufacturing population.
 
-An engineer selected a small Yield population, but an expensive inspection/Pareto
-path could retrieve far more production history than that investigation needed.
+**Engineering concepts:** preload, caching, eager computation, precomputation, shared analytical state.
 
-**Why the earlier approach became insufficient**
+### Separating common facts from high-volume detail
 
-Filtering after a broad query still paid the source-query and data-transfer cost.
-It also repeated work when the exact WorkOrders and wafers were already known from
-the selected matrix cell.
+The matrix, trend, and common Pareto views are used constantly, but chip-level and parameter-level detail can be much larger and is needed only after a user selects a specific wafer or population.
 
-**Engineering change**
+I separated the workloads. Common Yield facts are prepared and preloaded, specialized summaries can refresh independently, and very detailed records stay persisted until a user requests a narrow investigation.
 
-I first resolved the selected engineering population. For the expensive inspection
-path, the relevant WorkOrder/family keys were passed to the source as a set and the
-detail query was restricted to those keys. Exact WorkOrder/wafer matching then
-scoped prepared failure facts, while suitable failure classification and display
-aggregation remained in pandas.
+**Engineering concepts:** eager versus lazy computation, workload separation, targeted drill-down, memory control.
 
-**Why it worked**
+### Keeping a failed refresh from becoming an outage
 
-The expensive retrieval began with the manufacturing population the user had
-actually selected instead of scanning history and discarding most of it later.
+A source refresh can fail even when the application already has a valid analytical dataset. Replacing that dataset in place would turn a refresh problem into an application availability problem.
 
-**Software concept**
+I changed refresh to build and validate a new prepared generation separately, then atomically switch the active reference only after success. If retrieval, validation, or publication fails, the previous complete snapshot remains active and the application exposes the stale/failed refresh state.
 
-This is population-scoped retrieval, query scoping, predicate reduction, and
-set-based filtering.
+**Engineering concepts:** atomic publication, snapshot retention, last-known-good behavior, fault-tolerant refresh.
 
-### Challenge: Startup work leaked into repeated interactions
+### Scaling delivery with adoption
 
-**What was happening**
+The application began as an engineering tool on a workstation. Once other engineers relied on it, local copies and independent versions became part of the problem.
 
-Opening the application and changing common filters repeatedly rebuilt source and
-analytical work that was shared by many users and views.
+I moved delivery through versioned releases into a shared portal and ultimately centralized server hosting with common startup, refresh, health, and recovery behavior. The broader hosting evolution is described in the [Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md) case study.
 
-**Why the earlier approach became insufficient**
+**Engineering concepts:** release management, client/server delivery, centralized hosting, operational ownership.
 
-As history and adoption grew, a design that was acceptable for one engineer made
-startup and click paths depend on broad retrieval and repeated transformation.
+## User workflow
 
-**Engineering change**
+The public synthetic application demonstrates the same investigation pattern:
 
-Common source populations were loaded on refresh, transformed once, published as
-prepared facts, and held in memory. Frequently reused trend and Pareto views were
-prepared with the snapshot, while browser callbacks filtered or selected from that
-completed state.
-
-**Why it worked**
-
-Normal interaction no longer rebuilt the same manufacturing population. Expensive
-work moved out of the user's click path and became reusable across views.
-
-**Software concept**
-
-This is caching, preloading, eager computation, and precomputation.
-
-### Challenge: Not all detail belonged in the common preload
-
-**What was happening**
-
-The matrix, trends, and common Pareto views were reused constantly, but chip-level
-and Sorting parameter detail could be much larger and was needed only after a user
-selected a specific population or wafer.
-
-**Why the earlier approach became insufficient**
-
-Preloading every detail row would make common refresh wait for specialized,
-high-volume workloads. Loading nothing would make every investigation pay the full
-cost.
-
-**Engineering change**
-
-I separated the workloads. Common Yield facts are prepared and preloaded. Expensive
-but reusable Sorting summaries run on a separate background cycle. Very detailed
-chip or Sorting rows stay persisted and are read only for the selected physical
-wafer or scoped investigation.
-
-**Why it worked**
-
-The frequent path stays responsive without sacrificing the evidence needed for a
-narrow investigation, and a specialized refresh cannot block publication of the
-common Yield view.
-
-**Software concept**
-
-This is eager-versus-lazy computation, workload separation, lazy loading, and
-population-scoped retrieval.
-
-### Challenge: Adoption changed the delivery problem
-
-**What was happening**
-
-The application began as a practical engineering tool. Once other engineers needed
-it, running it from one workstation and coordinating local copies became part of
-the problem.
-
-**Why the earlier approach became insufficient**
-
-A useful analysis was not a dependable shared product if users could have different
-versions, separate refresh work, or no clear recovery path.
-
-**Engineering change**
-
-The delivery evolved through versioned releases into a common portal and a
-server-hosted application with centralized preparation and refresh behavior.
-
-**Why it worked**
-
-Users reached one maintained application state, and operational concerns such as
-startup, refresh, health, and recovery could be handled centrally. The supporting
-evolution is detailed in the [Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md)
-case study.
-
-**Software concept**
-
-This is release management, software distribution, client/server delivery, and
-centralized hosting.
-
-### Challenge: A failed refresh could not erase a working view
-
-**What was happening**
-
-Source retrieval and preparation can fail even when users already have a valid
-analytical dataset. Replacing that view with an error or partial data would turn a
-refresh problem into an application outage.
-
-**Why the earlier approach became insufficient**
-
-Updating shared data in place gave readers no clean boundary between the previous
-valid state and a refresh still being built.
-
-**Engineering change**
-
-Refresh writes a new prepared generation separately, validates its required files
-and metadata, and only then changes the active reference. In memory, the completed
-snapshot is replaced only after preparation succeeds. If retrieval, validation, or
-publication fails, the prior valid snapshot remains active and the status reports
-the failure.
-
-**Why it worked**
-
-Readers see either the previous complete dataset or the next complete dataset—never
-a partially published refresh.
-
-**Software concept**
-
-This is validated atomic publication, snapshot retention, last-known-good behavior,
-and fault-tolerant refresh.
+1. Start from a period-based Yield matrix with an explicit population and denominator.
+2. Select a period/cell to open the exact cohort behind the result.
+3. Investigate Pareto, time trend, and physical-wafer scatter views.
+4. Select a wafer for targeted chip or Sorting detail.
+5. Export the exact selected population with lineage preserved.
+6. Continue using the last valid dataset if a refresh fails, with freshness state visible.
 
 ## Result
 
-The design creates two performance paths: low-latency exploration over common facts
-held in memory and narrow, predicate-filtered reads from separately persisted detail
-facts. The production-compatible source boundary can apply the same population
-scoping before retrieval. The design also makes failure behavior explicit. A failed
-refresh does not erase a valid snapshot; the UI reports freshness and continues
-serving the last-known-good analytical state.
+The mature design creates two performance paths: low-latency exploration over prepared shared facts and narrow reads for high-volume drill-down evidence. That keeps the common investigation responsive without sacrificing the detailed records needed for root-cause work.
 
-No quantified operational impact is claimed here. The demonstrated result is an
-inspectable, tested architecture that addresses the latency, consistency, and
-availability failure modes discovered during application evolution.
+Just as important, the application makes data correctness and service behavior explicit. Yield populations are defined rather than inferred from row counts, readers never see a partially published refresh, and a transient source failure does not erase the last valid analytical state.
 
-## Lessons
+## My ownership
 
-- Define the yield cohort and denominator before designing charts.
-- Cache a stable analytical fact, not an arbitrary callback result.
-- Separate broad historical summaries from high-volume drill-down retrieval.
-- Treat freshness, provenance, and degraded state as product features.
-- Keep source-specific SQL behind an interface so public synthetic data and
-  production-compatible access exercise the same transformation contracts.
-- Test manufacturing invariants and publication behavior in addition to UI paths.
+I designed and implemented the application architecture, Python transformations, Yield population logic, cache/preload strategy, Dash/Plotly investigation workflow, targeted detail retrieval, refresh and last-known-good behavior, testing approach, public synthetic analogue, and documentation.
 
-## Personal ownership
-
-| Personally designed and implemented | Existing dependency or context |
-|---|---|
-| Application architecture, Python transformations, cache/preload strategy, Dash/Plotly investigation workflow, refresh and last-known-good behavior, testing approach, public synthetic analogue, and documentation | Manufacturing source systems, database administration, enterprise hosting environment, and the physical manufacturing process |
+The manufacturing source systems, database administration, enterprise infrastructure, and physical process remain external dependencies owned by their respective teams.
 
 ## Tradeoffs
 
-- **Parquet instead of a public SQL database:** excellent for reproducible local
-  snapshots and columnar reads, but not a replacement for transactional source
-  systems.
-- **In-process cache:** simple and appropriate for a single service instance; a
-  horizontally scaled deployment would need shared cache coordination.
-- **Background refresh:** protects browser latency but adds lifecycle, locking,
-  observability, and stale-data decisions.
-- **Separately persisted targeted detail:** limits common memory use and bulk reads,
-  but each drill-down incurs a filtered Parquet read and the detail still needs its
-  own refresh and lineage contract.
+- **Prepared Parquet facts:** provide reproducible columnar snapshots and fast reads, but do not replace transactional source systems.
+- **In-process cache:** is simple and effective for a single service instance; horizontal scaling would require shared cache coordination.
+- **Background refresh:** protects user latency but adds lifecycle, locking, observability, and stale-data decisions.
+- **Targeted persisted detail:** controls memory and bulk retrieval but adds a separate refresh and lineage contract for drill-down data.
 
 ## Explore the implementation
 
@@ -324,3 +134,7 @@ availability failure modes discovered during application evolution.
 - [Data flow](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/DATA_FLOW.md)
 - [Yield calculation model](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/YIELD_CALCULATION_MODEL.md)
 - [Performance evolution](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/PERFORMANCE_EVOLUTION.md)
+
+## Confidentiality
+
+The public implementation uses reproducible synthetic semiconductor data and generic source boundaries. Employer source code, database objects, credentials, network details, production data, and confidential operating rules are not included.
