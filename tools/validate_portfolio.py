@@ -14,17 +14,15 @@ MERMAID_BLOCK = re.compile(r"^```mermaid\s*\n(.*?)^```\s*$", re.MULTILINE | re.D
 MERMAID_DECLARATION = re.compile(
     r"^(?:flowchart\s+(?:TB|TD|BT|RL|LR)|stateDiagram-v2|sequenceDiagram)$"
 )
+
+# Public case studies are written for recruiters, hiring managers, and technical
+# reviewers. Validation therefore enforces the externally useful structure rather
+# than the earlier internal chronology/provenance template.
 REQUIRED_CASE_SECTIONS = (
     "## Problem",
-    "## First solution",
-    "## Limitation",
-    "## Iteration",
-    "## Next problem",
-    "## Mature state",
-    "## Selected Engineering Challenges",
     "## Result",
-    "## Lessons",
-    "## Personal ownership",
+    "## My ownership",
+    "## Confidentiality",
 )
 EXPECTED_CASES = {
     "YIELD.md",
@@ -69,12 +67,10 @@ def check_case_structure(errors: list[str]) -> None:
             if heading not in text:
                 errors.append(f"{path.relative_to(ROOT)}: missing {heading}")
 
-    grating_path = ROOT / "case-studies" / "GRATING_PROCESS_ANALYTICS.md"
-    if grating_path.exists():
-        grating_text = grating_path.read_text(encoding="utf-8")
-        distinctive_heading = "## What Made This More Than a Dashboard Project"
-        if distinctive_heading not in grating_text:
-            errors.append(f"{grating_path.relative_to(ROOT)}: missing {distinctive_heading}")
+        if "**What I built:**" not in text:
+            errors.append(f"{path.relative_to(ROOT)}: missing external-facing What I built summary")
+        if "**What it demonstrates:**" not in text:
+            errors.append(f"{path.relative_to(ROOT)}: missing external-facing What it demonstrates summary")
 
 
 def check_links(errors: list[str]) -> None:

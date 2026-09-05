@@ -1,160 +1,126 @@
 # Matthew Chung
 
-## Manufacturing Software & Forward-Deployed Engineering Portfolio
+## Manufacturing Software & Forward-Deployed Engineering
 
-Manufacturing, process, and quality engineer turned software builder, focused on
-turning ambiguous factory problems into production applications, analytical
-systems, and reliable engineering workflows. I did not begin with a platform
-blueprint: each practical tool exposed the next constraint in data, usability,
-performance, distribution, or support.
+I build software for manufacturing environments where the problem is rarely just "make a dashboard." My work starts with an operational or engineering need, then moves across data modeling, Python/SQL development, workflow design, deployment, performance, and support until the result is something other engineers can reliably use.
 
-This portfolio is a clean-room account of four engineering stories. It describes
-problems, architecture, tradeoffs, and evolution using generic terminology and
-fictional examples. It contains no employer source code, database objects,
-credentials, network details, production data, or confidential operating rules.
+My background spans semiconductor manufacturing, process engineering, quality, and technical program leadership. That domain experience shapes how I build software: define the physical or operational problem first, make the data grain and assumptions explicit, and design the application around the decision the user needs to make.
 
-## 60-second overview
+This portfolio highlights several systems I designed and implemented, with confidential production details replaced by generic terminology, synthetic data, and clean-room examples.
 
-| Story | Engineering question | What it demonstrates |
+## Selected work
+
+| Project | What I built | What it demonstrates |
 |---|---|---|
-| [Manufacturing Yield Platform](case-studies/YIELD.md) | How can engineers investigate yield from factory-level trends down to an individual wafer without repeatedly querying high-volume history? | Deep software, data, performance, and reliability engineering in a runnable synthetic application |
-| [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) | How can fragmented process measurements become a defensible recommendation while preserving engineering judgment? | Physical-process expertise translated into data requirements and decision support |
-| [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) | How can live work queues and shift handoffs reduce information motion and waiting? | Workflow redesign, visual management, and safer standard work |
-| [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) | How can useful local tools evolve into a supportable multi-application service? | Enterprise delivery, application integration, hosting, health, and recovery |
+| [Manufacturing Yield Platform](case-studies/YIELD.md) | A multi-level yield investigation system that moves from factory trends to wafer-level and defect-level evidence while controlling data volume and refresh cost | Python/SQL architecture, analytical data modeling, performance optimization, caching, drill-down design, reliability, and production delivery |
+| [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) | A process analytics and recommendation workflow that reconstructs wafer process history, connects upstream inputs to downstream responses, and presents model diagnostics for engineering review | Process engineering, event reconstruction, data requirements, statistical modeling, human-in-the-loop decision support, and manufacturing systems integration |
+| [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) | Shared production-visibility and shift-handoff tools that replace repeated manual status reconstruction with prepared operational state and controlled workflow transitions | Lean workflow redesign, configuration-driven applications, background refresh, session state, transactional actions, and operational reliability |
+| [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) | The internal hosting and delivery layer that moved engineering tools from local scripts and desktop packages to centrally hosted browser applications | Forward-deployed engineering, WSGI integration, Windows hosting, server deployment, network/database coordination, health checks, logging, restart behavior, and supportability |
 
-The [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform)
-is the technical flagship. It is a runnable Dash/Plotly application backed by
-reproducible synthetic semiconductor data and includes its own tests and
-architecture documentation.
+## Flagship project: Manufacturing Yield Platform
+
+The [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) is the deepest public implementation in this portfolio. It is a runnable Dash/Plotly application backed by reproducible synthetic semiconductor data, with tests and architecture documentation included.
+
+The system is designed around a common manufacturing problem: engineers need fast high-level yield visibility, but root-cause work eventually requires detailed wafer, inspection, and test records. Loading everything all the time is slow; aggregating everything in advance removes the detail needed for investigation. The architecture separates prepared shared facts from targeted drill-down data so the common path stays responsive while detailed evidence remains available when needed.
 
 ![Synthetic Yield Overview](assets/yield-summary.png)
 
-*A verified screenshot from the public synthetic Yield application. No production
-data or private interface is shown.*
+*Screenshot from the public synthetic Yield application. No production data or private interface is shown.*
 
-## Project cards
+[View the application repository](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) · [Read the Yield case study](case-studies/YIELD.md) · [View architecture](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/ARCHITECTURE.md)
 
-### 1. Manufacturing Yield Platform
+## How the projects connect
 
-Multi-source manufacturing data is transformed with SQL-compatible access,
-Python, and pandas into an interactive Yield investigation workflow. The important
-story is its evolution under adoption and data volume—not simply its charts.
+These projects show a progression from solving individual engineering problems to owning the infrastructure required to support shared manufacturing software.
 
-`SQL/pandas analysis → Dash application → shared use → performance optimization → server hosting → scheduled prepared data`
+```mermaid
+flowchart LR
+    A[Ambiguous manufacturing problem] --> B[Engineering analysis]
+    B --> C[Reusable application]
+    C --> D[Shared operational workflow]
+    D --> E[Central hosting and support]
+```
 
-[View repository](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) ·
-[Read engineering evolution](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/ENGINEERING_EVOLUTION.md) ·
-[View architecture](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/ARCHITECTURE.md)
+A typical project starts with a process or operations question, then expands as real usage exposes the next constraint: missing data relationships, slow queries, repeated manual work, multi-user state, deployment friction, or recovery after failure. I have worked across each of those layers rather than treating them as separate problems.
 
-### 2. Grating Process Analytics
+## Project highlights
 
-A process-engineering project that began with a focused manufacturing question,
-exposed the need for structured process history, and evolved into configurable
-analysis and constrained recommendation support.
+### Manufacturing Yield Platform
 
-`Process question → focused ashing analysis → data gap → structured history requirements → broader analytics → reviewed recommendations`
+I built a Python and SQL-based investigation workflow that combines multiple manufacturing grains into explicit yield populations, then supports trend, Pareto, wafer-level, and parameter-level drill-down. As history and adoption grew, I redesigned the application around prepared snapshots, bounded caches, background refresh, targeted detail retrieval, and last-known-good behavior.
+
+`SQL/pandas analysis → Dash application → shared use → performance redesign → centralized hosting → prepared data + targeted detail`
+
+[Read the case study](case-studies/YIELD.md)
+
+### Grating Process Analytics
+
+This project began with a physical process question rather than a request for software. Building the first analysis exposed missing structure in how process measurements and repeated wafer events were connected. I defined the required historical relationships, then built a configurable analytics and recommendation workflow that reconstructs process cycles, evaluates model quality, and keeps final process decisions with the engineer.
+
+`Process question → focused analysis → data requirements → structured history → configurable analytics → reviewed recommendation`
 
 [Read the case study](case-studies/GRATING_PROCESS_ANALYTICS.md)
 
-### 3. Lean Digital Operations
+### Lean Digital Operations
 
-Software applied as a Lean mechanism: Fab TV supports visual management and
-production visibility; Passdown standardizes information across shift boundaries.
+I built production-visibility and shift-handoff tools to reduce repeated information gathering. The systems prepare shared operational state in the background, make priority and shift-window rules explicit, preserve useful last-known-good views during refresh failures, and protect external actions such as passdown submission from duplicate or partial writes.
 
-`Information waste → visible standard work → digital handoff → multi-user safety → sustained workflow`
+`Manual status reconstruction → digital standard work → prepared shared state → safer multi-user workflow`
 
 [Read the case study](case-studies/LEAN_DIGITAL_OPERATIONS.md)
 
-### 4. Manufacturing Application Platform
+### Manufacturing Application Platform
 
-The delivery layer that became necessary as local engineering tools gained users:
-versioned application bundles, a central portal, mounted WSGI applications,
-production-style Windows hosting, health checks, and recovery tooling.
+As engineering applications gained users, the delivery problem became as important as the code. I moved tools through local Python execution, packaged desktop releases, a common application portal, and ultimately centralized server-hosted browser applications. That work required application refactoring, WSGI composition, Windows hosting, SQL Server connectivity, network and domain coordination with IT, health checks, logging, restart tooling, and failure isolation.
 
-`Local engineering apps → repeatable delivery → shared portal → central server → health and recovery`
+`Local engineering tools → repeatable releases → shared portal → central server → health, logging, and recovery`
 
 [Read the case study](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)
 
 ### Supporting engineering tools
 
-Clean Room Request, SPC/process-step monitoring, WIP views, process-run history,
-and equipment status show how small targeted tools can remove specific sources of
-manufacturing friction without becoming artificial standalone flagships.
+I have also built targeted tools for request/fulfillment workflows, SPC and process-step monitoring, WIP visibility, process-run history, and equipment status. These projects show how smaller applications can remove specific sources of manufacturing friction without needing to become large standalone platforms.
 
-[Review supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md)
+[View supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md)
 
-## A connected engineering narrative
+## Technical range
 
-These projects are not four unrelated dashboards. They show an expanding scope of
-ownership:
+- Python, pandas, Dash, Plotly, Tkinter, and application packaging
+- SQL Server-compatible access through `pyodbc`
+- Manufacturing data modeling across work orders, wafers, operations, tools, measurements, inspection, and test results
+- Query scoping, temporary/prepared data, caching, preload, background refresh, and targeted retrieval
+- Parquet-backed analytical snapshots and last-known-good publication behavior
+- Configuration-driven process definitions and workflow rules
+- Statistical analysis, model diagnostics, and human review boundaries
+- WSGI application composition and mounted Dash applications
+- Waitress-based Windows hosting, health endpoints, logging, launcher/restart/watchdog tooling
+- Multi-user state, idempotency protection, transactions, and external workflow integration
+- Testing around transformations, data contracts, state transitions, refresh behavior, and integration seams
 
-```mermaid
-flowchart LR
-    A[Answer one process question] --> B[Build reusable analysis]
-    B --> C[Support operational decisions]
-    C --> D[Deliver shared applications]
-    D --> E[Engineer refresh, recovery, and support]
-```
+## What I own in these projects
 
-The recurring pattern is to begin with the manufacturing decision, identify the
-minimum trustworthy data grain, make assumptions visible, and then evolve the
-delivery mechanism when usage exposes the next bottleneck.
+My work includes problem definition, application architecture, Python development, SQL/data access, transformations, analytical logic, visualization and workflow design, performance optimization, application integration, deployment design, troubleshooting, documentation, and support. I also work directly with process owners, manufacturing-system owners, database teams, and IT when the solution crosses those boundaries.
 
-## Technical review path
+I do not present enterprise infrastructure, source manufacturing systems, equipment operation, or process approvals owned by other teams as my work. The case studies call out those boundaries where they matter.
 
-1. Start with [Yield](case-studies/YIELD.md) for the deepest implementation story.
-2. Read [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) for
-   process modeling, repeated-event reconstruction, recommendations, and model
-   diagnostics.
-3. Read [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) for
-   work visibility, shift boundaries, duplicate-submit protection, and shared state.
-4. Read [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)
-   for WSGI composition, health checks, restart behavior, and deployment evolution.
-5. Use the [portfolio inventory](docs/PORTFOLIO_INVENTORY.md) to see why each project
-   received its public depth and what evidence was deliberately excluded.
+## Confidentiality
 
-## Engineering themes
-
-- Python and pandas transformation around manufacturing data
-- SQL Server-compatible access through a `pyodbc` boundary
-- Dash/Plotly analytics and shared browser-based workflows
-- configuration-driven process definitions and decision rules
-- bounded caching, preload, background refresh, and last-known-good behavior
-- Parquet snapshots where a verified workload benefits from precomputation
-- targeted retrieval for high-volume detail
-- process traceability across work orders, wafers, operations, tools, and results
-- model diagnostics and human review before recommendations become decisions
-- WSGI application composition, Waitress hosting, health checks, logging, and restart tooling
-- tests around transformations, state transitions, data contracts, and integration seams
-
-## Evidence and privacy
-
-The private applications were inspected only to verify system boundaries,
-chronology, and engineering decisions. Public material was then written from
-scratch. Diagrams are conceptual reconstructions; identifiers are generic; any
-example records are fictional. The screenshot policy and provenance are documented
-in [SCREENSHOT_MAPPING.md](docs/SCREENSHOT_MAPPING.md).
+This is a public engineering portfolio, not a copy of an employer environment. Production source code, credentials, network details, database object names, confidential process rules, and production data are excluded. Public examples use generic terminology, conceptual diagrams, and synthetic data while preserving the engineering problems, architecture, tradeoffs, and decisions I personally worked through.
 
 ## Repository map
 
 ```text
-case-studies/   Four primary engineering narratives and supporting tools
-docs/           Inventory, evidence boundaries, and screenshot provenance
-assets/         Verified public synthetic visuals only
-tools/          Dependency-free portfolio validation
-.github/        Continuous validation on supported Python versions
+case-studies/   Detailed engineering case studies
+assets/         Public synthetic visuals
+docs/           Supporting portfolio documentation
+tools/          Repository validation utilities
+.github/        Continuous validation
 ```
 
-## Local validation
+## Contact
 
-The portfolio has no runtime dependency. Validate links, required case-study
-sections, and public-safety rules with:
-
-```bash
-python tools/validate_portfolio.py
-```
+This portfolio is intended for engineering leaders, hiring managers, and technical reviewers interested in manufacturing software, forward-deployed engineering, process analytics, and production systems work.
 
 ## License
 
-Documentation and original diagrams are released under the [MIT License](LICENSE).
-The linked Yield application has its own license and repository history.
+Documentation and original diagrams are released under the [MIT License](LICENSE). The linked Yield application has its own license and repository history.
