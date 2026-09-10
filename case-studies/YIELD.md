@@ -16,16 +16,49 @@ The application therefore had to solve two problems at once: define trustworthy 
 
 The first useful version was a Python application that queried source data, transformed records with pandas, and displayed interactive Plotly figures. It proved the investigation workflow and clarified the relationships between work orders, wafers, process operations, inspection/test results, Yield populations, and defect classifications.
 
-As history and adoption grew, the same synchronous path became a bottleneck. Broad retrieval, analytical reconstruction, and browser requests were competing for the same startup and refresh path. I separated those responsibilities into source access, transformation, prepared data publication, shared cache/preload, service logic, and targeted detail retrieval.
+As history and adoption grew, the same synchronous path became a bottleneck. Broad retrieval, analytical reconstruction, and browser requests were competing for the same startup and refresh path. I separated those responsibilities into source access, transformation, prepared data publication, shared cache/preload, service logic, and targeted detail retrieval. The visible investigation workflow remained comparatively stable while these backend responsibilities changed substantially.
 
 ```mermaid
 flowchart LR
-    V0[SQL and pandas analysis] -->|repetition| V1[Interactive Dash workflow]
-    V1 -->|shared use| V2[Hosted application]
-    V2 -->|startup and source load| V3[Preload and bounded caches]
-    V3 -->|history scale| V4[Prepared facts plus targeted detail]
-    V4 -->|source failures| V5[Refresh status and last-known-good service]
+    V0[SQL and pandas analysis] -->|source cost| V1[Scoped retrieval]
+    V1 -->|repeated work| V2[Shared snapshot and cache]
+    V2 -->|uneven workloads| V3[Separate preload and targeted detail]
+    V3 -->|history scale| V4[Scheduled and incremental ETL]
+    V4 -->|data contract changes| V5[Version-aware rebuild]
+    V5 -->|service failures| V6[Atomic last-known-good publication]
 ```
+
+### Backend evolution in practice
+
+| Constraint revealed through use | Engineering change | Resulting capability |
+| --- | --- | --- |
+| Manufacturing records had different identities, dates, revisions, and grains | Build explicit transformation and cohort logic | Defensible, traceable Yield populations |
+| Small investigations still paid for broad source retrieval | Resolve the population first and scope parameterized reads | Less source scanning and transfer |
+| Browsers repeatedly rebuilt common facts and indexes | Share completed server snapshots and reusable caches | Faster interactions without per-user reconstruction |
+| Specialized inspection and test analysis delayed the common path | Separate reusable background preloads from lazy high-volume detail | Independent latency and memory decisions by workload |
+| Historical reconstruction remained expensive | Materialize validated Parquet facts through scheduled ETL | Fast, reusable analytical state |
+| Full rebuilds became wasteful and corrections could arrive late | Add incremental, correction-aware refresh where supported by the source grain | More efficient historical maintenance without ignoring changed records |
+| Transformation behavior changed between releases | Version the prepared-data contract and rebuild incompatible caches | Safer cache invalidation and deployment |
+| Refresh and polling could overlap or consume excess memory | Add synchronization, batching, polling guards, and bounded caches | More predictable production behavior |
+| A source or rebuild failure could interrupt a working view | Publish only complete generations and retain the previous valid state | Fault-tolerant refresh and continued availability |
+
+This progression is the central engineering story: the application moved from a correct interactive
+analysis toward a backend that owns extraction, transformation, materialization, refresh,
+compatibility, concurrency, memory, and failure behavior.
+
+### Why the interface changed less
+
+The table-to-drilldown workflow continued to match the engineering task, so later releases did not
+need constant visual reinvention. Keeping that workflow familiar reduced user disruption while the
+backend was reworked. The perceived UI improvement—faster responses, fewer blank states, fresher
+shared data, and continued access during refresh failure—came primarily from architecture rather
+than styling.
+
+Application delivery evolved in parallel but is a separate responsibility. The Yield service
+moved from local and packaged use into the common hosting environment while the broader platform
+standardized release distribution, application mounting, health, logging, restart, and recovery.
+That related progression is documented in the
+[Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md) case study.
 
 ## Architecture
 
@@ -133,6 +166,7 @@ The manufacturing source systems, database administration, enterprise infrastruc
 - [Architecture](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/ARCHITECTURE.md)
 - [Data flow](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/DATA_FLOW.md)
 - [Yield calculation model](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/YIELD_CALCULATION_MODEL.md)
+- [Engineering evolution](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/ENGINEERING_EVOLUTION.md)
 - [Performance evolution](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/docs/PERFORMANCE_EVOLUTION.md)
 
 ## Confidentiality

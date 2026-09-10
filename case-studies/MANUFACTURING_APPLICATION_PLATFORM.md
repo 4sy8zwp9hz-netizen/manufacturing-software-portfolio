@@ -32,6 +32,20 @@ The main steps were:
 6. Add a health endpoint, logging, deterministic launch/restart commands, status checks, and watchdog behavior.
 7. Isolate application import failures so one broken mount did not prevent every healthy application from starting.
 
+## Relationship to the Yield evolution
+
+The application platform and the Yield backend improved in parallel, but they are not the same
+system concern. The platform owns distribution, discovery, process hosting, route composition,
+health, logs, and recovery. The Yield application owns manufacturing transformation, prepared
+facts, cache/preload policy, targeted detail, refresh, and analytical correctness.
+
+They reinforced one another. Central hosting replaced duplicated per-user processing with shared
+service state, increasing the need for bounded caches and disciplined background lifecycles.
+Prepared Yield facts and workload-specific refresh paths then made shared browser access practical
+without rebuilding the same population for every user. This separation also allowed the familiar
+Yield investigation interface to remain stable while both its backend and its delivery model
+matured.
+
 ## Architecture
 
 ```mermaid

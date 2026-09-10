@@ -47,9 +47,12 @@ A typical project starts with a process or operations question, then expands as 
 
 ### Manufacturing Yield Platform
 
-I built a Python and SQL-based investigation workflow that combines multiple manufacturing grains into explicit yield populations, then supports trend, Pareto, wafer-level, and parameter-level drill-down. As history and adoption grew, I redesigned the application around prepared snapshots, bounded caches, background refresh, targeted detail retrieval, and last-known-good behavior.
+I built a Python and SQL-based investigation workflow that combines multiple manufacturing grains into explicit yield populations, then supports trend, Pareto, wafer-level, and parameter-level drill-down. The user workflow remained intentionally recognizable while the backend progressed through scoped queries, shared snapshots, workload-specific preloads, scheduled and incremental ETL, version-aware cache rebuilding, targeted detail retrieval, and last-known-good publication.
 
-`SQL/pandas analysis → Dash application → shared use → performance redesign → centralized hosting → prepared data + targeted detail`
+Two connected tracks drove that growth:
+
+- `Yield backend: SQL/pandas analysis → scoped retrieval → shared cache/preload → prepared Parquet facts → incremental and version-aware refresh → fault-tolerant service`
+- `Application delivery: local tool → versioned releases → shared access → mounted application portal → central hosting, health, logs, and recovery`
 
 [Read the case study](case-studies/YIELD.md)
 
