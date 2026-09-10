@@ -19,6 +19,7 @@ clone.
 | Fab TV / work-queue visibility | replace repeated production-status reconstruction with common visual management | Medium–high | High | Lean Digital Operations case study |
 | Shift passdown | make shift windows, notes, preview, and controlled delivery consistent | Medium–high | High | Lean Digital Operations case study |
 | Multi-application portal and server | move useful local applications into one supportable hosting and recovery contract | High | High | Infrastructure/platform case study |
+| Maintenance Operations Portal | connect mobile work logging, task completion, recurring patrol assignments, issue intake, attachments, authorization, and auditing | High | High | Featured supporting case study |
 | Clean Room Request | connect request submission to a traceable fulfillment queue and correction path | Medium | Medium | Supporting tool summary |
 | SPC / process-step monitoring | prioritize statistical signals and make review evidence repeatable | High | High | Supporting tool summary |
 | Current WIP and process-flow views | make current flow and detail visible from reusable snapshots | Medium | High | Supporting tool summary |
@@ -29,9 +30,11 @@ clone.
 
 The repository history verifies a progression from a portal baseline, through
 individual application integrations, toward shared snapshots, broader analytical
-apps, operational workflows, cached history, and equipment status. Archived server
-packages and launcher scripts verify repeated operational hardening: health checks,
-logging, restart commands, and watchdog behavior.
+apps, operational workflows, cached history, equipment status, and a maintenance
+workflow that expanded from mobile logging into scheduled completion, issue intake,
+daily patrol assignments, controlled administration, and submission auditing.
+Archived server packages and launcher scripts verify repeated operational
+hardening: health checks, logging, restart commands, and watchdog behavior.
 
 Some earlier Grating/Ashing work predates the visible history of the audited
 checkout. The current analytical engine and recommendation modules verify the

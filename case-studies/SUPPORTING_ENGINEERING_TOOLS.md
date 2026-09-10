@@ -1,6 +1,50 @@
 # Supporting Manufacturing Engineering Tools
 
-These smaller applications show the breadth of manufacturing problems I have translated into working software. Each one targets a specific source of friction: request fulfillment, process monitoring, work-in-process visibility, historical investigation, or equipment status.
+These smaller applications show the breadth of manufacturing problems I have translated into working software. Each one targets a specific source of friction: maintenance execution, request fulfillment, process monitoring, work-in-process visibility, historical investigation, or equipment status.
+
+## Maintenance Operations Portal
+
+### Problem
+
+Recording a short repair, check, calibration, or observation should be easy near the equipment, but the complete workflow is larger than a log-entry form. Technicians also need to see scheduled work, complete one-time or recurring tasks, record why work could not be completed, attach evidence, report new issues, and perform assigned daily checks. Supervisors need controlled scheduling and an audit trail without exposing sensitive work notes in operational logs.
+
+### How the application evolved
+
+```mermaid
+flowchart LR
+    A[Mobile quick log] --> B[Validated equipment and user selection]
+    B --> C[Photos and document attachments]
+    C --> D[Issue intake and scheduled-task completion]
+    D --> E[Daily process-patrol assignments]
+    E --> F[Role-checked schedule administration]
+    F --> G[Submission and outcome auditing]
+```
+
+The first practical application reduced the effort required to record maintenance work from a phone or shared browser. Usage exposed the next problems: source selections could become stale, uploaded files needed safe storage, scheduled work needed a completion path, and recurring patrol work needed assignment and correction behavior rather than another static checklist.
+
+### What I built
+
+- a responsive Dash workflow optimized for phones as well as desktop browsers
+- live equipment and authorized-user lookups, with selections checked again when a record is submitted
+- parameterized SQL Server writes with commit/rollback behavior
+- safe multi-file upload handling, sanitized paths, duplicate-name handling, and configurable limits
+- scheduled and one-time task completion with explicit work notes and unable-to-complete outcomes
+- recurring Process Patrol assignments by person, reusable group, or all users and by weekday
+- role checks in both the interface and backend before schedule or group changes are accepted
+- shared daily completion state so one completed team assignment is not presented as unfinished to every assignee
+- history-preserving schedule, assignment, and group changes through retirement or deactivation instead of destructive deletion
+- bounded browser payloads, progressive task lists, and cached task retrieval for a usable shared workflow
+- rotating, fail-safe submission auditing that records outcome metadata while deliberately excluding work notes, attachment names, and file contents
+
+Process Patrol is production-ready and scheduled for operational rollout. Its current outcome model records the daily checklist decision and preserves assignment history; it does not claim additional maintenance-record posting or attachment behavior that remains outside the approved workflow.
+
+### Why it is a supporting project
+
+This is a substantial application, but its strongest portfolio value is as another example of digital standard work and transactional workflow design. Keeping it here preserves the four primary stories while demonstrating that the same problem-first approach also applies to maintenance and reliability operations.
+
+### Engineering lesson
+
+A convenient input form creates value only when the receiving state, validation, attachments, permissions, completion rules, correction path, history, and support model are designed with it. In software terms, the portal combines transactional integrity, authorization, auditability, responsive interaction, and history-preserving state transitions around a real maintenance workflow.
 
 ## Clean Room Request and Fulfillment Queue
 

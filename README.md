@@ -79,7 +79,7 @@ As engineering applications gained users, the delivery problem became as importa
 
 ### Supporting engineering tools
 
-I have also built targeted tools for request/fulfillment workflows, SPC and process-step monitoring, WIP visibility, process-run history, and equipment status. These projects show how smaller applications can remove specific sources of manufacturing friction without needing to become large standalone platforms.
+I have also built a mobile-friendly Maintenance Operations Portal that connects quick work logging, scheduled-task completion, recurring process-patrol assignments, issue intake, attachments, authorization, and submission auditing. Additional tools cover request/fulfillment workflows, SPC and process-step monitoring, WIP visibility, process-run history, and equipment status. Together, these projects show how focused applications can remove specific sources of manufacturing friction without needing to become separate flagship platforms.
 
 [View supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md)
 
@@ -95,6 +95,7 @@ I have also built targeted tools for request/fulfillment workflows, SPC and proc
 - WSGI application composition and mounted Dash applications
 - Waitress-based Windows hosting, health endpoints, logging, launcher/restart/watchdog tooling
 - Multi-user state, idempotency protection, transactions, and external workflow integration
+- Mobile-responsive workflows, safe file handling, role-checked administration, and privacy-conscious audit logging
 - Testing around transformations, data contracts, state transitions, refresh behavior, and integration seams
 
 ## What I own in these projects
