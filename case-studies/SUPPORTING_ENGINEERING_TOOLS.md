@@ -50,15 +50,17 @@ A convenient input form creates value only when the receiving state, validation,
 
 ### Problem
 
-Requests for controlled-area garments or consumables need a clear submission path, a visible fulfillment queue, and a record of completion or inability to complete.
+Requests for controlled-area garments or consumables need a clear submission path, a visible fulfillment queue, and a record of completion or inability to complete. This is a frequently used operational workflow, not just a demonstration form: approximately 250 requests were handled in a recent month, based on my operational count. That figure describes usage, not a measured time-saving or productivity improvement.
 
 ### What I built
 
-- separate requester and fulfiller browser views
+- a request form and fulfillment queue with distinct desktop and mobile presentations
+- ticket-number or requester-name lookup so a requester can check status without contacting the fulfillment team
 - a durable backend store behind the workflow boundary
-- periodic queue refresh and status filtering
+- status tracking, periodic queue refresh, and queue filtering
 - multi-select completion, cannot-complete, and reopen transitions
 - fulfillment identity and comments captured with each transition
+- validated photo and document attachments stored with the request record, with fulfillment photos previewed in the lookup workflow
 - configuration separated from the form and queue logic
 
 ```mermaid
@@ -70,7 +72,29 @@ stateDiagram-v2
     Completed --> Open: reopened when correction is needed
 ```
 
-The key engineering lesson was that a form is only half a workflow. The receiving queue, state transitions, correction path, and traceability determine whether the application is operationally complete.
+The application reached v2.0.0 as the receiving workflow matured. The key engineering lesson was that a form is only half a workflow. The receiving queue, ticket lookup, mobile fulfillment path, photo evidence, state transitions, correction path, and traceability determine whether the application is operationally complete.
+
+### What the usage number means
+
+The approximate monthly count is evidence of operational adoption, not proof of labor hours saved. The defensible benefit is that requesters and fulfillers have one shared path from submission through disposition, with status and photo context available in the same workflow. A future quantified efficiency claim would require a documented before-and-after measurement.
+
+## Chip Yield and Manufacturing Flow Analytics
+
+### Problem
+
+The flagship Yield workflow established trusted prepared wafer and chip facts, but chip-side engineering questions required a different view of the same manufacturing history. Rebuilding those facts in another application would duplicate transformation logic and create competing interpretations of Yield.
+
+### What I built
+
+- a separate engineering workflow that consumes prepared Parquet facts produced by the Yield data pipeline
+- chip- and wafer-level Yield views connected to ordered manufacturing-process context
+- filters and export paths for investigating a selected product, wafer population, or process stage
+- incremental cache refresh so historical analytical state can be reused without rebuilding every record
+- portal integration so the workflow follows the same shared hosting and support model as the broader application environment
+
+### Why it matters
+
+This is a useful example of backend leverage. The original ETL work did not only make one dashboard faster; it created a governed analytical source that could support a second engineering problem without duplicating broad source retrieval or redefining core populations. I keep it as a supporting project because its strongest story is architectural reuse, not the number of separate dashboards.
 
 ## SPC and Process-Step Monitoring
 

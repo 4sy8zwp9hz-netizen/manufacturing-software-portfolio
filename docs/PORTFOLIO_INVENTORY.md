@@ -20,7 +20,8 @@ clone.
 | Shift passdown | make shift windows, notes, preview, and controlled delivery consistent | Medium–high | High | Lean Digital Operations case study |
 | Multi-application portal and server | move useful local applications into one supportable hosting and recovery contract | High | High | Infrastructure/platform case study |
 | Maintenance Operations Portal | connect mobile work logging, task completion, recurring patrol assignments, issue intake, attachments, authorization, and auditing | High | High | Featured supporting case study |
-| Clean Room Request | connect request submission to a traceable fulfillment queue and correction path | Medium | Medium | Supporting tool summary |
+| Clean Room Request | connect desktop/mobile submission, lookup, photo-supported status, and fulfillment with a correction path | Medium | High | Supporting tool summary with approximate owner-reported usage |
+| Chip Yield and manufacturing flow | reuse prepared Yield facts for chip-side Yield, process-stage, and WIP investigation | High | High | Supporting data-reuse case study |
 | SPC / process-step monitoring | prioritize statistical signals and make review evidence repeatable | High | High | Supporting tool summary |
 | Current WIP and process-flow views | make current flow and detail visible from reusable snapshots | Medium | High | Supporting tool summary |
 | Process-run history | retrieve and reconcile investigation history without repeated broad queries | Medium | Medium | Supporting tool summary |

@@ -18,6 +18,8 @@ dependencies, not personal creations.
 ## Confidence labels
 
 - **Verified:** directly supported by audited implementation or history.
+- **Owner-reported operational count:** an approximate aggregate supplied from current use,
+  identified as such and not presented as repository telemetry or a measured benefit.
 - **Reconstructed:** a clean-room diagram or narrative derived from verified roles.
 - **Illustrative:** fictional data or terminology used only to explain a concept.
 - **Not claimed:** contextual infrastructure or business outcome that was not
@@ -25,8 +27,10 @@ dependencies, not personal creations.
 
 ## Claims deliberately avoided
 
-This portfolio does not claim quantified savings, yield improvement, adoption,
-uptime, or cycle-time reduction. Those outcomes require controlled operational
-evidence that is not contained in source code. The case studies instead explain
-the mechanism by which the software reduces search effort, duplicated queries,
-manual transcription, or deployment friction.
+This portfolio does not claim quantified savings, yield improvement, uptime, or
+cycle-time reduction without controlled operational evidence. The Clean Room
+Request case study includes one approximate, owner-reported monthly request count
+as a measure of usage. It is not labeled a productivity gain, and no individual
+requests or production records are published. Other case studies explain the
+mechanism by which software can reduce search effort, duplicated queries, manual
+transcription, or deployment friction without inventing impact numbers.
