@@ -102,7 +102,7 @@ tools/          Repository validation utilities
 ## Contact
 
 - Email: [matthewvchung@gmail.com](mailto:matthewvchung@gmail.com)
-- LinkedIn: **[Matthew: insert your public LinkedIn URL]**
+- LinkedIn: [Matthew Chung](https://www.linkedin.com/in/matthew-chung-292a0446/)
 
 ## License
 
