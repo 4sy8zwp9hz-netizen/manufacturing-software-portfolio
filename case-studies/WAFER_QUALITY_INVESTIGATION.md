@@ -6,7 +6,7 @@
 
 ## Problem
 
-A low Yield result tells an engineer where to start. The next questions are harder:
+A low yield result tells an engineer where to start. The next questions are harder:
 does a selected wafer group differ from comparable production, which failures explain the gap,
 and do inspection and test patterns occur at the same physical chip positions?
 
@@ -24,7 +24,7 @@ The comparison workflow connects Chip Yield selections to statistical review. It
 Parquet facts through a scoped, read-only application API. Peers are selected by process family,
 nearby process dates, and relevant grade or group constraints. Selected wafers are excluded from peers.
 
-- Compare Yield, qualification outcomes, individual test parameters, or one failure code at a time.
+- Compare yield, qualification outcomes, individual test parameters, or one failure code at a time.
 - Show measured wafer counts and missing measurements alongside the result.
 - Use Welch's test and a difference interval for numeric wafer rates; use Fisher's exact test
   and a Wilson-based difference interval for binary qualification outcomes.
@@ -54,7 +54,7 @@ The difficult work is establishing correspondence:
 - Keep reports with uncertain alignment available as independent maps.
 - Preserve missing positions, repeat-report identity, and raw values.
 - Distinguish current active specification evaluation from historical test-time limits.
-- Distinguish parameter pass percentages from overall Yield.
+- Distinguish parameter pass percentages from overall yield.
 
 Initial maps load before heavier reports. Selected-wafer retrieval, bounded caches, and compressed
 responses control the workload. Linked filters operate on loaded data and preserve full-population
@@ -63,7 +63,7 @@ statistics and exports.
 ## Result
 
 The tools connect two investigation paths: comparison establishes whether a wafer population
-warrants attention, and spatial evidence helps locate patterns for review. Reusable Yield facts
+warrants attention, and spatial evidence helps locate patterns for review. Reusable yield facts
 support a new workflow, while maps retain explicit identity, alignment, and retrieval contracts.
 
 ## My ownership
@@ -73,16 +73,15 @@ exports, map retrieval, identity and alignment validation, linked interaction, a
 Source records, specification approval, physical testing, and final dispositions remain with
 their respective owners.
 
-## Implementation and evidence
+## Public example
 
-These workflows are supported by audited implementation, regression tests, and integration history.
-The map application is documented as internally mounted. Its latest package-level extensions and
-further hosting migration should be distinguished from earlier verified behavior when discussing
-deployment status.
+The comparison and map tools were developed for internal engineering use and covered by
+regression tests. This case study explains their design through fictional illustrations;
+it does not provide a public deployment of those applications.
 
-This portfolio provides illustrations and a case study. The runnable public Yield analogue is
+For a runnable synthetic example, explore
 [Manufacturing Analytics Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform).
-The reproducible figure source is [render_quality_visuals.cjs](../tools/render_quality_visuals.cjs).
+The figure source is [render_quality_visuals.cjs](../tools/render_quality_visuals.cjs).
 
 ## Confidentiality
 

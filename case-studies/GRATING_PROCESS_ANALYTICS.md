@@ -58,15 +58,11 @@ Collapsing everything to one row per wafer can pair a later response with an ear
 
 I normalized event order and assigned repeated entries to explicit process cycles. The analytical row became one wafer-cycle, with measurements, settings, responses, and tool context joined to that cycle rather than to wafer identity alone.
 
-**Engineering concepts:** event reconstruction, composite identity, explicit analytical grain, rework handling.
-
 ### Turning a one-time manual relationship into a data requirement
 
 The focused analysis depended on historical relationships that could be assembled manually but were not consistently available as reusable application inputs.
 
 Rather than burying that ambiguity inside more Python logic, I defined the required measurements, process events, identities, and linkages with the relevant manufacturing-system and data owners. The application then treated those relationships as explicit inputs and validated its configuration before constructing the wafer-cycle dataset.
-
-**Engineering concepts:** requirements engineering, data contracts, manufacturing-system integration, source-data quality.
 
 ### Keeping recommendations interpretable and bounded
 
@@ -76,15 +72,11 @@ I separated analysis by the relevant process grouping, exposed sample and fit di
 
 The application therefore presents a reviewable proposal together with the reasons to trust or distrust it. It does not convert a fitted relationship into an uncontrolled equipment change.
 
-**Engineering concepts:** model diagnostics, extrapolation controls, guardrails, human-in-the-loop decision support.
-
 ### Separating shared data acquisition from interactive analysis
 
 Repeated source queries made every browser interaction pay for the same data acquisition work. At the same time, different engineers needed to explore different subsets and exclusions without changing one another's view.
 
 I separated the shared refresh lifecycle from session-level analysis. A validated snapshot is refreshed independently, while each browser session can filter, exclude, compare, and export without mutating the common dataset. If refresh fails, the prior valid snapshot remains available with updated status.
-
-**Engineering concepts:** snapshot architecture, multi-user isolation, caching, last-known-good state.
 
 ## Example analytical grain
 

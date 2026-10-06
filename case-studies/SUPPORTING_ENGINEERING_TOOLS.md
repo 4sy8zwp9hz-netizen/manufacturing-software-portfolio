@@ -36,7 +36,7 @@ The first practical application reduced the effort required to record maintenanc
 - bounded browser payloads, progressive task lists, and cached task retrieval for a usable shared workflow
 - rotating, fail-safe submission auditing that records outcome metadata while deliberately excluding work notes, attachment names, and file contents
 
-Process Patrol is production-ready and scheduled for operational rollout. Its current outcome model records the daily checklist decision and preserves assignment history; it does not claim additional maintenance-record posting or attachment behavior that remains outside the approved workflow.
+Process Patrol is production-ready and scheduled for operational rollout. It records daily checklist outcomes and assignment history. Maintenance-record posting and attachments for patrol outcomes remain outside the current workflow.
 
 ### Why it is a supporting project
 
@@ -82,19 +82,19 @@ The approximate monthly count is evidence of operational adoption, not proof of 
 
 ### Problem
 
-The flagship Yield workflow established trusted prepared wafer and chip facts, but chip-side engineering questions required a different view of the same manufacturing history. Rebuilding those facts in another application would duplicate transformation logic and create competing interpretations of Yield.
+The flagship yield workflow established trusted prepared wafer and chip facts, but chip-side engineering questions required a different view of the same manufacturing history. Rebuilding those facts in another application would duplicate transformation logic and create competing interpretations of yield.
 
 ### What I built
 
-- a separate engineering workflow that consumes prepared Parquet facts produced by the Yield data pipeline
-- chip- and wafer-level Yield views connected to ordered manufacturing-process context
+- a separate engineering workflow that consumes prepared Parquet facts produced by the yield data pipeline
+- chip- and wafer-level yield views connected to ordered manufacturing-process context
 - filters and export paths for investigating a selected product, wafer population, or process stage
 - incremental cache refresh so historical analytical state can be reused without rebuilding every record
 - portal integration so the workflow follows the same shared hosting and support model as the broader application environment
 
 ### Why it matters
 
-This is a useful example of backend leverage. The original ETL work did not only make one dashboard faster; it created a governed analytical source that could support a second engineering problem without duplicating broad source retrieval or redefining core populations. I keep it as a supporting project because its strongest story is architectural reuse, not the number of separate dashboards.
+This shows how prepared data can support additional engineering work. The original ETL work did not only make one dashboard faster; it created a governed analytical source that could support a second engineering problem without duplicating broad source retrieval or redefining core populations. I keep it as a supporting project because its strongest story is architectural reuse, not the number of separate dashboards.
 
 ## SPC and Process-Step Monitoring
 

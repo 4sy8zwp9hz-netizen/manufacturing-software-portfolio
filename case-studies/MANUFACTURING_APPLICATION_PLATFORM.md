@@ -32,18 +32,18 @@ The main steps were:
 6. Add a health endpoint, logging, deterministic launch/restart commands, status checks, and watchdog behavior.
 7. Isolate application import failures so one broken mount did not prevent every healthy application from starting.
 
-## Relationship to the Yield evolution
+## Relationship to the yield evolution
 
-The application platform and the Yield backend improved in parallel, but they are not the same
+The application platform and the yield backend improved in parallel, but they are not the same
 system concern. The platform owns distribution, discovery, process hosting, route composition,
-health, logs, and recovery. The Yield application owns manufacturing transformation, prepared
+health, logs, and recovery. The yield application owns manufacturing transformation, prepared
 facts, cache/preload policy, targeted detail, refresh, and analytical correctness.
 
 They reinforced one another. Central hosting replaced duplicated per-user processing with shared
 service state, increasing the need for bounded caches and disciplined background lifecycles.
-Prepared Yield facts and workload-specific refresh paths then made shared browser access practical
+Prepared yield facts and workload-specific refresh paths then made shared browser access practical
 without rebuilding the same population for every user. This separation also allowed the familiar
-Yield investigation interface to remain stable while both its backend and its delivery model
+yield investigation interface to remain stable while both its backend and its delivery model
 matured.
 
 ## Architecture
@@ -52,7 +52,7 @@ matured.
 flowchart TB
     U[Manufacturing users] --> H[Common portal shell]
     H --> D[WSGI path dispatcher]
-    D --> A1[Yield analytics app]
+    D --> A1[yield analytics app]
     D --> A2[Process analytics app]
     D --> A3[Operational workflow app]
     D --> A4[Supporting engineering tools]
@@ -87,8 +87,6 @@ The first tools were useful on a local engineering workstation, but other engine
 
 I first made delivery repeatable through versioned bundles, then moved browser-based tools into a common portal and centralized host. The migration was incremental so a working application did not need a full rewrite simply to join the shared environment.
 
-**Engineering concepts:** release management, software distribution, client/server delivery, incremental migration.
-
 ### Integrating applications that assumed they owned the process
 
 Standalone Dash applications commonly assume they own their listener, route root, browser launch, and background services. Those assumptions conflict when multiple applications share one host.
@@ -96,8 +94,6 @@ Standalone Dash applications commonly assume they own their listener, route root
 I separated application construction from process startup, exposed each Dash application's WSGI server, made background-service startup explicit and idempotent, assigned mounted callback/asset prefixes, and dispatched stable portal paths to each application.
 
 The result was a cleaner ownership model: the portal owns the listener and process lifecycle; each application owns its domain behavior and refresh lifecycle.
-
-**Engineering concepts:** WSGI composition, application factories, route-prefix management, lifecycle separation.
 
 ### Treating the enterprise environment as part of the system
 
@@ -107,23 +103,17 @@ I identified and troubleshot the application's concrete requirements and worked 
 
 This work required diagnosing problems across application code, Windows behavior, database access, networking, deployment, and enterprise ownership boundaries rather than treating every failure as a software bug.
 
-**Engineering concepts:** systems integration, forward-deployed engineering, dependency isolation, cross-functional technical troubleshooting.
-
 ### Turning a running script into a supportable service
 
 A process can appear to be running while the application is unavailable. A shared service can also disappear after an exception, machine restart, or terminal-session loss.
 
 I added a defined health endpoint, operational logs, deterministic launcher and restart commands, status checks, and watchdog logic that could detect a failed health check and reissue the launcher. Mounted application failures are recorded so the status of healthy applications remains visible.
 
-**Engineering concepts:** observability, health contracts, fault isolation, recovery automation, operational ownership.
-
 ### Managing the blast radius of a shared host
 
 Centralizing applications simplifies discovery and support, but shared process state introduces new risks. Startup work, background threads, mutable module globals, and route assumptions can collide inside one process.
 
 I responded by making application creation and background startup explicit, bounding caches, isolating import errors, and pushing runtime configuration into defined interfaces. These constraints make application integration more predictable and reduce the chance that one tool's startup behavior silently affects another.
-
-**Engineering concepts:** shared-process isolation, idempotency, bounded resources, defensive integration.
 
 ## Result
 
@@ -135,7 +125,7 @@ Tester snapshot installation verifies checksums and counts before switching the 
 generation. A failed transfer preserves the previous usable generation.
 
 Tester history uses local SQLite snapshot files. This is a workload-specific implementation;
-the Yield platform's prepared facts remain Parquet. Neither host opens the tester database
+the yield platform's prepared facts remain Parquet. Neither host opens the tester database
 as a shared writable network file.
 
 WIP preparation defines one active producer, bounded historical backfill, scheduled snapshot

@@ -70,15 +70,11 @@ The same production state had to be gathered and interpreted repeatedly before a
 
 I moved queue membership, checkpoints, timing intervals, and priority ordering into shared configuration. A background process refreshes prepared display state in staggered cycles, while the browser polls the completed state instead of triggering a new source query. If refresh fails, the previous valid view stays available and can be labeled stale rather than disappearing.
 
-**Engineering concepts:** Lean visual management, configuration-driven behavior, background preparation, caching, last-known-good state.
-
 ### Defining shift boundaries as code rather than interpretation
 
 A handoff selected only by calendar date can include the wrong events around a day/night boundary. The risk is especially subtle because the resulting message may still look reasonable.
 
 I formalized date-and-shift window functions, loaded the selected production population once, and applied section and presentation filters locally. The workflow keeps the loaded time window explicit while allowing users to refine the handoff without silently changing its source population.
-
-**Engineering concepts:** temporal boundary modeling, domain-rule centralization, reusable session datasets.
 
 ### Protecting external actions from retries and double submissions
 
@@ -86,15 +82,11 @@ A browser retry, double click, or uncertain response can submit the same passdow
 
 I assigned each draft a submission identity, protected against repeated submission, deduplicated recipients, wrote recipient batches inside one transaction, committed only after all inserts succeeded, and rolled back on error.
 
-**Engineering concepts:** idempotency, transactional integrity, retry safety, explicit state transitions.
-
 ### Separating shared state from user-specific state
 
 A shared manufacturing snapshot should not be rebuilt every time one user changes a filter, and one user's edits or selections should not alter another user's workflow.
 
 I separated common refreshed state from browser/session-level choices. Shared source work is prepared once, while user-specific filters, draft content, and submission state remain isolated.
-
-**Engineering concepts:** shared cache versus session state, multi-user isolation, state ownership.
 
 ## Result
 
