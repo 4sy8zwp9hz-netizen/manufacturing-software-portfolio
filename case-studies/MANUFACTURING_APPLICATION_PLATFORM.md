@@ -127,6 +127,22 @@ I responded by making application creation and background startup explicit, boun
 
 ## Result
 
+### Separating data preparation from interactive service
+
+The platform has progressed to a two-host operating model for selected workloads. One host
+prepares historical tester and WIP snapshots; the serving host consumes completed local copies.
+Tester snapshot installation verifies checksums and counts before switching the active local
+generation. A failed transfer preserves the previous usable generation.
+
+Tester history uses local SQLite snapshot files. This is a workload-specific implementation;
+the Yield platform's prepared facts remain Parquet. Neither host opens the tester database
+as a shared writable network file.
+
+WIP preparation defines one active producer, bounded historical backfill, scheduled snapshot
+copying, and a documented manual failover procedure that changes producer ownership. This
+demonstrates workload separation and recovery. Automatic host failover and continuous availability
+are not claimed.
+
 The mature environment provides a single discoverable entry point for multiple manufacturing applications and a common operational contract for how those applications are hosted, checked, logged, restarted, and supported.
 
 The larger achievement was not simply putting Dash applications on a server. It was building the infrastructure and integration model required to move engineering software from "works on my machine" into something a broader organization could depend on.

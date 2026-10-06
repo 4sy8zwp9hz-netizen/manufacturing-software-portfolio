@@ -21,7 +21,7 @@ The usage figure shows adoption; it is not presented as measured labor savings o
 
 | If you are interested in… | Start here |
 |---|---|
-| Quality engineering and root-cause analysis | [Manufacturing Yield Platform](case-studies/YIELD.md) and [supporting SPC tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#spc-and-process-step-monitoring) |
+| Quality engineering and root-cause analysis | [Wafer Quality Investigation](case-studies/WAFER_QUALITY_INVESTIGATION.md), [Manufacturing Yield Platform](case-studies/YIELD.md), and [SPC tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#spc-and-process-step-monitoring) |
 | Manufacturing execution and digital standard work | [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md), [Maintenance Operations](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#maintenance-operations-portal), and [Clean Room Requests](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#clean-room-request-and-fulfillment-queue) |
 | Data and software architecture | [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) and [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) |
 
@@ -48,6 +48,19 @@ The system is designed around a common manufacturing problem: engineers need fas
 
 ## Project highlights
 
+### Quality investigation in pictures
+
+**Does this wafer group differ from its peers? Where do inspection and test patterns line up?**
+I built comparison and wafer-map tools that connect a Yield signal to its underlying evidence,
+with explicit populations, statistical context, and verified chip alignment.
+
+![Illustration of linked inspection, electrical, and reliability wafer maps](assets/linked-wafer-maps.png)
+
+*Scientific illustration with fictional geometry and values. Outlined chips show the same
+selection across three sources; this is not a production screenshot.*
+
+[See wafer comparisons and maps](case-studies/WAFER_QUALITY_INVESTIGATION.md)
+
 ### Manufacturing Yield Platform
 
 - **Problem:** Manufacturing records at different grains did not directly produce a trustworthy or fast Yield investigation.
@@ -69,6 +82,7 @@ The system is designed around a common manufacturing problem: engineers need fas
 - **Problem:** Production status and shift handoff required repeated information gathering and inconsistent interpretation.
 - **Result:** Shared views and explicit workflow rules make priorities, shift windows, and handoff state consistent across users.
 - **Reliability:** Background preparation, last-known-good views, and duplicate protection keep the workflow useful during refresh or submission problems.
+- **Recent work:** Tester tracking and shift passdown connect tester activity, changeovers, work-order history, and WIP to a structured handoff.
 
 [Read the case study](case-studies/LEAN_DIGITAL_OPERATIONS.md)
 
@@ -77,6 +91,7 @@ The system is designed around a common manufacturing problem: engineers need fas
 - **Problem:** Individually distributed applications created version drift, discovery problems, duplicated processing, and manual recovery.
 - **Result:** A common browser portal provides centralized access and a consistent hosting and support model.
 - **Evolution:** Local tools became versioned releases, mounted applications, and centrally hosted services with health, logging, restart, and failure isolation.
+- **Recent work:** Data preparation and browser service span two hosts, with validated snapshot transfer, explicit producer ownership, and a documented manual recovery path.
 
 [Read the case study](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)
 

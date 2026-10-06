@@ -22,6 +22,7 @@ clone.
 | Maintenance Operations Portal | connect mobile work logging, task completion, recurring patrol assignments, issue intake, attachments, authorization, and auditing | High | High | Featured supporting case study |
 | Clean Room Request | connect desktop/mobile submission, lookup, photo-supported status, and fulfillment with a correction path | Medium | High | Supporting tool summary with approximate owner-reported usage |
 | Chip Yield and manufacturing flow | reuse prepared Yield facts for chip-side Yield, process-stage, and WIP investigation | High | High | Supporting data-reuse case study |
+| Wafer comparisons and linked maps | compare defined populations and trace spatial inspection/test evidence through validated chip identities | High | High | Visual supporting case study with reproducible synthetic illustrations |
 | SPC / process-step monitoring | prioritize statistical signals and make review evidence repeatable | High | High | Supporting tool summary |
 | Current WIP and process-flow views | make current flow and detail visible from reusable snapshots | Medium | High | Supporting tool summary |
 | Process-run history | retrieve and reconcile investigation history without repeated broad queries | Medium | Medium | Supporting tool summary |

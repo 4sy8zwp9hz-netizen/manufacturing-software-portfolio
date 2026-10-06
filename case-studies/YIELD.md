@@ -143,6 +143,18 @@ The public synthetic application demonstrates the same investigation pattern:
 
 ## Result
 
+### Historical corrections are part of the data contract
+
+Recent ETL work addresses a less visible risk: a cache can refresh successfully while retaining
+incorrect history. Source reconciliation includes additions, corrections, and deletions,
+replacement of refreshed source identities, and an audit against the last committed baseline.
+A failed publication does not advance that baseline, so a retry can still detect the changes.
+
+This extends the backend story from speed to analytical correctness over time. Regression and
+isolated materialization checks support the implementation. The audited release notes distinguish
+code integration from production scheduler changes and publication; the newest source fixes
+are described as implemented and validated without claiming they have all been deployed.
+
 The mature design creates two performance paths: low-latency exploration over prepared shared facts and narrow reads for high-volume drill-down evidence. That keeps the common investigation responsive without sacrificing the detailed records needed for root-cause work.
 
 Just as important, the application makes data correctness and service behavior explicit. Yield populations are defined rather than inferred from row counts, readers never see a partially published refresh, and a transient source failure does not erase the last valid analytical state.

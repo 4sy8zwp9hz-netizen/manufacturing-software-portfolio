@@ -98,6 +98,10 @@ This is a useful example of backend leverage. The original ETL work did not only
 
 ## SPC and Process-Step Monitoring
 
+The [Wafer Quality Investigation](WAFER_QUALITY_INVESTIGATION.md) visual case study shows recent
+comparison and map workflows: selected wafers versus defined peers, individual failure-code rates,
+statistical uncertainty, and verified spatial alignment across inspection and test evidence.
+
 I built tools that convert selected process-step measurements into health summaries, out-of-control/out-of-specification investigation, wafer cohort views, statistical charts, review records, and exports. Configuration defines which process steps and measurements are monitored, while query/preparation logic is separated from desktop or browser presentation.
 
 The important design boundary is between a statistical signal and an engineering disposition. Software can calculate, visualize, and prioritize signals, but the engineer still needs to interpret control limits, specification limits, sampling, repeat measurements, and process context before acting.

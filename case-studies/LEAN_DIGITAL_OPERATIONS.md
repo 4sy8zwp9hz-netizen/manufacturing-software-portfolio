@@ -98,6 +98,19 @@ I separated common refreshed state from browser/session-level choices. Shared so
 
 ## Result
 
+### Tester tracking and shift handoff
+
+Recent work extends this approach to physical chip testing. The applications reconstruct tester
+activity and changeovers, connect work-order history and current WIP, and assemble shift-specific
+handoff reports with operator notes and a preview before sending. Completed-work-order history
+is prepared separately so repeated review can reuse local analytical state.
+
+WIP history adds a second time contract: a current capture is not interchangeable with the exact
+shift boundary. The workflow gives completed boundary snapshots priority, labels unavailable
+history, and bounds catch-up work so historical backfill does not crowd out current visibility.
+
+These changes make the time, population, and completeness of the operating view explicit.
+
 The applications reduce avoidable information reconstruction by turning recurring manufacturing coordination into prepared, explicit workflows. Production visibility is refreshed once and reused, shift windows follow one defined rule, and external submission actions have controlled server-side state transitions rather than relying on browser behavior alone.
 
 The larger engineering lesson is that digital Lean work is not primarily about adding charts. It is about making information flow, standard work, ownership, and failure behavior explicit in the software.
