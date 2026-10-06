@@ -8,7 +8,7 @@
 
 ## Problem
 
-yield investigation spans several data grains and time scales. A factory-level trend may point to a product, operation, tool, defect family, or individual wafer, but the supporting records are not naturally shaped for interactive analysis. Querying all high-volume inspection and test detail on every page load is slow and wasteful; aggregating everything in advance removes the detail needed for root-cause work.
+Yield investigation spans several data grains and time scales. A factory-level trend may point to a product, operation, tool, defect family, or individual wafer, but the supporting records are not naturally shaped for interactive analysis. Querying all high-volume inspection and test detail on every page load is slow and wasteful; aggregating everything in advance removes the detail needed for root-cause work.
 
 The application therefore had to solve two problems at once: define trustworthy manufacturing populations and make them fast enough to investigate interactively.
 
