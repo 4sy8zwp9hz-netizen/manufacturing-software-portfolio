@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore a working semiconductor qualification investigation with synthetic wafer, process, and reliability data. A portfolio demo by Matthew Chung.">
+<meta name="theme-color" content="#fafbf7"><title>Qualification Studio · Matthew Chung</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to analysis</a>
+<header><div class="header-inner"><a class="brand" href="#conclusions"><span class="brand-mark" aria-hidden="true">q.</span> Qualification Studio</a><div class="header-right"><span class="demo-badge"><span></span> Synthetic data</span><a href="https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio">Matthew Chung ↗</a></div></div></header>
+<main>
+<div class="intro"><div><span class="eyebrow">MANUFACTURING / RELIABILITY</span><h1>Follow the evidence.</h1></div><div class="metric-control"><span>Outcome</span><div class="segment" role="group" aria-label="Outcome metric"><button data-metric="qualification" aria-pressed="true">Qualification</button><button data-metric="bi" aria-pressed="false">Device yield</button></div></div></div>
+<section class="filters" aria-label="Analysis filters"><label>Product<select id="product"><option value="photon100">Photon · 100 mm</option><option value="photon75">Photon · 75 mm</option><option value="ridge75">Ridge · 75 mm</option><option value="all">All products</option></select></label><label>Process period<select id="period"><option value="all">All periods · Mar–Aug 2026</option></select></label><label>Variant<select id="variant"><option value="all">All variants</option><option value="Standard">Standard</option><option value="Plus">Plus</option></select></label><button id="reset" class="text-button">Reset filters</button><div class="filter-end"><span id="scope-count"></span><details class="export-menu"><summary>Export data ↓</summary><div class="menu-items"><button data-export="wafers">Wafer records · CSV</button><button data-export="chips">Device records · CSV</button></div></details></div></section>
+<div id="nav-anchor"></div><nav id="navigation" aria-label="Investigation views"><div role="tablist" aria-label="Primary analyses"><button role="tab" id="tab-conclusions" aria-controls="content" aria-selected="true" data-view="conclusions">Conclusions</button><button role="tab" id="tab-runs" aria-controls="content" aria-selected="false" data-view="runs">Within-run comparison</button><button role="tab" id="tab-devices" aria-controls="content" aria-selected="false" data-view="devices">Device explorer</button></div><details id="explore-menu"><summary>Explore &amp; methods <span aria-hidden="true">⌄</span></summary><div class="menu-items"><button data-view="records">Wafer records</button><button data-view="methods">Definitions &amp; methods</button><a href="https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio/tree/main/demos/qualification-studio">View demo source ↗</a></div></details></nav>
+<div id="content" role="tabpanel" tabindex="-1" aria-live="polite"></div>
+<footer><div><strong>Matthew Chung</strong><span>Quality engineering · Manufacturing analytics · Product design</span></div><p>Interactive portfolio demo. All wafers, measurements, dates, and relationships are generated examples, not production results.</p><a href="https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio">Back to portfolio ↗</a></footer>
+</main><div id="tooltip" role="tooltip" hidden></div>
+</body></html>

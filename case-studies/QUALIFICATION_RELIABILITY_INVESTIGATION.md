@@ -1,5 +1,7 @@
 # Qualification and Reliability Investigation
 
+**[Open the working demo](https://qualification-studio.orange-rat-4119.chatgpt.site)** · [Inspect its source](../demos/qualification-studio)
+
 **What I built:** An engineering investigation application that connects wafer process history, waiting intervals, electrical measurements, repeated reliability tests, and qualification outcomes in one auditable workflow.
 
 **What it demonstrates:** Quality engineering, data reconciliation, statistical modeling, reliability analysis, and the design of readable applications for technical decisions.
@@ -18,9 +20,9 @@ The analysis distinguishes two endpoints: recorded wafer qualification and the f
 
 Process timing is also explicit. The application compares waiting intervals to different recorded process milestones, so engineers can see whether the choice of timestamp changes the result. Product families keep their own process definitions and comparison populations.
 
-![Fictional qualification investigation example showing cohort completeness and within-run comparisons](../assets/qualification-investigation.png)
+[![Qualification Studio running with generated data](../assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
 
-*Scientific illustration with invented counts and measurements. It explains the investigation workflow; it is neither an application screenshot nor a production result.*
+*Screenshot of the runnable public synthetic demo. All displayed products, records, measurements, and relationships are fictional.*
 
 ## Separate a population trend from a within-run comparison
 
@@ -55,10 +57,10 @@ Source manufacturing systems, physical testing, process operation, and final pro
 
 ## Public example
 
-This case study documents an internal engineering application. The illustration is independently authored from fictional data, with reproducible source in [render_qualification_visual.cjs](../tools/render_qualification_visual.cjs). It does not reproduce a private interface or expose the internal application.
+Try [Qualification Studio](https://qualification-studio.orange-rat-4119.chatgpt.site) directly. The independent, buildless browser application includes filters, outcome switching, timing charts, completion context, run and device drilldowns, searchable wafer records, and CSV exports. Its synthetic generator and small binomial model are included in the [public source](../demos/qualification-studio). It demonstrates investigation patterns without reproducing production code, data, or process rules.
 
 For related quality workflows, see [Wafer Quality Investigation](WAFER_QUALITY_INVESTIGATION.md). For a runnable public synthetic application, see the [Manufacturing Yield Platform](YIELD.md).
 
 ## Confidentiality
 
-This case study omits production values, screen limits, model coefficients, equipment and product identities, database objects, network details, source code, and private screenshots. The diagram's numbers and relationships are fictional and support no production or statistical claim.
+This case study omits production values, screen limits, model coefficients, equipment and product identities, database objects, network details, production source code, and private screenshots. The demo's numbers and relationships are fictional and support no production or statistical claim.

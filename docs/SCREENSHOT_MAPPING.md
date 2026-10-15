@@ -12,6 +12,7 @@ screenshots. Private screenshots and reconstructed private interfaces are exclud
 | `assets/linked-wafer-maps.png` / `.svg` | `tools/render_quality_visuals.cjs` | Fictional grid, values, and selected chips | Explains shared physical-chip context and alignment validation | Illustrative, visually reviewed |
 | `assets/wafer-comparison.png` / `.svg` | `tools/render_quality_visuals.cjs` | Deterministic fictional wafer rates | Explains means, wafer populations, and date context | Illustrative, visually reviewed |
 | `assets/qualification-investigation.png` / `.svg` | `tools/render_qualification_visual.cjs` | Independently invented cohort counts and within-run position summaries | Explains completion context, endpoint choice, and shared-run comparison without reconstructing a private interface | Illustrative, visually reviewed |
+| `assets/qualification-studio-demo.png` | Runnable public `demos/qualification-studio/dist` application | Deterministic fictional wafers, process intervals, device readings, and outcomes | Shows the working demo visitors can open from the portfolio | Browser-verified, visually reviewed |
 
 ## Reproduce the illustrations
 
@@ -31,3 +32,7 @@ without implying that a public clone duplicates a private interface.
 If a future public synthetic analogue is implemented, its screenshot can be added
 only after the app is run locally and the image is checked for fictional data,
 generic labels, and correspondence with the documented public code.
+
+## Reproduce the application screenshot
+
+Serve `demos/qualification-studio/dist` with a static HTTP server and capture the initial Conclusions view after it loads. The demo has no build dependencies or production connections. Enable reduced motion when capturing a switched view so the image does not freeze partway through a transition.
