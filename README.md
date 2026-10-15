@@ -29,20 +29,21 @@ The usage figure shows adoption; it is not presented as measured labor savings o
 
 | Project | Engineering purpose |
 |---|---|
-| [Qualification Studio · live demo](https://qualification-studio.orange-rat-4119.chatgpt.site) | Reconcile process and reliability records, compare wafer and device endpoints, account for pending results and shared runs, and present auditable statistical evidence in a focused engineering interface. |
+| [Big Data Analysis · live demo](https://qualification-studio.orange-rat-4119.chatgpt.site) | Reconcile process and reliability records, compare wafer and device endpoints, account for pending results and shared runs, and present auditable statistical evidence in a focused engineering interface. |
 | [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) | Reconstruct repeated wafer process events, compare upstream conditions with downstream response, and present model diagnostics and a bounded recommendation for engineering review. |
 | [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) | Make production priorities and shift handoff consistent through shared views, explicit time boundaries, and controlled submission. Recent tester tracking connects activity, changeovers, work-order history, and WIP. |
 | [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) | Move local tools through versioned releases into a common browser portal with health checks, logs, and recovery. Selected workloads split preparation and serving across two hosts with validated snapshot transfer and manual failover. |
 
-## Try the product: Qualification Studio
+## Try the product: Big Data Analysis
 
 **[Open the interactive demo](https://qualification-studio.orange-rat-4119.chatgpt.site)** · [Source code](demos/qualification-studio) · [Engineering notes](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md)
 
 Explore a working investigation: change products and periods, switch outcomes,
 compare run mates, inspect individual device measurements, and export the data.
+Meeting minutes connect review decisions to evidence and published follow-up.
 All records and screen limits are fictional.
 
-[![Qualification Studio running with synthetic data](assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
+[![Big Data Analysis interactive example with synthetic data](assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
 
 *Screenshot of the runnable public demo. Generated data only; no production interface or records.*
 

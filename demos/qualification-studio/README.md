@@ -1,8 +1,15 @@
-# Qualification Studio
+# Big Data Analysis — Interactive Example
 
 A working portfolio demo by Matthew Chung. Open the investigation, change product
 and period, switch between wafer Qualification and device yield, inspect run
 positions, open individual device measurements, and export the selected records.
+Meeting minutes link illustrative review decisions to the relevant analysis, while
+a published-change log records actual portfolio-demo updates. Visitors can save
+their own notes locally in the browser; those notes do not update the shared site.
+
+The example emphasizes executive presentation, manufacturing data analysis,
+clear conclusions, and interactive review. It is observational analysis, not a
+designed experiment or a demonstrated machine-learning training pipeline.
 
 All 576 wafers, 72 runs, and 23,040 device records are generated deterministically
 in the browser. Product names, measurements, outcomes, and screen limits are

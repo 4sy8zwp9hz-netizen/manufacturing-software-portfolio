@@ -20,7 +20,7 @@ The analysis distinguishes two endpoints: recorded wafer qualification and the f
 
 Process timing is also explicit. The application compares waiting intervals to different recorded process milestones, so engineers can see whether the choice of timestamp changes the result. Product families keep their own process definitions and comparison populations.
 
-[![Qualification Studio running with generated data](../assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
+[![Big Data Analysis example running with generated data](../assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
 
 *Screenshot of the runnable public synthetic demo. All displayed products, records, measurements, and relationships are fictional.*
 
@@ -57,7 +57,7 @@ Source manufacturing systems, physical testing, process operation, and final pro
 
 ## Public example
 
-Try [Qualification Studio](https://qualification-studio.orange-rat-4119.chatgpt.site) directly. The independent, buildless browser application includes filters, outcome switching, timing charts, completion context, run and device drilldowns, searchable wafer records, and CSV exports. Its synthetic generator and small binomial model are included in the [public source](../demos/qualification-studio). It demonstrates investigation patterns without reproducing production code, data, or process rules.
+Try [Big Data Analysis — Interactive Example](https://qualification-studio.orange-rat-4119.chatgpt.site) directly. The independent, buildless browser application includes filters, outcome switching, timing charts, completion context, run and device drilldowns, searchable wafer records, CSV exports, and meeting minutes linked to the evidence. The meeting tab separates illustrative engineering discussion, actual published revisions, and visitor notes saved only in their own browser. Its synthetic generator and small binomial model are included in the [public source](../demos/qualification-studio). It demonstrates investigation patterns without reproducing production code, data, or process rules.
 
 For related quality workflows, see [Wafer Quality Investigation](WAFER_QUALITY_INVESTIGATION.md). For a runnable public synthetic application, see the [Manufacturing Yield Platform](YIELD.md).
 
