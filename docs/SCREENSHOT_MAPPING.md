@@ -11,12 +11,14 @@ screenshots. Private screenshots and reconstructed private interfaces are exclud
 | `assets/yield-summary.png` | Public `manufacturing-analytics-platform` landing/yield overview | Reproducible synthetic semiconductor dataset | Shows the visual quality and investigation entry point of the runnable flagship | Verified |
 | `assets/linked-wafer-maps.png` / `.svg` | `tools/render_quality_visuals.cjs` | Fictional grid, values, and selected chips | Explains shared physical-chip context and alignment validation | Illustrative, visually reviewed |
 | `assets/wafer-comparison.png` / `.svg` | `tools/render_quality_visuals.cjs` | Deterministic fictional wafer rates | Explains means, wafer populations, and date context | Illustrative, visually reviewed |
+| `assets/qualification-investigation.png` / `.svg` | `tools/render_qualification_visual.cjs` | Independently invented cohort counts and within-run position summaries | Explains completion context, endpoint choice, and shared-run comparison without reconstructing a private interface | Illustrative, visually reviewed |
 
 ## Reproduce the illustrations
 
 Use Node.js with the `sharp` package available in its module search path, then run
 `node tools/render_quality_visuals.cjs`. The script writes SVG and 1600-by-900 PNG
 assets. It reads no external data and makes no inferential statistical claims.
+For the qualification illustration, run `node tools/render_qualification_visual.cjs` with the same dependency.
 `sharp` is optional tooling for these figures; portfolio validation needs only Python.
 
 ## Intentionally diagram-only stories

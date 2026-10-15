@@ -21,7 +21,7 @@ The usage figure shows adoption; it is not presented as measured labor savings o
 
 | If you are interested in | Start here |
 |---|---|
-| Quality engineering and root-cause analysis | [Wafer Quality Investigation](case-studies/WAFER_QUALITY_INVESTIGATION.md), [Manufacturing Yield Platform](case-studies/YIELD.md), and [SPC tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#spc-and-process-step-monitoring) |
+| Quality engineering and root-cause analysis | [Qualification and Reliability Investigation](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md), [Wafer Quality Investigation](case-studies/WAFER_QUALITY_INVESTIGATION.md), [Manufacturing Yield Platform](case-studies/YIELD.md), and [SPC tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#spc-and-process-step-monitoring) |
 | Manufacturing execution and digital standard work | [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md), [Maintenance Operations](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#maintenance-operations-portal), and [Clean Room Requests](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#clean-room-request-and-fulfillment-queue) |
 | Data and software architecture | [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) and [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) |
 
@@ -29,6 +29,7 @@ The usage figure shows adoption; it is not presented as measured labor savings o
 
 | Project | Engineering purpose |
 |---|---|
+| [Qualification and Reliability Investigation](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md) | Reconcile process and reliability records, compare wafer and device endpoints, account for pending results and shared runs, and present auditable statistical evidence in a focused engineering interface. |
 | [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) | Reconstruct repeated wafer process events, compare upstream conditions with downstream response, and present model diagnostics and a bounded recommendation for engineering review. |
 | [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) | Make production priorities and shift handoff consistent through shared views, explicit time boundaries, and controlled submission. Recent tester tracking connects activity, changeovers, work-order history, and WIP. |
 | [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) | Move local tools through versioned releases into a common browser portal with health checks, logs, and recovery. Selected workloads split preparation and serving across two hosts with validated snapshot transfer and manual failover. |
@@ -44,6 +45,23 @@ Engineers need fast summary views and the detailed wafer, inspection, and test r
 *Screenshot from the public synthetic Yield application. No production data or private interface is shown.*
 
 [View the application repository](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) | [Read the yield case study](case-studies/YIELD.md) | [View architecture](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/ARCHITECTURE.md)
+
+## Qualification and reliability investigation
+
+I built an investigation workbench that connects process history, electrical measurements,
+repeated reliability tests, and wafer qualification. Engineers can change the endpoint,
+inspect completion by cohort, compare wafers within shared runs, and review the records
+and statistical output behind a conclusion.
+
+The interface puts the finding and supporting counts first. Compact controls, readable
+tables, grouped navigation, and expandable model details keep the evidence accessible
+without presenting every analytical detail at once.
+
+![Fictional qualification investigation showing completion context and within-run comparisons](assets/qualification-investigation.png)
+
+*Scientific illustration with invented values. This is not a production result or an application screenshot.*
+
+[Read the qualification and reliability case study](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md)
 
 ## Quality investigation in pictures
 

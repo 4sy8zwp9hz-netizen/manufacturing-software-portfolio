@@ -14,6 +14,7 @@ clone.
 
 | Candidate | Real problem | Technical depth | Process value | Proposed public form |
 |---|---|---:|---:|---|
+| Qualification and reliability investigation | reconcile wafer and device evidence, account for incomplete results, and distinguish adjusted population trends from within-run comparisons | High | High | Dedicated analytical and interface-design case study with a fictional scientific illustration |
 | Manufacturing Yield Platform | investigate yield across mixed grains without repeatedly scanning high-volume history | High | High | Full runnable synthetic repository |
 | Grating Process Analytics | reconstruct process response and support a constrained engineering recommendation from fragmented events | High | High | Deep architecture/evolution case study |
 | Fab TV / work-queue visibility | replace repeated production-status reconstruction with common visual management | Medium–high | High | Lean Digital Operations case study |
