@@ -14,6 +14,7 @@ clone.
 
 | Candidate | Real problem | Technical depth | Process value | Proposed public form |
 |---|---|---:|---:|---|
+| Engineering leadership across the application ecosystem | align application decisions, trustworthy yield populations, reusable ETL, and repeatable investigation workflows | High | High | Concise cross-project overview linking to the technical case studies |
 | Qualification and reliability investigation | reconcile wafer and device evidence, account for incomplete results, and distinguish adjusted population trends from within-run comparisons | High | High | Runnable synthetic browser demo with analytical and interface-design case study |
 | Manufacturing Yield Platform | investigate yield across mixed grains without repeatedly scanning high-volume history | High | High | Full runnable synthetic repository |
 | Grating Process Analytics | reconstruct process response and support a constrained engineering recommendation from fragmented events | High | High | Deep architecture/evolution case study |

@@ -17,6 +17,12 @@ This portfolio highlights several systems I designed and implemented, with confi
 
 The usage figure shows adoption; it is not presented as measured labor savings or productivity improvement.
 
+## Engineering leadership across the ecosystem
+
+My strongest cross-project case connects the application ecosystem, yield Parquet/ETL, and reusable engineering tools: defining trustworthy manufacturing populations, validating backend changes, and making investigation and delivery patterns reusable.
+
+**[Read the engineering leadership overview](case-studies/ENGINEERING_LEADERSHIP.md)** for the decisions, concrete examples, and ownership behind the individual projects.
+
 ## Choose a starting point
 
 | If you are interested in | Start here |
