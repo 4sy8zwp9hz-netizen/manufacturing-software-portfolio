@@ -1,18 +1,18 @@
 # Engineering Leadership Across a Manufacturing Application Ecosystem
 
-**What I built:** An ecosystem of manufacturing applications connecting yield investigation, reusable data preparation, engineering analysis, and daily operations.
+**What I built:** Reusable data and delivery patterns connecting yield investigation with shared manufacturing tools.
 
 **What it demonstrates:** Technical direction across applications, ownership of ambiguous problems, rigorous validation, and reusable engineering capability.
 
 ## Problem
 
-Engineers needed to move from a yield signal to the physical population and process history behind it. Separate tools, repeated queries, and inconsistent definitions made that difficult. My role expanded from solving individual analysis problems to defining the data and delivery patterns shared by multiple applications.
+Engineers needed to move from a yield signal to the physical population and process history behind it. Separate tools, repeated queries, and inconsistent definitions made that difficult. My role grew to connect investigation requirements with the two flagships: reusable yield data and shared application delivery.
 
 ## Three connected examples
 
 ### Application ecosystem: define the decision before building the view
 
-I connected yield dashboards, wafer maps, statistical tools, qualification investigations, tester activity, WIP, maintenance, and shift handoff through a shared application environment.
+I brought analytical tools and operational workflows into a shared application environment, keeping each workflow's data and decisions explicit.
 
 One concrete decision concerned tester tracking: a work order's overall yield cannot automatically describe the chips processed by one tester during one shift. I required the view to distinguish actual chip populations, completed and partial activity, repeat testing, and changeovers. That turned a plausible dashboard number into an explicitly defined engineering measure.
 
@@ -34,7 +34,7 @@ In qualification investigations, I challenged fitted trends by examining outcome
 
 ## Result
 
-The contribution spans problem framing, data semantics, architecture, validation, and operational delivery. Shared facts and reusable investigation patterns connect multiple tools, while explicit populations and traceable detail make conclusions reviewable. This is the basis of my staff-level engineering case: technical decisions that improve a broader engineering system. Quantified yield uplift, savings, and organization-wide adoption are not claimed here.
+The two flagships provide reusable data and shared delivery; supporting tools apply those capabilities to specific engineering decisions. Explicit populations, traceable detail, and validation make findings reviewable as the software evolves. Quantified yield uplift, savings, and organization-wide adoption are not claimed here.
 
 ## My ownership
 

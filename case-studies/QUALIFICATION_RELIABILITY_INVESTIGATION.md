@@ -2,7 +2,7 @@
 
 **[Open the working demo](https://qualification-studio.orange-rat-4119.chatgpt.site)** · [Inspect its source](../demos/qualification-studio)
 
-**What I built:** An engineering investigation application that connects wafer process history, waiting intervals, electrical measurements, repeated reliability tests, and qualification outcomes in one auditable workflow.
+**What I built:** An investigation application that connects process history, electrical measurements, reliability tests, and qualification outcomes so engineers can test competing explanations for qualification losses.
 
 **What it demonstrates:** Quality engineering, data reconciliation, statistical modeling, reliability analysis, and the design of readable applications for technical decisions.
 
@@ -14,7 +14,7 @@ An attractive correlation is therefore only a starting point. Engineers need to 
 
 ## Connect the evidence before fitting the model
 
-I linked source records through physical substrate and device identities, preserving the distinction between wafer-level outcomes and device-level measurements. The investigation retains repeated-test context and pairs baseline and stressed readings within compatible measurement configurations.
+I combined independently extracted process, electrical, and reliability records with wafer context from the [Manufacturing Yield Platform](YIELD.md). Physical substrate and device identities connect the evidence while keeping wafer outcomes distinct from device measurements. Baseline and stressed readings are paired within compatible test configurations, retaining repeated-test context.
 
 The analysis distinguishes two endpoints: recorded wafer qualification and the fraction of evaluable devices meeting a reliability screen. A visible selector changes the analytical endpoint across the relevant product views. Missing or invalid pairs remain visible in coverage counts rather than silently becoming failures or passes.
 
@@ -37,21 +37,21 @@ These are observational comparisons. Their role is to narrow the engineering inv
 
 ## Make the findings readable without losing the detail
 
-I developed the interface through direct engineering review. Early versions had useful comparisons but too much text and too little hierarchy. The final presentation puts a concise conclusion and its supporting counts first, followed by charts and progressively deeper statistical detail.
+Direct engineering review shaped the presentation: a concise conclusion and supporting counts come first, followed by charts and progressively deeper statistical detail.
 
-The interface uses a centered layout, a light palette, consistent numeric tables, compact endpoint controls, and restrained transitions. Primary analysis tabs stay visible in a slim navigation bar that hides during downward scrolling and returns on upward scrolling. A disclosure menu groups detailed tools and methods. Additional product analyses open in tabs without repeating the application header.
+Consistent tables and compact endpoint controls help readers compare results. Primary analysis tabs and a disclosure menu separate the main investigation from detailed tools and methods; additional product analyses open without repeating the application header.
 
 Statistical output is collapsed by default, while raw-data exports and definitions remain available. Responsive layouts, keyboard focus states, and reduced-motion support keep presentation choices from blocking access to the evidence.
 
 ## Result
 
-The application turns a fragmented reliability investigation into a shared decision surface: engineers can inspect a suspected relationship, change the endpoint, compare more closely matched wafers, and trace the result back to its underlying records.
+The application turns fragmented reliability records into a shared investigation: engineers can inspect a suspected relationship, change the endpoint, compare more closely matched wafers, and trace the result back to its underlying records.
 
 It supported process-timing hypotheses and showed where an association became weaker under a different endpoint or a within-run comparison. The result is a more focused engineering investigation and a reviewable analytical basis for follow-up. No measured yield improvement or proven physical root cause is claimed here.
 
 ## My ownership
 
-I defined the investigation with process stakeholders, implemented identity reconciliation and data preparation, developed the statistical comparisons and exports, designed the interface, integrated the application into shared hosting, and verified the published workflows through browser checks and regression tests.
+I defined the investigation with process stakeholders, implemented data reconciliation, statistical comparisons and exports, designed the interface, integrated it into the [Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md), and verified published workflows through browser checks and regression tests.
 
 Source manufacturing systems, physical testing, process operation, and final process approvals remain with their respective owners.
 

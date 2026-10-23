@@ -1,6 +1,6 @@
 # Supporting Manufacturing Engineering Tools
 
-These applications show the two flagships in use: shared analytical foundations support engineering investigation, while the hosted application platform brings custom tools into daily manufacturing work. Each one targets a specific need, from maintenance and request fulfillment to process monitoring and historical investigation.
+Chip-yield analysis reuses the [Manufacturing Yield Platform](YIELD.md)'s prepared data. Operational workflows use the [hosted application platform](MANUFACTURING_APPLICATION_PLATFORM.md)'s shared access and support. Together, they show how investigation and daily manufacturing work build on the two flagships.
 
 ## Maintenance Operations Portal
 
@@ -38,19 +38,19 @@ The first practical application reduced the effort required to record maintenanc
 
 Process Patrol is production-ready and scheduled for operational rollout. It records daily checklist outcomes and assignment history. Maintenance-record posting and attachments for patrol outcomes remain outside the current workflow.
 
-### Why it is a supporting project
+### Role in shared operations
 
-This application shows the hosted platform's practical value: a shared place to deliver and support digital standard work, with the transactional behavior needed for maintenance and reliability operations.
+Maintenance is one use of the hosted platform: technicians record work and evidence in a common workflow, with controlled updates and a correction history.
 
 ### Engineering lesson
 
-A convenient input form creates value only when the receiving state, validation, attachments, permissions, completion rules, correction path, history, and support model are designed with it. In software terms, the portal combines transactional integrity, authorization, auditability, responsive interaction, and history-preserving state transitions around a real maintenance workflow.
+Reliable maintenance records depend on validated submissions, safe attachments, permissions, completion rules, and correction paths. Transactional writes and history-preserving state changes support that workflow beyond the initial form submission.
 
 ## Clean Room Request and Fulfillment Queue
 
 ### Problem
 
-Requests for controlled-area garments or consumables need a clear submission path, a visible fulfillment queue, and a record of completion or inability to complete. This is a frequently used operational workflow, not just a demonstration form: approximately 250 requests were handled in a recent month, based on my operational count. That figure describes usage, not a measured time-saving or productivity improvement.
+Requests for controlled-area garments or consumables need a clear submission path, a visible fulfillment queue, and a record of completion or inability to complete. Approximately 250 requests were handled in a recent month, based on my operational count. That figure describes usage, not a measured time-saving or productivity improvement.
 
 ### What I built
 
@@ -72,11 +72,11 @@ stateDiagram-v2
     Completed --> Open: reopened when correction is needed
 ```
 
-The application reached v2.0.0 as the receiving workflow matured. The key engineering lesson was that a form is only half a workflow. The receiving queue, ticket lookup, mobile fulfillment path, photo evidence, state transitions, correction path, and traceability determine whether the application is operationally complete.
+The application reached v2.0.0 as the receiving workflow matured. Requesters and fulfillers share a path from submission through disposition, with ticket lookup, mobile fulfillment, photo evidence, controlled transitions, and corrections. This is the hosted platform's daily-workflow role in practice.
 
 ### What the usage number means
 
-The approximate monthly count is evidence of operational adoption, not proof of labor hours saved. The defensible benefit is that requesters and fulfillers have one shared path from submission through disposition, with status and photo context available in the same workflow. A future quantified efficiency claim would require a documented before-and-after measurement.
+The count describes use of the shared workflow. Measuring time savings would require a documented before-and-after comparison.
 
 ## Chip Yield and Manufacturing Flow Analytics
 
@@ -94,7 +94,7 @@ The flagship yield workflow established trusted prepared wafer and chip facts, b
 
 ### Why it matters
 
-This shows how prepared data can support additional engineering work. The original ETL work did not only make one dashboard faster; it created a governed analytical source that could support a second engineering problem without duplicating broad source retrieval or redefining core populations. I keep it as a supporting project because its strongest story is architectural reuse, not the number of separate dashboards.
+Prepared yield facts support a different engineering question without repeating broad source retrieval or redefining core populations. The yield platform supplies that analytical foundation; portal integration supplies the shared access and support model.
 
 ## SPC and Process-Step Monitoring
 
@@ -120,18 +120,14 @@ I therefore treated refresh reconciliation and store-level validation as part of
 
 ## Equipment Status
 
-I adapted equipment-status information into a responsive, portal-mounted browser view for shared operational visibility. The engineering work was less about creating another isolated screen and more about integrating the view into the same deployment, routing, and support model as the broader application platform.
+I adapted equipment-status information into a responsive browser view for shared operational visibility, using the application platform's deployment, routing, and support model.
 
 ## What these projects demonstrate
 
-Across these smaller tools, the recurring pattern is the same:
+These workflows apply two recurring engineering responsibilities:
 
-- start with the manufacturing decision or workflow rather than the UI
-- identify the minimum trustworthy data and state model
-- make transitions, timing, and ownership explicit
-- separate source retrieval from presentation when shared use makes repeated querying expensive
-- design correction and recovery paths rather than only the happy path
-- integrate successful tools into a common hosting and support model
+- **Trustworthy evidence:** explicit identities, populations, timing, and reconciliation, with repeated source work prepared for reuse.
+- **Shared operations:** controlled state transitions, user-specific choices, correction paths, and a common hosting and support model.
 
 ## My ownership
 

@@ -1,6 +1,6 @@
 # Lean Digital Operations
 
-**What I built:** Shared production-visibility and shift-handoff tools that reduce repeated manual status reconstruction and turn common manufacturing coordination tasks into explicit digital workflows.
+**What I built:** Shared workflows that prepare production priorities, define shift-reporting windows, and let teams review a handoff before controlled submission.
 
 **What it demonstrates:** Lean workflow design, configuration-driven applications, background refresh, multi-user state management, transactional actions, idempotency, and operational reliability.
 
@@ -8,16 +8,16 @@
 
 Manufacturing teams need two different kinds of operational awareness. During a shift, people need a low-friction view of what should move next and why. At shift change, they need a durable summary of what happened, what remains at risk, and where attention is required.
 
-Without purpose-built workflows, the same information is repeatedly searched, copied, reformatted, and explained. The waste is information motion: opening several reports, reconstructing priorities, walking to status screens, and manually assembling a handoff whose time boundary may be ambiguous.
+Without shared workflows, people repeatedly search reports, reconstruct priorities, and assemble handoffs. Different reporting windows or stale information can make those views disagree even when they describe the same work.
 
 ## What I built
 
-Two focused applications addressed those needs:
+The [Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md) provides shared access to two workflows:
 
-- **Fab TV:** a continuously visible browser dashboard that groups production work into operational queues and shows progress toward configured checkpoints.
-- **Passdown:** a date-and-shift workflow that assembles events, comments, and current work-in-process into an editable handoff preview before submission.
+- **During the shift:** Fab TV groups production work into operational queues and shows progress toward configured checkpoints on a continuously visible browser display.
+- **At shift change:** Passdown assembles events, comments, and current work-in-process for a selected date and shift into an editable handoff preview.
 
-Both applications move the decision closer to the work. Instead of asking every user to become a data analyst for routine coordination, the systems prepare the relevant state and make the operating rules visible.
+Prepared views make priorities and reporting boundaries visible, so routine coordination starts from a common basis.
 
 ## Evolution
 
@@ -60,7 +60,7 @@ stateDiagram-v2
     Sent --> [*]
 ```
 
-Fab TV acts as a pull signal for current attention. Passdown provides durable standard work across a time boundary.
+The floor display identifies work needing attention; the handoff preserves a reviewed account of a defined shift.
 
 ## Selected engineering challenges
 
@@ -90,6 +90,8 @@ I separated common refreshed state from browser/session-level choices. Shared so
 
 ## Result
 
+Teams can review current priorities and prepare handoffs using shared production state and explicit shift windows. Submission has controlled server-side state transitions, so retries and failures are handled beyond the browser. These workflows put the hosted platform to practical use in recurring manufacturing coordination.
+
 ### Tester tracking and shift handoff
 
 Recent work extends this approach to physical chip testing. The applications reconstruct tester
@@ -102,10 +104,6 @@ shift boundary. The workflow gives completed boundary snapshots priority, labels
 history, and bounds catch-up work so historical backfill does not crowd out current visibility.
 
 These changes make the time, population, and completeness of the operating view explicit.
-
-The applications reduce avoidable information reconstruction by turning recurring manufacturing coordination into prepared, explicit workflows. Production visibility is refreshed once and reused, shift windows follow one defined rule, and external submission actions have controlled server-side state transitions rather than relying on browser behavior alone.
-
-The larger engineering lesson is that digital Lean work is not primarily about adding charts. It is about making information flow, standard work, ownership, and failure behavior explicit in the software.
 
 ## My ownership
 

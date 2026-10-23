@@ -20,9 +20,10 @@ and careful interpretation of repeated measurements and missing evidence.
 *Scientific illustration with fictional wafer rates. Bars show group means; shading illustrates
 selected-wafer date context. This descriptive example is not an application screenshot or production result.*
 
-The comparison workflow connects Chip Yield selections to statistical review. It reuses curated
-Parquet facts through a scoped, read-only application API. Peers are selected by process family,
-nearby process dates, and relevant grade or group constraints. Selected wafers are excluded from peers.
+The comparison workflow connects Chip Yield selections to statistical review, reusing prepared
+Parquet facts from the [Manufacturing Yield Platform](YIELD.md) through a scoped, read-only API.
+Peers match process family, nearby process dates, and relevant grade or group constraints.
+Selected wafers are excluded from peers.
 
 - Compare yield, qualification outcomes, individual test parameters, or one failure code at a time.
 - Show measured wafer counts and missing measurements alongside the result.
@@ -62,14 +63,15 @@ statistics and exports.
 
 ## Result
 
-The tools connect two investigation paths: comparison establishes whether a wafer population
-warrants attention, and spatial evidence helps locate patterns for review. Reusable yield facts
-support a new workflow, while maps retain explicit identity, alignment, and retrieval contracts.
+Comparison tests whether a wafer population warrants attention; spatial evidence helps locate
+patterns for review. Reusable yield facts support the comparison, while maps add inspection,
+test, and reliability evidence with explicit identity and alignment checks.
 
 ## My ownership
 
-I implemented comparison integration, cohort selection, rate calculations, statistical presentation,
-exports, map retrieval, identity and alignment validation, linked interaction, and caching.
+I implemented cohort selection, statistical comparisons, exports, map retrieval, identity and
+alignment checks, linked interaction, caching, and integration into the
+[Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md).
 Source records, specification approval, physical testing, and final dispositions remain with
 their respective owners.
 

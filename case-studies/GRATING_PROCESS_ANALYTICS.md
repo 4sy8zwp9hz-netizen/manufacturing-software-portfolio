@@ -1,6 +1,6 @@
 # Grating Process Analytics
 
-**What I built:** A process analytics and recommendation workflow that reconstructs wafer history across repeated process events, connects upstream conditions to downstream results, and presents model diagnostics for engineering review.
+**What I built:** A process investigation and recommendation workflow that reconstructs repeated wafer-processing cycles, compares upstream conditions with downstream response, and presents proposed settings with diagnostics for engineering review.
 
 **What it demonstrates:** Semiconductor process engineering, data requirements, event reconstruction, configurable analytics, statistical modeling, human-in-the-loop decision support, and manufacturing-system integration.
 
@@ -8,13 +8,13 @@
 
 A process recommendation can depend on measurements collected at several operations, tool context, wafer attributes, repeated processing, and the currently approved setting matrix. The source history arrives as events, not as the one-row-per-observation analytical frame needed for comparison or modeling.
 
-The challenge is therefore not simply visualization. The application has to determine which measurements belong to the same physical process cycle, preserve traceability, expose data quality, and prevent a mathematical recommendation from being mistaken for an automatic process decision.
+The application must establish which measurements belong to the same physical process cycle, preserve traceability, expose data quality, and keep proposed settings subject to engineering approval.
 
 ## How the project started
 
-This work began with a physical process question rather than a request for a dashboard. The initial ashing analysis needed upstream measurements, process inputs, downstream responses, equipment context, and wafer identity to be connected in the order they occurred.
+The initial ashing investigation needed upstream measurements, process inputs, downstream responses, equipment context, and wafer identity connected in the order they occurred.
 
-Building that first analysis exposed a more fundamental issue: some of the relationships required for repeatable engineering analysis were not yet structured cleanly enough in the available history. I defined the measurements, event relationships, identities, and process-cycle history the application needed and worked with the relevant manufacturing-system and data owners to establish those requirements.
+That analysis exposed gaps in how the history represented repeated processing. I defined the measurements, event relationships, identities, and process-cycle history needed for repeatable analysis, then worked with manufacturing-system and data owners to establish those requirements.
 
 Once that structured history was available, the software evolved from a focused analysis into a reusable, configuration-driven analytics and recommendation workflow.
 
@@ -46,7 +46,7 @@ flowchart TB
     P --> H[Human engineering review and export]
 ```
 
-The shared source history is normalized and reconstructed into an explicit wafer-cycle grain before it reaches the modeling layer. Browser sessions can then filter, exclude, compare, and export from a stable analytical snapshot without mutating the shared source state.
+This shares a data-definition principle with the [Manufacturing Yield Platform](YIELD.md): establish the physical population before analysis. Here, source history is normalized into wafer-cycle records. Browser sessions filter, exclude, compare, and export from a stable snapshot without changing shared data.
 
 ## Selected engineering challenges
 
@@ -62,7 +62,7 @@ I normalized event order and assigned repeated entries to explicit process cycle
 
 The focused analysis depended on historical relationships that could be assembled manually but were not consistently available as reusable application inputs.
 
-Rather than burying that ambiguity inside more Python logic, I defined the required measurements, process events, identities, and linkages with the relevant manufacturing-system and data owners. The application then treated those relationships as explicit inputs and validated its configuration before constructing the wafer-cycle dataset.
+I defined the required measurements, process events, identities, and linkages with manufacturing-system and data owners. The application treats those relationships as explicit inputs and validates its configuration before constructing the wafer-cycle dataset.
 
 ### Keeping recommendations interpretable and bounded
 
@@ -92,11 +92,11 @@ The composite key is wafer plus process cycle. Collapsing the table to wafer onl
 
 ## Result
 
-The mature workflow turns a process recommendation into a traceable engineering chain:
+Engineers can trace a proposed process setting through its supporting measurements, event pairings, and model diagnostics:
 
 `configuration → source events → process-cycle reconstruction → wafer-level evidence → model diagnostics → proposed setting → human decision`
 
-The value is not that software replaces the process engineer. The value is that evidence assembly, event pairing, diagnostics, and comparison become repeatable and reviewable instead of depending on one-off manual joins and spreadsheet interpretation.
+Evidence assembly and comparison become repeatable and reviewable. Engineers can inspect coverage, exclusions, and model fit before accepting or rejecting a proposal; approval remains with the process owner.
 
 ## My ownership
 
