@@ -2,17 +2,17 @@
 
 ## Quality Engineering, Manufacturing Analytics & Digital Operations
 
-I am a semiconductor quality and manufacturing engineer who builds production software to turn fragmented manufacturing data into engineering decisions and practical tools for daily operations.
+I am a semiconductor quality and manufacturing engineer who uses data to investigate yield losses, evaluate reliability, and guide engineering follow-up. I also build the software that makes this work repeatable and usable by engineers, technicians, and operations teams.
 
-My work centers on two flagship systems: a **Manufacturing Yield Platform** that connects process, wafer, and chip yield with the manufacturing events, inspection, and test history behind each result, and a **Manufacturing Application Platform** that delivers custom engineering applications to engineers, technicians, and operations teams.
+Two flagship systems support this work. The **Manufacturing Yield Platform** connects process, wafer, and chip yield with the manufacturing history behind each result. The **Manufacturing Application Platform** puts custom engineering tools into shared daily use.
 
-The investigations below show the engineering questions this work helps answer. The flagships explain the data preparation and shared delivery behind it.
+Start with the investigations to see how I turn manufacturing questions into evidence. Then explore the two flagships to see how I prepare that evidence and deliver tools that support further investigation and daily operations.
 
 ## At a glance
 
 - **Manufacturing data at scale:** **430,000+ prepared process-yield records across 17,000+ wafers**, backed by **tens of millions of inspection and test records** in the October 2026 snapshot.
 - **Shared use:** more than **3,000 recorded app/page opens in a measured 30-day period**, across two hosts in September–October 2026. Opens include reloads, not unique users.
-- **End-to-end ownership:** manufacturing problem definition, Python/SQL development, analytical validation, deployment, and ongoing support.
+- **End-to-end ownership:** manufacturing problem definition, data analysis, software development, validation, rollout, and ongoing support.
 
 [Data scale and scope](case-studies/YIELD.md#data-scale) · [Usage measurement](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md#measured-use)
 
@@ -20,7 +20,7 @@ The investigations below show the engineering questions this work helps answer. 
 
 **What changed? Which population is affected? What evidence should guide the next engineering action?**
 
-Explore an electrical resistance investigation and a qualification/burn-in study, with interactive charts, cohort filters, findings, and supporting methods. These are examples of the analytical work enabled by reusable data preparation and investigation tools; each study explains its own sources and methods.
+Explore an electrical resistance shift and a qualification/burn-in study. The reports show which groups were compared, how the findings change under closer examination, and what the evidence can support. Interactive charts and supporting methods let reviewers follow the reasoning behind the findings.
 
 <a href="https://4sy8zwp9hz-netizen.github.io/webpage_presentation_example/"><img src="assets/investigations-preview.png" alt="Preview of the manufacturing investigations landing page, featuring resistance and reliability studies" width="640"></a>
 
@@ -45,11 +45,11 @@ Change products and periods, compare run mates, inspect individual device measur
 
 ### 1. Manufacturing Yield Platform — the analytical foundation
 
-Engineers need to understand where yield changes across manufacturing stages, then trace the result through work orders, wafers, chips, and their process, inspection, and test history. The system brings yield events, pass/fail quantities, and stage-specific populations together with high-volume measurement evidence. Repeatedly retrieving and rebuilding that history on each interaction is impractical.
+Engineers need to understand where yield changes across manufacturing stages, then trace the result to the relevant work orders, wafers, and chips. I built the dashboard to connect yield events and pass/fail quantities with the process, inspection, and test records behind them, keeping clear which physical population each result describes.
 
-I built the dashboard and evolved its backend through scoped SQL retrieval, Python/pandas transformations, shared caches and preloads, and scheduled Parquet ETL. Common views use prepared facts; selected investigations retrieve high-volume detail on demand. Correction-aware refresh and last-known-good publication protect the answer as records change or refreshes fail.
+As the data grew, I moved repeated preparation out of the engineer's workflow. Common views use prepared summaries, while a selected investigation retrieves the detail it needs. Scheduled updates incorporate corrected history and retain the last complete dataset if a refresh fails.
 
-The data work also supports Chip Yield, wafer comparisons, and linked maps. The interface stayed familiar while extraction, memory use, refresh, and recovery became substantial engineering responsibilities.
+The same prepared data supports chip-yield analysis, wafer comparisons, and linked maps. I improved data preparation, refresh, and recovery while keeping the investigation workflow familiar.
 
 ![Synthetic Yield Overview](assets/yield-summary.png)
 
@@ -59,9 +59,9 @@ The data work also supports Chip Yield, wafer comparisons, and linked maps. The 
 
 ### 2. Manufacturing Application Platform — shared tools in daily use
 
-A useful engineering application needs a reliable way to reach the people who use it. I built a common browser portal and hosting model for custom analytics and operational workflows: yield investigation, process monitoring, WIP visibility, shift handoff, maintenance, and request fulfillment.
+The yield platform organizes the analytical evidence; the application platform makes engineering tools available where people work. I built a common browser portal for investigating quality signals, reviewing production status, and completing shared workflows such as shift handoff and maintenance.
 
-The platform evolved from local tools and versioned desktop releases to centrally hosted applications, with shared navigation, Waitress/WSGI integration, health checks, logs, restart tooling, and recovery. Selected workloads separate data preparation and serving across two hosts.
+I moved tools from individual desktops and versioned releases into a shared browser environment, with common navigation, health checks, logs, restart procedures, and recovery. This made updates and day-to-day support part of the product, rather than something each user had to manage independently.
 
 Usage records show **3,081 app/page opens over one measured 30-day period**. This is evidence of use across the hosted environment; the case study explains the measurement and its limits.
 
@@ -73,8 +73,8 @@ These examples extend the two flagships into specific engineering decisions and 
 
 | Area | Examples |
 |---|---|
-| Investigation and process decisions | [Wafer comparisons and linked maps](case-studies/WAFER_QUALITY_INVESTIGATION.md), [qualification and reliability](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md), and [grating process analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) |
-| Daily manufacturing work | [Maintenance, Process Patrol, Clean Room Requests, and supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md); [production visibility and shift handoff](case-studies/LEAN_DIGITAL_OPERATIONS.md) |
+| Investigate quality and process questions | [Compare wafers and trace spatial patterns](case-studies/WAFER_QUALITY_INVESTIGATION.md), [evaluate qualification and reliability](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md), and [investigate process response](case-studies/GRATING_PROCESS_ANALYTICS.md) |
+| Support daily manufacturing decisions and follow-through | [Maintenance, request fulfillment, and monitoring workflows](case-studies/SUPPORTING_ENGINEERING_TOOLS.md); [production visibility and shift handoff](case-studies/LEAN_DIGITAL_OPERATIONS.md) |
 | Technical direction and ownership | [Engineering leadership across the ecosystem](case-studies/ENGINEERING_LEADERSHIP.md) |
 
 ## Engineering range
