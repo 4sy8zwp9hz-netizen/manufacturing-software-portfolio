@@ -18,6 +18,7 @@ examples. The preview does not reproduce the reports' underlying evidence tables
 | `assets/wafer-comparison.png` / `.svg` | `tools/render_quality_visuals.cjs` | Deterministic fictional wafer rates | Explains means, wafer populations, and date context | Illustrative, visually reviewed |
 | `assets/qualification-investigation.png` / `.svg` | `tools/render_qualification_visual.cjs` | Independently invented cohort counts and within-run position summaries | Explains completion context, endpoint choice, and shared-run comparison without reconstructing a private interface | Illustrative, visually reviewed |
 | `assets/qualification-studio-demo.png` | Runnable public `demos/qualification-studio/dist` application | Deterministic fictional wafers, process intervals, device readings, and outcomes | Shows the working demo visitors can open from the portfolio | Browser-verified, visually reviewed |
+| `assets/small-group-demo.png` | Runnable public `demos/small-group-demo/dist` application | Fictional households, meetings, assignments, and attendance | Previews a supporting personal project; this browser-only demo is separate from the live Flask/Sheets/Cloud Run app | Browser-captured from the published demo; desktop and phone workflows checked |
 
 ## Reproduce the illustrations
 
@@ -41,3 +42,5 @@ generic labels, and correspondence with the documented public code.
 ## Reproduce the application screenshot
 
 Serve `demos/qualification-studio/dist` with a static HTTP server and capture the initial Conclusions view after it loads. The demo has no build dependencies or production connections. Enable reduced motion when capturing a switched view so the image does not freeze partway through a transition.
+
+For the small-group preview, serve `demos/small-group-demo/dist`, choose **Reset demo**, and capture the initial Schedule view. Its fixed sample date and fictional fixtures keep the preview reproducible.

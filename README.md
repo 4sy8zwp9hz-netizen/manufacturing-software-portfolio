@@ -77,6 +77,14 @@ These examples extend the two flagships into specific engineering decisions and 
 | Support daily manufacturing decisions and follow-through | [Maintenance, request fulfillment, and monitoring workflows](case-studies/SUPPORTING_ENGINEERING_TOOLS.md); [production visibility and shift handoff](case-studies/LEAN_DIGITAL_OPERATIONS.md) |
 | Technical direction and ownership | [Engineering leadership across the ecosystem](case-studies/ENGINEERING_LEADERSHIP.md) |
 
+## Personal project: cloud-hosted small-group app
+
+I built and deployed a mobile-friendly schedule and household attendance app for a small group using Flask, Google Sheets, and Google Cloud Run. This personal project extends my application work into internet-facing cloud hosting. The no-login demo below uses fictional data and runs entirely in the browser; it does not connect to the live app or backend.
+
+<a href="https://small-group-demo.orange-rat-4119.chatgpt.site"><img src="assets/small-group-demo.png" alt="Fictional small-group schedule and household attendance demo" width="640"></a>
+
+**[Try the demo](https://small-group-demo.orange-rat-4119.chatgpt.site)** · [Demo source](demos/small-group-demo)
+
 ## Engineering range
 
 - **Manufacturing and quality:** yield, Pareto, SPC, wafer/lot traceability, inspection/test analysis, WIP, and digital standard work.
@@ -96,7 +104,7 @@ Public software examples use synthetic data, generic terminology, and clean-room
 ```text
 case-studies/   Detailed engineering case studies
 assets/         Public previews and synthetic visuals
-demos/          Runnable synthetic investigation example
+demos/          Runnable synthetic demos
 docs/           Supporting portfolio documentation
 tools/          Repository validation utilities
 .github/        Continuous validation

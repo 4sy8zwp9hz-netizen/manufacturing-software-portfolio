@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try a fictional small-group schedule and household attendance workflow. An independent portfolio demo by Matthew Chung, with no login and no live data.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Small Group Schedule | Fictional Portfolio Demo</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to schedule</a>
+  <div class="demo-banner"><span class="demo-dot" aria-hidden="true"></span><strong>Fictional demo</strong><span>No login. Changes stay in this tab.</span><a href="https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio">Matthew Chung's portfolio <span aria-hidden="true">↗</span></a></div>
+  <header class="site-header">
+    <a class="brand" href="#main"><span class="brand-mark" aria-hidden="true">cg.</span><span><strong>Cedar Grove</strong><small>SMALL GROUP · DEMO</small></span></a>
+    <nav aria-label="App views"><button type="button" data-view="schedule" aria-current="page">Schedule</button><button type="button" data-view="leader">Leader tools</button></nav>
+    <button class="reset-button" type="button" id="reset-demo"><span aria-hidden="true">↺</span> Reset demo</button>
+  </header>
+  <main id="main" tabindex="-1"><noscript><p class="notice">This interactive demo needs JavaScript. It uses fictional data and does not connect to a backend.</p></noscript><div id="app"></div></main>
+  <footer class="site-footer"><div><strong>A personal project by Matthew Chung</strong><p>Fictional people, places, and dates. Browser-only interactions, not the live group app.</p></div><a href="https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio/tree/main/demos/small-group-demo">About this demo & source <span aria-hidden="true">↗</span></a></footer>
+  <p id="feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+  <dialog id="editor" aria-labelledby="editor-heading"></dialog>
+  <dialog id="reset-dialog" aria-labelledby="reset-heading"><div class="dialog-header"><h2 id="reset-heading">Start fresh?</h2><button type="button" data-close="reset-dialog" class="icon-button" aria-label="Close reset confirmation">×</button></div><p>This resets this tab's fictional attendance and schedule edits. The real app and other visitors are unaffected.</p><div class="dialog-actions"><button type="button" data-close="reset-dialog" class="button secondary">Keep exploring</button><button type="button" id="confirm-reset" class="button">Reset this demo</button></div></dialog>
+</body>
+</html>
