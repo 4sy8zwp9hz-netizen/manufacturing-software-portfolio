@@ -1,6 +1,6 @@
 # Manufacturing Application Platform
 
-**What I built:** The delivery and hosting layer that moved engineering applications from local Python tools and desktop packages into a centrally hosted, browser-accessible manufacturing software environment.
+**What I built:** A shared browser portal and hosting platform for custom engineering and manufacturing applications, evolving local Python tools and desktop packages into services used in daily work.
 
 **What it demonstrates:** Forward-deployed engineering, application integration, Windows hosting, WSGI composition, deployment design, health and recovery tooling, and cross-functional troubleshooting with IT and database teams.
 
@@ -9,6 +9,24 @@
 Useful manufacturing tools often begin as individual scripts, desktop applications, or locally hosted dashboards. That is a good way to validate an engineering idea, but it creates a new problem once other users depend on the tool: where do they find it, how is it updated, who owns the running process, what happens after a reboot, and how is a failure diagnosed or recovered?
 
 As the number of applications and users increased, separate ports, local copies, inconsistent launch instructions, duplicated hosting logic, and manual recovery became part of the engineering problem.
+
+## Measured use
+
+Combined usage logs from two hosts recorded **3,081 application page opens and
+reloads in the 30 days from September 16 to October 16, 2026**. The total was
+recomputed from saved usage snapshots, covering analytics, operational workflows,
+and application landing pages.
+
+The tracker excludes tagged dashboard-rotation traffic and does not count chart
+callbacks, button/filter interactions, assets, or health checks. Opens can include
+repeat visits and manual testing; they do not establish unique users or departmental
+reach. Tracking coverage changed during October, so this is a measured period of
+use rather than a monthly growth claim.
+
+The practical value is a common place to investigate yield, inspect process and
+WIP status, prepare shift handoff, record maintenance, and manage requests. The
+[operational workflows](LEAN_DIGITAL_OPERATIONS.md) and
+[supporting applications](SUPPORTING_ENGINEERING_TOOLS.md) show these uses in detail.
 
 ## How the platform evolved
 

@@ -1,6 +1,6 @@
 # Manufacturing Yield Platform
 
-**What I built:** A multi-level manufacturing yield investigation system that moves from factory-level trends to the exact wafer, inspection, and test evidence behind a result.
+**What I built:** A manufacturing yield dashboard and data pipeline that make tens of millions of inspection-event records usable for investigation, from factory-level trends to the wafer, inspection, and test evidence behind a result.
 
 **What it demonstrates:** Python/SQL application architecture, manufacturing data modeling, performance optimization, targeted retrieval, caching, reliability engineering, and production delivery.
 
@@ -11,6 +11,31 @@
 Yield investigation spans several data grains and time scales. A factory-level trend may point to a product, operation, tool, defect family, or individual wafer, but the supporting records are not naturally shaped for interactive analysis. Querying all high-volume inspection and test detail on every page load is slow and wasteful; aggregating everything in advance removes the detail needed for root-cause work.
 
 The application therefore had to solve two problems at once: define trustworthy manufacturing populations and make them fast enough to investigate interactively.
+
+## Data scale
+
+The active prepared-data snapshot reviewed on **October 23, 2026** contained:
+
+| Dataset role | Approximate stored rows | Why it matters |
+|---|---:|---|
+| Inspection-event population | **28.0 million** | Preserve detailed inspection history without loading it all into each browser session |
+| Inspection failure history | **6.2 million** | Retain the evidence behind failure categories and drill-down investigations |
+| Sorting-event facts | **2.3 million** | Connect downstream test history to the selected manufacturing population |
+
+Prepared yield facts in the same snapshot represented **17,398 distinct wafers**.
+
+Counts were checked against the active Parquet files' metadata. These datasets
+describe different, overlapping grains and include repeated events; they are not
+additive counts of unique devices or yield denominators. They describe one active
+snapshot, not accumulated backups or the full source-system estate. The public
+synthetic demo demonstrates the architecture at a smaller scale.
+
+The challenge is both volume and meaning: reconstruct the right physical population
+across repeated events and historical corrections, then make it available for
+interactive use. I keep large detail datasets out of startup, preload common
+facts, and retrieve only the selected cohort and required columns for deeper work.
+That separates the cost of maintaining history from the cost of an engineer's next
+interaction.
 
 ## How the system evolved
 
@@ -145,6 +170,15 @@ deployment remains separate from that validation.
 The mature design creates two performance paths: low-latency exploration over prepared shared facts and narrow reads for high-volume drill-down evidence. That keeps the common investigation responsive without sacrificing the detailed records needed for root-cause work.
 
 The application also makes data correctness and service behavior explicit. Its yield populations are defined rather than inferred from row counts, readers never see a partially published refresh, and a transient source failure does not erase the last valid analytical state.
+
+### A foundation for further investigation
+
+Chip Yield and wafer-comparison tools reuse the prepared yield facts for different
+engineering questions. Linked maps connect selected physical devices across
+inspection and test views. Qualification investigations combine yield wafer context
+with additional process, electrical, and reliability sources. This reuse makes the
+dashboard's backend valuable beyond its original screens, while each investigation
+still owns its cohort definition and analytical methods.
 
 ## My ownership
 

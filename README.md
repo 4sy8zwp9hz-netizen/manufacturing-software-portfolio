@@ -2,130 +2,101 @@
 
 ## Quality Engineering, Manufacturing Analytics & Digital Operations
 
-I am a semiconductor quality and manufacturing engineer who builds production software for yield investigation, SPC, traceability, maintenance, and shop-floor workflows. I turn fragmented manufacturing data and manual processes into reliable tools that engineers, technicians, and operations teams can use in their daily work.
+I am a semiconductor quality and manufacturing engineer who builds production software to turn fragmented manufacturing data into engineering decisions and practical tools for daily operations.
 
-My work spans the full problem: define the manufacturing need, model the data or workflow, build the Python/SQL application, deploy it for shared use, and improve it as adoption exposes new performance, reliability, and support requirements.
+My work centers on two flagship systems: a **Manufacturing Yield Platform** that makes large inspection and test histories usable for investigation, and a **Manufacturing Application Platform** that delivers custom engineering applications to engineers, technicians, and operations teams.
 
-This portfolio highlights several systems I designed and implemented, with confidential production details replaced by generic terminology, synthetic data, and clean-room examples.
+The investigations below show the engineering questions this work helps answer. The flagships explain the data preparation and shared delivery behind it.
 
 ## At a glance
 
-- **Quality and root-cause investigation:** yield, Pareto, wafer-level drill-down, inspection analysis, SPC, and traceability.
-- **Digital manufacturing operations:** maintenance logging, Process Patrol, WIP visibility, shift handoff, and request fulfillment.
-- **Production software ownership:** ETL, shared data preparation, testing, centralized hosting, health checks, logging, and recovery.
-- **Demonstrated use:** a Clean Room Item Request workflow handled approximately **250 requests in a recent month**, based on my operational count.
+- **Data scale:** more than **28 million inspection-event records**, with prepared yield facts spanning **17,000+ wafers**, in the active snapshot reviewed in October 2026.
+- **Shared use:** more than **3,000 recorded app/page opens in a measured 30-day period**, across two hosts in September–October 2026. Opens include reloads, not unique users.
+- **End-to-end ownership:** manufacturing problem definition, Python/SQL development, analytical validation, deployment, and ongoing support.
 
-The usage figure shows adoption; it is not presented as measured labor savings or productivity improvement.
+[Data scale and scope](case-studies/YIELD.md#data-scale) · [Usage measurement](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md#measured-use)
 
-## Explore interactive engineering investigations
+## Start with the engineering investigations
 
-Investigate an electrical resistance shift and compare qualification and burn-in outcomes.
-Explore the charts, cohort filters, findings, and supporting methods in two public reports.
+**What changed? Which population is affected? What evidence should guide the next engineering action?**
+
+Explore an electrical resistance investigation and a qualification/burn-in study, with interactive charts, cohort filters, findings, and supporting methods. These are examples of the analytical work enabled by reusable data preparation and investigation tools; each study explains its own sources and methods.
 
 <a href="https://4sy8zwp9hz-netizen.github.io/webpage_presentation_example/"><img src="assets/investigations-preview.png" alt="Preview of the manufacturing investigations landing page, featuring resistance and reliability studies" width="640"></a>
 
 **[Open the investigations](https://4sy8zwp9hz-netizen.github.io/webpage_presentation_example/)**
 
-*These linked reports use anonymized observed data, as described on the study site.
-The software demos elsewhere in this portfolio use synthetic data.*
+*These linked reports use anonymized observed data, as described on the study site. The software demos in this portfolio use synthetic data.*
 
-## Engineering leadership across the ecosystem
+<details>
+<summary>Try an investigation workflow with fictional data</summary>
 
-My strongest cross-project case connects the application ecosystem, yield Parquet/ETL, and reusable engineering tools: defining trustworthy manufacturing populations, validating backend changes, and making investigation and delivery patterns reusable.
+**[Open the interactive qualification demo](https://qualification-studio.orange-rat-4119.chatgpt.site)** · [Source code](demos/qualification-studio) · [Case study](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md)
 
-**[Read the engineering leadership overview](case-studies/ENGINEERING_LEADERSHIP.md)** for the decisions, concrete examples, and ownership behind the individual projects.
+Change products and periods, compare run mates, inspect individual device measurements, and export the selected data. Meeting minutes connect review decisions to evidence and follow-up.
 
-## Choose a starting point
+[![Interactive qualification investigation with synthetic data](assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
 
-| If you are interested in | Start here |
-|---|---|
-| Quality engineering and root-cause analysis | [Interactive qualification demo](https://qualification-studio.orange-rat-4119.chatgpt.site), [Qualification and Reliability Investigation](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md), [Wafer Quality Investigation](case-studies/WAFER_QUALITY_INVESTIGATION.md), [Manufacturing Yield Platform](case-studies/YIELD.md), and [SPC tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#spc-and-process-step-monitoring) |
-| Manufacturing execution and digital standard work | [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md), [Maintenance Operations](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#maintenance-operations-portal), and [Clean Room Requests](case-studies/SUPPORTING_ENGINEERING_TOOLS.md#clean-room-request-and-fulfillment-queue) |
-| Data and software architecture | [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) and [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) |
+*Runnable public demo with fictional records and screen limits.*
 
-## Selected work
+</details>
 
-| Project | Engineering purpose |
-|---|---|
-| [Big Data Analysis · live demo](https://qualification-studio.orange-rat-4119.chatgpt.site) | Reconcile process and reliability records, compare wafer and device endpoints, account for pending results and shared runs, and present auditable statistical evidence in a focused engineering interface. |
-| [Grating Process Analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) | Reconstruct repeated wafer process events, compare upstream conditions with downstream response, and present model diagnostics and a bounded recommendation for engineering review. |
-| [Lean Digital Operations](case-studies/LEAN_DIGITAL_OPERATIONS.md) | Make production priorities and shift handoff consistent through shared views, explicit time boundaries, and controlled submission. Recent tester tracking connects activity, changeovers, work-order history, and WIP. |
-| [Manufacturing Application Platform](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md) | Move local tools through versioned releases into a common browser portal with health checks, logs, and recovery. Selected workloads split preparation and serving across two hosts with validated snapshot transfer and manual failover. |
+## Two flagship systems behind the work
 
-## Try the product: Big Data Analysis
+### 1. Manufacturing Yield Platform — the analytical foundation
 
-**[Open the interactive demo](https://qualification-studio.orange-rat-4119.chatgpt.site)** · [Source code](demos/qualification-studio) · [Engineering notes](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md)
+Engineers need to move from a yield trend to the wafer, inspection, and test evidence behind it. At this scale, repeatedly retrieving and rebuilding the full history on each interaction is impractical.
 
-Explore a working investigation: change products and periods, switch outcomes,
-compare run mates, inspect individual device measurements, and export the data.
-Meeting minutes connect review decisions to evidence and published follow-up.
-All records and screen limits are fictional.
+I built the dashboard and evolved its backend through scoped SQL retrieval, Python/pandas transformations, shared caches and preloads, and scheduled Parquet ETL. Common views use prepared facts; selected investigations retrieve high-volume detail on demand. Correction-aware refresh and last-known-good publication protect the answer as records change or refreshes fail.
 
-[![Big Data Analysis interactive example with synthetic data](assets/qualification-studio-demo.png)](https://qualification-studio.orange-rat-4119.chatgpt.site)
-
-*Screenshot of the runnable public demo. Generated data only; no production interface or records.*
-
-## Flagship project: Manufacturing Yield Platform
-
-The [Manufacturing Yield Platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) is the deepest public implementation in this portfolio. It is a runnable Dash/Plotly application backed by reproducible synthetic semiconductor data, with tests and architecture documentation included.
-
-Engineers need fast summary views and the detailed wafer, inspection, and test records behind them. Prepared shared facts keep common interactions responsive; targeted reads preserve detail for investigation. The familiar workflow remained stable while the backend evolved through scoped queries, caches and preloads, Parquet ETL, incremental refresh, compatibility checks, and last-known-good publication.
+The data work also supports Chip Yield, wafer comparisons, and linked maps. The interface stayed familiar while extraction, memory use, refresh, and recovery became substantial engineering responsibilities.
 
 ![Synthetic Yield Overview](assets/yield-summary.png)
 
-*Screenshot from the public synthetic Yield application. No production data or private interface is shown.*
+*Public synthetic application screenshot. The production-scale counts above describe the internal system, not the size of this demo.*
 
-[View the application repository](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) | [Read the yield case study](case-studies/YIELD.md) | [View architecture](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform/blob/main/ARCHITECTURE.md)
+**[Read the yield case study](case-studies/YIELD.md)** · [Run the synthetic application](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) · [Explore wafer comparisons and maps](case-studies/WAFER_QUALITY_INVESTIGATION.md)
 
-## Quality investigation in pictures
+### 2. Manufacturing Application Platform — shared tools in daily use
 
-**Does this wafer group differ from its peers? Where do inspection and test patterns line up?**
-I built comparison and wafer-map tools that connect a yield signal to its underlying evidence,
-with explicit populations, statistical context, and verified chip alignment.
+A useful engineering application needs a reliable way to reach the people who use it. I built a common browser portal and hosting model for custom analytics and operational workflows: yield investigation, process monitoring, WIP visibility, shift handoff, maintenance, and request fulfillment.
 
-![Illustration of linked inspection, electrical, and reliability wafer maps](assets/linked-wafer-maps.png)
+The platform evolved from local tools and versioned desktop releases to centrally hosted applications, with shared navigation, Waitress/WSGI integration, health checks, logs, restart tooling, and recovery. Selected workloads separate data preparation and serving across two hosts.
 
-*Scientific illustration with fictional geometry and values. Outlined chips show the same
-selection across three sources; this is not a production screenshot.*
+Usage records show **3,081 app/page opens over one measured 30-day period**. This is evidence of use across the hosted environment; the case study explains the measurement and its limits.
 
-[See wafer comparisons and maps](case-studies/WAFER_QUALITY_INVESTIGATION.md)
+**[Read the platform case study](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)** · [See operational workflows](case-studies/LEAN_DIGITAL_OPERATIONS.md)
 
-## Supporting engineering tools
+## Follow the work further
 
-The supporting portfolio includes:
+These examples extend the two flagships into specific engineering decisions and daily workflows.
 
-- a mobile-friendly Maintenance Operations Portal for work logging, scheduled tasks, Process Patrol, issue intake, attachments, authorization, and auditability;
-- a desktop/mobile Clean Room Item Request workflow with ticket lookup, photo-supported status review, and fulfillment tracking;
-- Chip Yield and manufacturing-flow analytics that reuse prepared Parquet facts from the Yield platform for a different engineering question;
-- SPC, WIP, process-history, and equipment-status tools.
-
-These focused tools extend the flagship's data and delivery patterns into everyday manufacturing work.
-
-[View supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md)
+| Area | Examples |
+|---|---|
+| Investigation and process decisions | [Wafer comparisons and linked maps](case-studies/WAFER_QUALITY_INVESTIGATION.md), [qualification and reliability](case-studies/QUALIFICATION_RELIABILITY_INVESTIGATION.md), and [grating process analytics](case-studies/GRATING_PROCESS_ANALYTICS.md) |
+| Daily manufacturing work | [Maintenance, Process Patrol, Clean Room Requests, and supporting tools](case-studies/SUPPORTING_ENGINEERING_TOOLS.md); [production visibility and shift handoff](case-studies/LEAN_DIGITAL_OPERATIONS.md) |
+| Technical direction and ownership | [Engineering leadership across the ecosystem](case-studies/ENGINEERING_LEADERSHIP.md) |
 
 ## Engineering range
 
-- **Quality and manufacturing:** yield, Pareto, SPC, wafer and lot traceability, WIP, inspection/test data, maintenance, and standard work.
-- **Data engineering:** SQL Server-compatible access, pandas transformations, Parquet facts, ETL, query scoping, caching, preload, incremental refresh, and targeted retrieval.
-- **Application development:** Python, Dash, Plotly, Tkinter, responsive workflows, configuration-driven behavior, transactions, and safe file handling.
-- **Production delivery:** mounted WSGI applications, Waitress hosting, health endpoints, logs, launch/restart/watchdog tooling, and cross-functional deployment work.
-- **Software quality:** tests for transformations, data contracts, state transitions, refresh failures, permissions, attachments, and integration boundaries.
+- **Manufacturing and quality:** yield, Pareto, SPC, wafer/lot traceability, inspection/test analysis, WIP, and digital standard work.
+- **Data and applications:** Python, SQL Server-compatible access, pandas, Parquet, Dash/Plotly, responsive workflows, caching, and targeted retrieval.
+- **Production software:** incremental ETL, tests, configuration, centralized hosting, background refresh, logging, and recovery.
 
-## What I own in these projects
+## What I own
 
-My work includes problem definition, application architecture, Python development, SQL/data access, transformations, analytical logic, visualization and workflow design, performance optimization, application integration, deployment design, troubleshooting, documentation, and support. I also work directly with process owners, manufacturing-system owners, database teams, and IT when the solution crosses those boundaries.
-
-I do not present enterprise infrastructure, source manufacturing systems, equipment operation, or process approvals owned by other teams as my work. The case studies call out those boundaries where they matter.
+I own problem definition, application architecture and development, analytical logic, workflow design, validation, deployment integration, troubleshooting, and support. I work directly with process, manufacturing-system, database, and IT owners; their source systems, enterprise infrastructure, and process approvals remain their responsibilities.
 
 ## Confidentiality
 
-This is a public engineering portfolio, not a copy of an employer environment. Production source code, credentials, network details, database object names, confidential process rules, and production data are excluded from the software examples. Those examples use generic terminology, conceptual diagrams, and synthetic data while preserving the engineering problems, architecture, tradeoffs, and decisions I personally worked through. The separately linked investigations describe their anonymized observed-data basis on the study site.
+Public software examples use synthetic data, generic terminology, and clean-room implementations. They exclude employer source code, credentials, network details, database object names, production records, and confidential process rules. Only aggregate scale and usage measures are reported here. The separately linked investigations describe their anonymized observed-data basis on the study site.
 
 ## Repository map
 
 ```text
 case-studies/   Detailed engineering case studies
 assets/         Public previews and synthetic visuals
+demos/          Runnable synthetic investigation example
 docs/           Supporting portfolio documentation
 tools/          Repository validation utilities
 .github/        Continuous validation

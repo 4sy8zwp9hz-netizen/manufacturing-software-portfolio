@@ -1,6 +1,6 @@
 # Supporting Manufacturing Engineering Tools
 
-These smaller applications show the breadth of manufacturing problems I have translated into working software. Each one targets a specific source of friction: maintenance execution, request fulfillment, process monitoring, work-in-process visibility, historical investigation, or equipment status.
+These applications show the two flagships in use: shared analytical foundations support engineering investigation, while the hosted application platform brings custom tools into daily manufacturing work. Each one targets a specific need, from maintenance and request fulfillment to process monitoring and historical investigation.
 
 ## Maintenance Operations Portal
 
@@ -40,7 +40,7 @@ Process Patrol is production-ready and scheduled for operational rollout. It rec
 
 ### Why it is a supporting project
 
-This is a substantial application, but its strongest portfolio value is as another example of digital standard work and transactional workflow design. Keeping it here preserves the four primary stories while demonstrating that the same problem-first approach also applies to maintenance and reliability operations.
+This application shows the hosted platform's practical value: a shared place to deliver and support digital standard work, with the transactional behavior needed for maintenance and reliability operations.
 
 ### Engineering lesson
 

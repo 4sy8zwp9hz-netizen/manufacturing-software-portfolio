@@ -12,6 +12,11 @@ distinctiveness, evidence quality, clean-room feasibility, and reviewer value.
 Public depth is proportional to the story—not every useful tool needs a public
 clone.
 
+The reading path begins with engineering investigations, then follows the two
+flagships that support this work: the Manufacturing Yield Platform for data and
+analysis, and the Manufacturing Application Platform for shared access and
+operation. Individual tools are examples of those capabilities in use.
+
 | Candidate | Real problem | Technical depth | Process value | Proposed public form |
 |---|---|---:|---:|---|
 | Engineering leadership across the application ecosystem | align application decisions, trustworthy yield populations, reusable ETL, and repeatable investigation workflows | High | High | Concise cross-project overview linking to the technical case studies |
@@ -20,7 +25,7 @@ clone.
 | Grating Process Analytics | reconstruct process response and support a constrained engineering recommendation from fragmented events | High | High | Deep architecture/evolution case study |
 | Fab TV / work-queue visibility | replace repeated production-status reconstruction with common visual management | Medium–high | High | Lean Digital Operations case study |
 | Shift passdown | make shift windows, notes, preview, and controlled delivery consistent | Medium–high | High | Lean Digital Operations case study |
-| Multi-application portal and server | move useful local applications into one supportable hosting and recovery contract | High | High | Infrastructure/platform case study |
+| Manufacturing Application Platform | move useful local applications into one supportable hosting and recovery contract | High | High | Flagship hosting and operations case study |
 | Maintenance Operations Portal | connect mobile work logging, task completion, recurring patrol assignments, issue intake, attachments, authorization, and auditing | High | High | Featured supporting case study |
 | Clean Room Request | connect desktop/mobile submission, lookup, photo-supported status, and fulfillment with a correction path | Medium | High | Supporting tool summary with approximate owner-reported usage |
 | Chip Yield and manufacturing flow | reuse prepared yield facts for chip-side yield, process-stage, and WIP investigation | High | High | Supporting data-reuse case study |
@@ -66,7 +71,8 @@ to an earlier implementation that could not be independently reconstructed.
 
 ## Depth decision
 
-The result is deliberately asymmetric. Yield is a complete public analogue.
-Grating is a deep technical case study. Lean Operations and the Application
-Platform emphasize workflow and system evolution. Supporting tools demonstrate
-breadth without creating a wall of shallow repositories.
+The two flagships have different public forms. Yield has a runnable synthetic
+analogue; the Application Platform has a hosting and operations case study.
+Investigations show the engineering questions this foundation helps answer.
+Grating, Lean Operations, and supporting tools provide deeper examples of
+analysis and daily workflows, rather than additional flagship projects.

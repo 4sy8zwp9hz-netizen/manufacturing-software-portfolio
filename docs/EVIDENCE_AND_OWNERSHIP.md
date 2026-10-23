@@ -20,6 +20,8 @@ dependencies, not personal creations.
 - **Verified:** directly supported by audited implementation or history.
 - **Owner-reported operational count:** an approximate aggregate supplied from current use,
   identified as such and not presented as repository telemetry or a measured benefit.
+- **Measured aggregate:** a dated count checked against active data-file metadata or
+  saved usage logs, with its population and limitations stated in the case study.
 - **Reconstructed:** a clean-room diagram or narrative derived from verified roles.
 - **Illustrative:** fictional data or terminology used only to explain a concept.
 - **Not claimed:** contextual infrastructure or business outcome that was not
@@ -29,8 +31,12 @@ dependencies, not personal creations.
 
 This portfolio does not claim quantified savings, yield improvement, uptime, or
 cycle-time reduction without controlled operational evidence. The Clean Room
-Request case study includes one approximate, owner-reported monthly request count
-as a measure of usage. It is not labeled a productivity gain, and no individual
-requests or production records are published. Other case studies explain the
-mechanism by which software can reduce search effort, duplicated queries, manual
-transcription, or deployment friction without inventing impact numbers.
+Request case study includes an approximate, owner-reported monthly request count.
+The two flagship case studies also include measured aggregates: active prepared-data
+row counts and page opens in a fixed 30-day window. Row counts are not unique-device
+counts; page opens are not unique users, completed actions, or a growth rate.
+
+These figures describe scale and use, not measured productivity gains. Private logs,
+source records, identifiers, and data files are not published. The case studies
+explain how software can reduce search effort, duplicated queries, manual
+transcription, and deployment friction without inventing impact numbers.
