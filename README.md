@@ -55,7 +55,7 @@ The same prepared data supports chip-yield analysis, wafer comparisons, and link
 
 *Public synthetic application screenshot. The production-scale counts above describe the internal system, not the size of this demo.*
 
-**[Read the yield case study](case-studies/YIELD.md)** · [Run the synthetic application](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) · [Explore wafer comparisons and maps](case-studies/WAFER_QUALITY_INVESTIGATION.md)
+**[Read the yield case study](case-studies/YIELD.md)** · [Application source and setup](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform) · [Explore wafer comparisons and maps](case-studies/WAFER_QUALITY_INVESTIGATION.md)
 
 ### 2. Manufacturing Application Platform — shared tools in daily use
 

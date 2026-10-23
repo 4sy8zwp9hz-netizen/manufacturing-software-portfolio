@@ -11,7 +11,7 @@ published here.
 
 Case studies separate personal engineering work from surrounding systems. “I
 designed” or “I implemented” refers to the application and workflow work described
-in the ownership matrix. Source databases, manufacturing processes, enterprise
+in the ownership sections. Source databases, manufacturing processes, enterprise
 email infrastructure, Windows administration, and upstream records are treated as
 dependencies, not personal creations.
 
