@@ -4,13 +4,13 @@
 
 I am a semiconductor quality and manufacturing engineer who builds production software to turn fragmented manufacturing data into engineering decisions and practical tools for daily operations.
 
-My work centers on two flagship systems: a **Manufacturing Yield Platform** that makes large inspection and test histories usable for investigation, and a **Manufacturing Application Platform** that delivers custom engineering applications to engineers, technicians, and operations teams.
+My work centers on two flagship systems: a **Manufacturing Yield Platform** that connects process, wafer, and chip yield with the manufacturing events, inspection, and test history behind each result, and a **Manufacturing Application Platform** that delivers custom engineering applications to engineers, technicians, and operations teams.
 
 The investigations below show the engineering questions this work helps answer. The flagships explain the data preparation and shared delivery behind it.
 
 ## At a glance
 
-- **Data scale:** more than **28 million inspection-event records**, with prepared yield facts spanning **17,000+ wafers**, in the active snapshot reviewed in October 2026.
+- **Manufacturing data at scale:** **430,000+ prepared process-yield records across 17,000+ wafers**, backed by **tens of millions of inspection and test records** in the October 2026 snapshot.
 - **Shared use:** more than **3,000 recorded app/page opens in a measured 30-day period**, across two hosts in September–October 2026. Opens include reloads, not unique users.
 - **End-to-end ownership:** manufacturing problem definition, Python/SQL development, analytical validation, deployment, and ongoing support.
 
@@ -45,7 +45,7 @@ Change products and periods, compare run mates, inspect individual device measur
 
 ### 1. Manufacturing Yield Platform — the analytical foundation
 
-Engineers need to move from a yield trend to the wafer, inspection, and test evidence behind it. At this scale, repeatedly retrieving and rebuilding the full history on each interaction is impractical.
+Engineers need to understand where yield changes across manufacturing stages, then trace the result through work orders, wafers, chips, and their process, inspection, and test history. The system brings yield events, pass/fail quantities, and stage-specific populations together with high-volume measurement evidence. Repeatedly retrieving and rebuilding that history on each interaction is impractical.
 
 I built the dashboard and evolved its backend through scoped SQL retrieval, Python/pandas transformations, shared caches and preloads, and scheduled Parquet ETL. Common views use prepared facts; selected investigations retrieve high-volume detail on demand. Correction-aware refresh and last-known-good publication protect the answer as records change or refreshes fail.
 

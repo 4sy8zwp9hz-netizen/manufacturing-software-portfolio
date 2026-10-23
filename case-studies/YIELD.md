@@ -1,6 +1,6 @@
 # Manufacturing Yield Platform
 
-**What I built:** A manufacturing yield dashboard and data pipeline that make tens of millions of inspection-event records usable for investigation, from factory-level trends to the wafer, inspection, and test evidence behind a result.
+**What I built:** A manufacturing yield dashboard and data pipeline connecting process, wafer, and chip yield across manufacturing stages, supported by tens of millions of inspection and test records. Engineers can trace a trend through yield events and physical populations to the evidence behind a result.
 
 **What it demonstrates:** Python/SQL application architecture, manufacturing data modeling, performance optimization, targeted retrieval, caching, reliability engineering, and production delivery.
 
@@ -14,21 +14,30 @@ The application therefore had to solve two problems at once: define trustworthy 
 
 ## Data scale
 
+Yield events are central to the system: they connect work orders, manufacturing
+stages, reporting dates, and pass/fail quantities to defined physical populations.
+Inspection and test detail provide the evidence for investigating those results.
+The data engineering challenge spans both layers.
+
 The active prepared-data snapshot reviewed on **October 23, 2026** contained:
 
 | Dataset role | Approximate stored rows | Why it matters |
 |---|---:|---|
+| Prepared process-yield records | **430,000** | Track yield quantities by wafer, work order, reporting day, and manufacturing stage |
+| Final-chip yield components | **79,000** | Build final yield from defined physical populations and component quantities |
+| Test-yield facts by event and parameter | **2.3 million** | Connect downstream test outcomes to the selected manufacturing population |
 | Inspection-event population | **28.0 million** | Preserve detailed inspection history without loading it all into each browser session |
 | Inspection failure history | **6.2 million** | Retain the evidence behind failure categories and drill-down investigations |
-| Sorting-event facts | **2.3 million** | Connect downstream test history to the selected manufacturing population |
 
 Prepared yield facts in the same snapshot represented **17,398 distinct wafers**.
 
-Counts were checked against the active Parquet files' metadata. These datasets
-describe different, overlapping grains and include repeated events; they are not
-additive counts of unique devices or yield denominators. They describe one active
-snapshot, not accumulated backups or the full source-system estate. The public
-synthetic demo demonstrates the architecture at a smaller scale.
+Counts were checked against the active Parquet files' metadata. A prepared yield
+record can summarize many physical units; an event can have several
+test-parameter results. These datasets describe overlapping grains, so their row
+counts are not additive totals of unique events or devices, and unit quantities
+are not record counts. They describe one active snapshot, not accumulated backups
+or the full source-system estate. The public synthetic demo demonstrates the
+architecture at a smaller scale.
 
 The challenge is both volume and meaning: reconstruct the right physical population
 across repeated events and historical corrections, then make it available for
