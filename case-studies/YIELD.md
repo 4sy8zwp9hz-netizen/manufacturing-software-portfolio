@@ -1,16 +1,18 @@
 # Manufacturing Yield Platform
 
-**What I built:** A manufacturing yield dashboard and data pipeline connecting process, wafer, and chip yield across manufacturing stages, supported by tens of millions of inspection and test records. Engineers can trace a trend through yield events and physical populations to the evidence behind a result.
+**What I built:** A manufacturing yield dashboard and data pipeline that help engineers locate yield losses and trace them to the affected work orders, wafers, and chips. The system connects process, wafer, and chip yield with tens of millions of inspection and test records behind the results.
 
-**What it demonstrates:** Python/SQL application architecture, manufacturing data modeling, performance optimization, targeted retrieval, caching, reliability engineering, and production delivery.
+**What it demonstrates:** Yield investigation, traceability, manufacturing data modeling, Python/SQL architecture, performance optimization, and reliable data delivery.
 
 **Runnable public implementation:** [manufacturing-analytics-platform](https://github.com/4sy8zwp9hz-netizen/manufacturing-analytics-platform)
 
 ## Problem
 
-Yield investigation spans several data grains and time scales. A factory-level trend may point to a product, operation, tool, defect family, or individual wafer, but the supporting records are not naturally shaped for interactive analysis. Querying all high-volume inspection and test detail on every page load is slow and wasteful; aggregating everything in advance removes the detail needed for root-cause work.
+A change in factory yield is a starting point for investigation. Engineers need to identify the affected stage and population, understand which failures account for the loss, and trace the result back to process, inspection, and test evidence. Those records describe different things at different times: a work-order event, a wafer, an inspected site, or an individual chip.
 
-The application therefore had to solve two problems at once: define trustworthy manufacturing populations and make them fast enough to investigate interactively.
+The application had to preserve that meaning while making large histories practical to explore. Repeatedly loading all detail delays the investigation; keeping only summary percentages removes the evidence needed to explain them.
+
+This flagship provides the analytical foundation. The [Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md) provides shared browser access and the hosting and support model that brings the workflow into daily use.
 
 ## Data scale
 
@@ -48,9 +50,9 @@ interaction.
 
 ## How the system evolved
 
-The first useful version was a Python application that queried source data, transformed records with pandas, and displayed interactive Plotly figures. It proved the investigation workflow and clarified the relationships between work orders, wafers, process operations, inspection/test results, yield populations, and defect classifications.
+The first useful version queried source data with Python, transformed records with pandas, and displayed interactive Plotly figures. It established the path from a yield trend to the population and failure evidence behind it, while clarifying the relationships between work orders, wafers, operations, inspection/test results, and defect classifications.
 
-As history and adoption grew, the same synchronous path became a bottleneck. Broad retrieval, analytical reconstruction, and browser requests were competing for the same startup and refresh path. I separated those responsibilities into source access, transformation, prepared data publication, shared cache/preload, service logic, and targeted detail retrieval. The visible investigation workflow remained comparatively stable while these backend responsibilities changed substantially.
+As history and use grew, opening the dashboard could also trigger expensive retrieval and reconstruction. I separated that preparation from browser interaction: source access and transformation build reusable datasets; caches and preloads serve common views; targeted reads supply detail for a selected investigation. The visible workflow remained familiar while the backend changed substantially.
 
 ```mermaid
 flowchart LR
@@ -76,25 +78,23 @@ flowchart LR
 | Refresh and polling could overlap or consume excess memory | Add synchronization, batching, polling guards, and bounded caches | More predictable production behavior |
 | A source or rebuild failure could interrupt a working view | Publish only complete generations and retain the previous valid state | Fault-tolerant refresh and continued availability |
 
-This progression is the central engineering story: the application moved from a correct interactive
-analysis toward a backend that owns extraction, transformation, materialization, refresh,
-compatibility, concurrency, memory, and failure behavior.
+Each change addressed a practical constraint: keeping investigations usable as history grew,
+preserving the meaning of yield calculations, and retaining a working dataset when a refresh failed.
+That required ownership of extraction, transformation, prepared-data storage, refresh,
+compatibility, concurrency, and memory use.
 
 ### Why the interface changed less
 
-The table-to-drilldown workflow continued to match the engineering task, so later releases did not
-need constant visual reinvention. Keeping that workflow familiar reduced user disruption while the
-backend was reworked. The perceived UI improvement—faster responses, fewer blank states, fresher
-shared data, and continued access during refresh failure—came primarily from architecture rather
-than styling.
-
-Application delivery evolved in parallel but is a separate responsibility. The yield service
-moved from local and packaged use into the common hosting environment while the broader platform
-standardized release distribution, application mounting, health, logging, restart, and recovery.
-That related progression is documented in the
-[Manufacturing Application Platform](MANUFACTURING_APPLICATION_PLATFORM.md) case study.
+The table-to-drilldown workflow continued to match the engineering task. Keeping it familiar
+allowed users to investigate the same way while I changed how the data was retrieved, prepared,
+and refreshed. Shared preparation, bounded detail reads, and retention of the last complete
+dataset improved service behavior without requiring users to learn a new interface at each release.
 
 ## Architecture
+
+Two paths serve the investigation: prepared summaries for routine exploration and selected
+detail for deeper questions. Background preparation uses the same population definitions and
+publishes only a complete, validated dataset.
 
 ```mermaid
 flowchart LR
@@ -146,6 +146,17 @@ A source refresh can fail even when the application already has a valid analytic
 
 I changed refresh to build and validate a new prepared generation separately, then atomically switch the active reference only after success. If retrieval, validation, or publication fails, the previous complete snapshot remains active and the application exposes the stale/failed refresh state.
 
+### Keeping historical results correct
+
+A prepared dataset can refresh successfully while retaining incorrect history. Source
+reconciliation therefore considers additions, corrections, and deletions, replaces refreshed
+source identities, and compares changes against the last committed baseline. A failed
+publication does not advance that baseline, so a retry can still detect the changes.
+
+This extends the backend work from speed to analytical correctness over time. The recent
+source-reconciliation fixes were checked with regression tests and isolated builds;
+production deployment remains a separate step from that validation.
+
 ### Scaling delivery with adoption
 
 The application began as an engineering tool on a workstation. Once other engineers relied on it, local copies and independent versions became part of the problem.
@@ -165,24 +176,17 @@ The public synthetic application demonstrates the same investigation pattern:
 
 ## Result
 
-### Historical corrections are part of the data contract
+Engineers can follow a yield change from a summary to the defined physical population, failure
+breakdown, and individual-wafer evidence. The same population definitions support both the
+overview and the detailed investigation, making the basis of a comparison visible and reviewable.
 
-Recent ETL work addresses a less visible risk: a cache can refresh successfully while retaining
-incorrect history. Source reconciliation includes additions, corrections, and deletions,
-replacement of refreshed source identities, and an audit against the last committed baseline.
-A failed publication does not advance that baseline, so a retry can still detect the changes.
-
-This extends the backend story from speed to analytical correctness over time. The newest source
-fixes have been implemented and checked with regression tests and isolated builds. Their production
-deployment remains separate from that validation.
-
-The mature design creates two performance paths: low-latency exploration over prepared shared facts and narrow reads for high-volume drill-down evidence. That keeps the common investigation responsive without sacrificing the detailed records needed for root-cause work.
-
-The application also makes data correctness and service behavior explicit. Its yield populations are defined rather than inferred from row counts, readers never see a partially published refresh, and a transient source failure does not erase the last valid analytical state.
+Prepared shared facts support common views, while narrow reads retain access to high-volume
+detail. Readers do not see a partially published refresh, and a transient source failure leaves
+the last valid dataset available with its freshness state visible.
 
 ### A foundation for further investigation
 
-Chip Yield and wafer-comparison tools reuse the prepared yield facts for different
+Chip-yield analysis and wafer-comparison tools reuse the prepared yield facts for different
 engineering questions. Linked maps connect selected physical devices across
 inspection and test views. Qualification investigations combine yield wafer context
 with additional process, electrical, and reliability sources. This reuse makes the

@@ -1,14 +1,14 @@
 # Manufacturing Application Platform
 
-**What I built:** A shared browser portal and hosting platform for custom engineering and manufacturing applications, evolving local Python tools and desktop packages into services used in daily work.
+**What I built:** A shared browser portal and hosting platform that gives engineers, technicians, and operations teams access to custom tools for yield investigation, production visibility, and daily manufacturing workflows.
 
-**What it demonstrates:** Forward-deployed engineering, application integration, Windows hosting, WSGI composition, deployment design, health and recovery tooling, and cross-functional troubleshooting with IT and database teams.
+**What it demonstrates:** Application integration and delivery, Windows hosting, WSGI composition, deployment design, health and recovery tooling, and cross-functional troubleshooting with IT and database teams.
 
 ## Problem
 
-Useful manufacturing tools often begin as individual scripts, desktop applications, or locally hosted dashboards. That is a good way to validate an engineering idea, but it creates a new problem once other users depend on the tool: where do they find it, how is it updated, who owns the running process, what happens after a reboot, and how is a failure diagnosed or recovered?
+Manufacturing teams need consistent access to the tools they use to investigate quality signals, review production status, and complete shared work. A useful application on one engineer's workstation is only the beginning: other users need to find it, receive updates, and know who can restore it when something fails.
 
-As the number of applications and users increased, separate ports, local copies, inconsistent launch instructions, duplicated hosting logic, and manual recovery became part of the engineering problem.
+My early tools ran as individual scripts, desktop applications, or local dashboards. As use expanded, separate ports, local copies, inconsistent launch instructions, duplicated hosting logic, and manual recovery became part of the engineering problem.
 
 ## Measured use
 
@@ -30,7 +30,7 @@ WIP status, prepare shift handoff, record maintenance, and manage requests. The
 
 ## How the platform evolved
 
-I did not start by building a large platform. I evolved the delivery model as real usage exposed the next constraint.
+The delivery model evolved as more people needed the applications and shared use exposed new support requirements.
 
 ```mermaid
 flowchart LR
@@ -52,17 +52,17 @@ The main steps were:
 
 ## Relationship to the yield evolution
 
-The application platform and the yield backend improved in parallel, but they are not the same
-system concern. The platform owns distribution, discovery, process hosting, route composition,
-health, logs, and recovery. The yield application owns manufacturing transformation, prepared
-facts, cache/preload policy, targeted detail, refresh, and analytical correctness.
+The [Manufacturing Yield Platform](YIELD.md) prepares manufacturing data and connects
+yield results to the records behind them. The application platform gives people a shared
+way to reach that analysis and related engineering tools. Each application retains its
+own data sources, analytical logic, and workflow; the portal provides common navigation,
+hosting, health checks, logs, and recovery.
 
-They reinforced one another. Central hosting replaced duplicated per-user processing with shared
-service state, increasing the need for bounded caches and disciplined background lifecycles.
-Prepared yield facts and workload-specific refresh paths then made shared browser access practical
-without rebuilding the same population for every user. This separation also allowed the familiar
-yield investigation interface to remain stable while both its backend and its delivery model
-matured.
+The two systems improved together. Central hosting made prepared yield data reusable
+across browser sessions, while shared process state required bounded caches and explicit
+background-service lifecycles. The yield application continued to own transformation,
+preload, targeted retrieval, and refresh. This separation let the investigation workflow
+remain familiar as both data preparation and application delivery changed underneath it.
 
 ## Architecture
 
@@ -127,13 +127,11 @@ A process can appear to be running while the application is unavailable. A share
 
 I added a defined health endpoint, operational logs, deterministic launcher and restart commands, status checks, and watchdog logic that could detect a failed health check and reissue the launcher. Mounted application failures are recorded so the status of healthy applications remains visible.
 
-### Managing the blast radius of a shared host
+### Containing failures in a shared host
 
 Centralizing applications simplifies discovery and support, but shared process state introduces new risks. Startup work, background threads, mutable module globals, and route assumptions can collide inside one process.
 
 I responded by making application creation and background startup explicit, bounding caches, isolating import errors, and pushing runtime configuration into defined interfaces. These constraints make application integration more predictable and reduce the chance that one tool's startup behavior silently affects another.
-
-## Result
 
 ### Separating data preparation from interactive service
 
@@ -147,15 +145,21 @@ the yield platform's prepared facts remain Parquet. Neither host opens the teste
 as a shared writable network file.
 
 WIP preparation defines one active producer, bounded historical backfill, scheduled snapshot
-copying, and a documented manual failover procedure that changes producer ownership. This
-demonstrates workload separation and recovery. Automatic host failover and continuous availability
-are not claimed.
+copying, and a documented manual failover procedure that changes producer ownership.
+Failover requires an operator; this design does not provide automatic host failover or
+guaranteed continuous availability.
 
-The mature environment provides a single discoverable entry point for multiple manufacturing applications and a common operational contract for how those applications are hosted, checked, logged, restarted, and supported.
+## Result
 
-The larger achievement was not simply putting Dash applications on a server. It was building the infrastructure and integration model required to move engineering software from "works on my machine" into something a broader organization could depend on.
+Engineers, technicians, and operations teams have a common browser entry point for
+yield investigation, production visibility, and shared workflows. Updates and support
+for hosted applications are managed centrally, with defined ways to check health,
+diagnose failures, restart services, and recover usable data.
 
-That progression also changed how I approached application development. Deployment, network/database integration, startup behavior, refresh lifecycle, health, and recovery became first-class design concerns rather than tasks added after the application was finished.
+The platform gives new engineering tools an established path into shared use. Integration
+now includes startup behavior, background refresh, route configuration, and recovery from
+the outset. The yield dashboard and operational applications keep their own purpose while
+sharing the delivery and support needed for daily work.
 
 ## My ownership
 
