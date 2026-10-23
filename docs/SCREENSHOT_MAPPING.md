@@ -6,9 +6,14 @@ and geometry are fictional, their source is reproducible, and they are labeled
 inside the image and in surrounding text. Illustrations are not application
 screenshots. Private screenshots and reconstructed private interfaces are excluded.
 
+The linked investigations preview shows only the already-public report landing page.
+Those external studies identify their data as anonymized observations rather than synthetic
+examples. The preview does not reproduce the reports' underlying evidence tables or charts.
+
 | Asset | Source | Data | Purpose | Status |
 |---|---|---|---|---|
 | `assets/yield-summary.png` | Public `manufacturing-analytics-platform` landing/yield overview | Reproducible synthetic semiconductor dataset | Shows the visual quality and investigation entry point of the runnable flagship | Verified |
+| `assets/investigations-preview.png` | Public `webpage_presentation_example` landing page | Public study descriptions; linked reports use anonymized observed data | Provides a visual entry point to the two investigations | Browser-captured, visually reviewed |
 | `assets/linked-wafer-maps.png` / `.svg` | `tools/render_quality_visuals.cjs` | Fictional grid, values, and selected chips | Explains shared physical-chip context and alignment validation | Illustrative, visually reviewed |
 | `assets/wafer-comparison.png` / `.svg` | `tools/render_quality_visuals.cjs` | Deterministic fictional wafer rates | Explains means, wafer populations, and date context | Illustrative, visually reviewed |
 | `assets/qualification-investigation.png` / `.svg` | `tools/render_qualification_visual.cjs` | Independently invented cohort counts and within-run position summaries | Explains completion context, endpoint choice, and shared-run comparison without reconstructing a private interface | Illustrative, visually reviewed |

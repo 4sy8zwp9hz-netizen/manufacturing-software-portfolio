@@ -17,6 +17,18 @@ This portfolio highlights several systems I designed and implemented, with confi
 
 The usage figure shows adoption; it is not presented as measured labor savings or productivity improvement.
 
+## Explore interactive engineering investigations
+
+Investigate an electrical resistance shift and compare qualification and burn-in outcomes.
+Explore the charts, cohort filters, findings, and supporting methods in two public reports.
+
+<a href="https://4sy8zwp9hz-netizen.github.io/webpage_presentation_example/"><img src="assets/investigations-preview.png" alt="Preview of the manufacturing investigations landing page, featuring resistance and reliability studies" width="640"></a>
+
+**[Open the investigations](https://4sy8zwp9hz-netizen.github.io/webpage_presentation_example/)**
+
+*These linked reports use anonymized observed data, as described on the study site.
+The software demos elsewhere in this portfolio use synthetic data.*
+
 ## Engineering leadership across the ecosystem
 
 My strongest cross-project case connects the application ecosystem, yield Parquet/ETL, and reusable engineering tools: defining trustworthy manufacturing populations, validating backend changes, and making investigation and delivery patterns reusable.
@@ -107,13 +119,13 @@ I do not present enterprise infrastructure, source manufacturing systems, equipm
 
 ## Confidentiality
 
-This is a public engineering portfolio, not a copy of an employer environment. Production source code, credentials, network details, database object names, confidential process rules, and production data are excluded. Public examples use generic terminology, conceptual diagrams, and synthetic data while preserving the engineering problems, architecture, tradeoffs, and decisions I personally worked through.
+This is a public engineering portfolio, not a copy of an employer environment. Production source code, credentials, network details, database object names, confidential process rules, and production data are excluded from the software examples. Those examples use generic terminology, conceptual diagrams, and synthetic data while preserving the engineering problems, architecture, tradeoffs, and decisions I personally worked through. The separately linked investigations describe their anonymized observed-data basis on the study site.
 
 ## Repository map
 
 ```text
 case-studies/   Detailed engineering case studies
-assets/         Public synthetic visuals
+assets/         Public previews and synthetic visuals
 docs/           Supporting portfolio documentation
 tools/          Repository validation utilities
 .github/        Continuous validation
