@@ -10,7 +10,7 @@ Start with the investigations to see how I turn manufacturing questions into evi
 
 ## At a glance
 
-- **Manufacturing data at scale:** **430,000+ prepared process-yield records across 17,000+ wafers**, backed by **tens of millions of inspection and test records** in the October 2026 snapshot.
+- **Yield investigations:** Engineers can trace yield shifts across 17,000+ wafers using 430,000+ prepared process-yield records, **34 months of inspection history**, and **600M+ stored test-parameter values** (November 4, 2026 snapshot).
 - **Shared use:** more than **3,000 recorded app/page opens in a measured 30-day period**, across two hosts in September–October 2026. Opens include reloads, not unique users.
 - **End-to-end ownership:** manufacturing problem definition, data analysis, software development, validation, rollout, and ongoing support.
 
@@ -45,11 +45,9 @@ Change products and periods, compare run mates, inspect individual device measur
 
 ### 1. Manufacturing Yield Platform — the analytical foundation
 
-Engineers need to understand where yield changes across manufacturing stages, then trace the result to the relevant work orders, wafers, and chips. I built the dashboard to connect yield events and pass/fail quantities with the process, inspection, and test records behind them, keeping clear which physical population each result describes.
+I built the dashboard so engineers can start at the stage where yield shifted and trace the change to the affected work orders, wafers, and chips. A failure breakdown shows which categories account for the loss; linked wafer maps let engineers check whether inspection and test patterns appear at the same chip positions.
 
-As the data grew, I moved repeated preparation out of the engineer's workflow. Common views use prepared summaries, while a selected investigation retrieves the detail it needs. Scheduled updates incorporate corrected history and retain the last complete dataset if a refresh fails.
-
-The same prepared data supports chip-yield analysis, wafer comparisons, and linked maps. I improved data preparation, refresh, and recovery while keeping the investigation workflow familiar.
+The pipeline refreshes yield summaries automatically on a schedule, including corrections to historical records. Engineers open a prepared view and load inspection or test detail for the wafers they select. If a refresh fails, the last validated dataset stays available while the pipeline retries.
 
 ![Synthetic Yield Overview](assets/yield-summary.png)
 

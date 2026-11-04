@@ -1,6 +1,6 @@
 # Manufacturing Yield Platform
 
-**What I built:** A manufacturing yield dashboard and data pipeline that help engineers locate yield losses and trace them to the affected work orders, wafers, and chips. The system connects process, wafer, and chip yield with tens of millions of inspection and test records behind the results.
+**What I built:** A Yield Dashboard that engineers use to trace a change in process yield to the affected work orders, wafers, and chips. From a weekly trend, they can break down the loss by failure category, select a wafer, and inspect its test results.
 
 **What it demonstrates:** Yield investigation, traceability, manufacturing data modeling, Python/SQL architecture, performance optimization, and reliable data delivery.
 
@@ -16,37 +16,15 @@ This flagship provides the analytical foundation. The [Manufacturing Application
 
 ## Data scale
 
-Yield events are central to the system: they connect work orders, manufacturing
-stages, reporting dates, and pass/fail quantities to defined physical populations.
-Inspection and test detail provide the evidence for investigating those results.
-The data engineering challenge spans both layers.
+The November 4, 2026 production snapshot supports three different investigation questions:
 
-The active prepared-data snapshot reviewed on **October 23, 2026** contained:
+| Engineering question | Evidence available |
+|---|---|
+| Where did yield change, and which wafers were affected? | **430,000+ prepared process-yield records across 17,000+ distinct wafers**, with pass/fail quantities by stage, work order, and reporting day. |
+| Has this inspection pattern appeared before? | **34 consecutive months of inspection history** (January 2024 through October 2026), covering more than 31 million chip-inspection records. |
+| What did testing show for the selected population? | **600M+ stored numeric test-parameter values** behind the yield summaries. The dashboard retrieves the relevant detail for the selected wafers rather than loading the entire history. |
 
-| Dataset role | Approximate stored rows | Why it matters |
-|---|---:|---|
-| Prepared process-yield records | **430,000** | Track yield quantities by wafer, work order, reporting day, and manufacturing stage |
-| Final-chip yield components | **79,000** | Build final yield from defined physical populations and component quantities |
-| Test-yield facts by event and parameter | **2.3 million** | Connect downstream test outcomes to the selected manufacturing population |
-| Inspection-event population | **28.0 million** | Preserve detailed inspection history without loading it all into each browser session |
-| Inspection failure history | **6.2 million** | Retain the evidence behind failure categories and drill-down investigations |
-
-Prepared yield facts in the same snapshot represented **17,398 distinct wafers**.
-
-Counts were checked against the active Parquet files' metadata. A prepared yield
-record can summarize many physical units; an event can have several
-test-parameter results. These datasets describe overlapping grains, so their row
-counts are not additive totals of unique events or devices, and unit quantities
-are not record counts. They describe one active snapshot, not accumulated backups
-or the full source-system estate. The public synthetic demo demonstrates the
-architecture at a smaller scale.
-
-The challenge is both volume and meaning: reconstruct the right physical population
-across repeated events and historical corrections, then make it available for
-interactive use. I keep large detail datasets out of startup, preload common
-facts, and retrieve only the selected cohort and required columns for deeper work.
-That separates the cost of maintaining history from the cost of an engineer's next
-interaction.
+The test figure is a conservative count of populated measurement fields in current captures, excluding identifiers and superseded captures. A test record can contain several values, so 600M+ does not mean 600M tests or chips. The 34 months describe inspection coverage, not how long the application has been running. The public demo uses a smaller, synthetic dataset.
 
 ## How the system evolved
 
@@ -92,9 +70,7 @@ dataset improved service behavior without requiring users to learn a new interfa
 
 ## Architecture
 
-Two paths serve the investigation: prepared summaries for routine exploration and selected
-detail for deeper questions. Background preparation uses the same population definitions and
-publishes only a complete, validated dataset.
+Engineers can open a yield trend without running a query or rebuilding a report. In the production system, scheduled Python jobs transform SQL Server data into Parquet datasets, validate them, and publish them for Dash. Common views use prepared summaries; selecting a wafer retrieves its detail. If a refresh fails, the worker retries automatically and the dashboard continues to serve the last validated data.
 
 ```mermaid
 flowchart LR
