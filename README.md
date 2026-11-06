@@ -11,7 +11,7 @@ Start with the investigations to see how I turn manufacturing questions into evi
 ## At a glance
 
 - **Yield investigations:** Engineers can trace yield shifts across 17,000+ wafers using 430,000+ prepared process-yield records, **34 months of inspection history**, and **600M+ stored test-parameter values** (November 4, 2026 snapshot).
-- **Shared use:** more than **3,000 recorded app/page opens in a measured 30-day period**, across two hosts in September–October 2026. Opens include reloads, not unique users.
+- **Shared use:** **6,136 app opens and reloads in about eight weeks**, including **3,270 in October 2026**. This measures activity, not unique users.
 - **End-to-end ownership:** manufacturing problem definition, data analysis, software development, validation, rollout, and ongoing support.
 
 [Data scale and scope](case-studies/YIELD.md#data-scale) · [Usage measurement](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md#measured-use)
@@ -61,7 +61,7 @@ The yield platform organizes the analytical evidence; the application platform m
 
 I moved tools from individual desktops and versioned releases into a shared browser environment, with common navigation, health checks, logs, restart procedures, and recovery. This made updates and day-to-day support part of the product, rather than something each user had to manage independently.
 
-Usage records show **3,081 app/page opens over one measured 30-day period**. This is evidence of use across the hosted environment; the case study explains the measurement and its limits.
+From October 16 through November 6, 2026, the platform recorded **339 distinct client IPs** across both hosts. That counts observed network addresses, not individual people.
 
 **[Read the platform case study](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)** · [See operational workflows](case-studies/LEAN_DIGITAL_OPERATIONS.md)
 

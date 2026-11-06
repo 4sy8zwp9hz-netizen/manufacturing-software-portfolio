@@ -32,9 +32,10 @@ dependencies, not personal creations.
 This portfolio does not claim quantified savings, yield improvement, uptime, or
 cycle-time reduction without controlled operational evidence. The Clean Room
 Request case study includes an approximate, owner-reported monthly request count.
-The two flagship case studies also include measured aggregates: active prepared-data
-row counts and page opens in a fixed 30-day window. Row counts are not unique-device
-counts; page opens are not unique users, completed actions, or a growth rate.
+The two flagship case studies also include measured aggregates: prepared-data
+counts, page opens and reloads over a defined period, and distinct recorded
+client IPs. Data counts are not unique-device counts. Page opens are not
+completed actions or unique users, and recorded IPs are not a headcount.
 
 These figures describe scale and use, not measured productivity gains. Private logs,
 source records, identifiers, and data files are not published. The case studies

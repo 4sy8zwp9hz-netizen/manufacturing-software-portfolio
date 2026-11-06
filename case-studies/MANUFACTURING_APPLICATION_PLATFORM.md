@@ -12,16 +12,15 @@ My early tools ran as individual scripts, desktop applications, or local dashboa
 
 ## Measured use
 
-Combined usage logs from two hosts recorded **3,081 application page opens and
-reloads in the 30 days from September 16 to October 16, 2026**. The total was
-recomputed from saved usage snapshots, covering analytics, operational workflows,
-and application landing pages.
+The two hosts recorded **6,136 application page opens and reloads in about eight
+weeks**, from September 11 through November 6, 2026. **3,270 of those opens
+occurred in October.** This is page-open activity, not a count of people or
+completed workflows.
 
-The tracker excludes tagged dashboard-rotation traffic and does not count chart
-callbacks, button/filter interactions, assets, or health checks. Opens can include
-repeat visits and manual testing; they do not establish unique users or departmental
-reach. Tracking coverage changed during October, so this is a measured period of
-use rather than a monthly growth claim.
+Client IP tracking began October 16, later than page-open tracking. From then
+through November 6, the logs recorded **339 distinct client IPs**, counting each
+address once across both hosts. A network address can be shared or change over
+time, so this is not a count of unique users or employees.
 
 The practical value is a common place to investigate yield, inspect process and
 WIP status, prepare shift handoff, record maintenance, and manage requests. The
