@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="610" viewBox="0 0 880 610" role="img" aria-labelledby="usage-title usage-description">
+  <title id="usage-title">Hosted application usage over time</title>
+  <desc id="usage-description">Weekly aggregate snapshots from September 11 through November 6, 2026. Cumulative app opens and reloads reach 6,136. Client IP tracking starts October 16 and reaches 339 distinct recorded addresses by November 6. Neither measure counts unique people.</desc>
+  <rect width="880" height="610" rx="12" fill="#fbfcf8" />
+  <g font-family="Arial, sans-serif">
+    <text x="32" y="51" fill="#20352c" font-size="33" font-weight="700">Hosted application usage</text>
+    <text x="33" y="82" fill="#4f635a" font-size="18">Weekly cumulative snapshots · September 11–November 6, 2026</text>
+    <text x="33" y="126" fill="#20352c" font-size="22" font-weight="700">App opens and reloads</text>
+    <text x="33" y="350" fill="#20352c" font-size="22" font-weight="700">Distinct client IPs</text>
+    <rect x="100" y="379" width="419" height="144" fill="#edf1ed" />
+    <g stroke="#d5dfd7" stroke-width="1">
+    <line x1="100" y1="295" x2="770" y2="295" />
+    <line x1="100" y1="253" x2="770" y2="253" />
+    <line x1="100" y1="210" x2="770" y2="210" />
+    <line x1="100" y1="168" x2="770" y2="168" />
+    <line x1="100" y1="151" x2="100" y2="295" />
+    <line x1="268" y1="151" x2="268" y2="295" />
+    <line x1="435" y1="151" x2="435" y2="295" />
+    <line x1="603" y1="151" x2="603" y2="295" />
+    <line x1="770" y1="151" x2="770" y2="295" />
+    <line x1="100" y1="523" x2="770" y2="523" />
+    <line x1="100" y1="485" x2="770" y2="485" />
+    <line x1="100" y1="447" x2="770" y2="447" />
+    <line x1="100" y1="409" x2="770" y2="409" />
+    <line x1="100" y1="379" x2="100" y2="523" />
+    <line x1="268" y1="379" x2="268" y2="523" />
+    <line x1="435" y1="379" x2="435" y2="523" />
+    <line x1="603" y1="379" x2="603" y2="523" />
+    <line x1="770" y1="379" x2="770" y2="523" />
+    </g>
+    <line x1="519" y1="379" x2="519" y2="523" stroke="#9aaca3" stroke-width="1.5" stroke-dasharray="5 5" />
+    <g fill="#4f635a" text-anchor="end" font-size="17">
+    <text x="84" y="301">0</text>
+    <text x="84" y="259">2,000</text>
+    <text x="84" y="216">4,000</text>
+    <text x="84" y="174">6,000</text>
+    <text x="84" y="529">0</text>
+    <text x="84" y="491">100</text>
+    <text x="84" y="453">200</text>
+    <text x="84" y="415">300</text>
+    </g>
+    <text x="310" y="458" text-anchor="middle" font-size="18" fill="#4f635a">Not tracked before Oct 16</text>
+  <polyline fill="none" stroke="#147761" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+    points="124,292 208,276 291,261 375,248 459,234 543,216 626,200 710,183 770,165" />
+  <g fill="#147761">
+    <circle cx="124" cy="292" r="3" />
+    <circle cx="208" cy="276" r="3" />
+    <circle cx="291" cy="261" r="3" />
+    <circle cx="375" cy="248" r="3" />
+    <circle cx="459" cy="234" r="3" />
+    <circle cx="543" cy="216" r="3" />
+    <circle cx="626" cy="200" r="3" />
+    <circle cx="710" cy="183" r="3" />
+    <circle cx="770" cy="165" r="5" />
+  </g>
+  <polyline fill="none" stroke="#345b86" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+    points="543,514 626,473 710,432 770,395" />
+  <g fill="#345b86">
+    <circle cx="543" cy="514" r="3" />
+    <circle cx="626" cy="473" r="3" />
+    <circle cx="710" cy="432" r="3" />
+    <circle cx="770" cy="395" r="5" />
+  </g>
+    <text x="788" y="173" fill="#0d6854" font-size="24" font-weight="700">6,136</text>
+    <text x="788" y="403" fill="#345b86" font-size="24" font-weight="700">339</text>
+    <g fill="#4f635a" text-anchor="middle" font-size="17">
+    <text x="100" y="552">Sep 11</text>
+    <text x="268" y="552">Sep 25</text>
+    <text x="435" y="552">Oct 9</text>
+    <text x="603" y="552">Oct 23</text>
+    <text x="770" y="552">Nov 6</text>
+    </g>
+    <line x1="33" y1="570" x2="847" y2="570" stroke="#d5dfd7" />
+    <text x="33" y="593" fill="#4f635a" font-size="17">Opens include reloads. Distinct client IPs count network addresses, not people.</text>
+  </g>
+</svg>

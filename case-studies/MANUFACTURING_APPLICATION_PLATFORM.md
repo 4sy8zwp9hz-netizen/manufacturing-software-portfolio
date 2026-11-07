@@ -22,6 +22,11 @@ through November 6, the logs recorded **339 distinct client IPs**, counting each
 address once across both hosts. A network address can be shared or change over
 time, so this is not a count of unique users or employees.
 
+![Weekly cumulative totals through November 6, 2026: 6,136 app opens and reloads, and 339 distinct client IPs. Client IP tracking began October 16.](../assets/hosted-platform-usage.svg)
+
+*Weekly aggregate snapshots, ending November 6. The shaded interval shows when
+client IPs were not tracked, not a period of zero usage.*
+
 The practical value is a common place to investigate yield, inspect process and
 WIP status, prepare shift handoff, record maintenance, and manage requests. The
 [operational workflows](LEAN_DIGITAL_OPERATIONS.md) and
