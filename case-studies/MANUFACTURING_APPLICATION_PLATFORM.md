@@ -22,7 +22,9 @@ Select a process step, equipment, and dates to retrieve a defined wafer populati
 then compare measurements by tool. The workflow brings data selection and statistical
 review together instead of leaving engineers to assemble each comparison manually.
 
-![Stat Tools fictional-data demo showing population selection and equipment comparisons](../assets/platform-stat-tools.jpg)
+[![Stat Tools fictional-data demo showing population selection and equipment comparisons](../assets/platform-stat-tools.jpg)](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats)
+
+[Try Stat Tools with fictional data](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats)
 
 ### Wafer maps: where do the patterns overlap?
 
@@ -30,7 +32,9 @@ Inspect electrical measurements and inspection findings at the same chip positio
 Linked selection preserves spatial context; missing measurements remain visible as
 missing, not passing. [Explore the investigation workflow](WAFER_QUALITY_INVESTIGATION.md).
 
-![Fictional inspection and electrical wafer maps linked by a selected chip position](../assets/platform-wafer-maps.jpg)
+[![Fictional inspection and electrical wafer maps linked by a selected chip position](../assets/platform-wafer-maps.jpg)](https://engineering-workspace-demo.holykungfu.chatgpt.site/#maps)
+
+[Explore the fictional wafer maps](https://engineering-workspace-demo.holykungfu.chatgpt.site/#maps)
 
 ### Process response: how do upstream conditions relate to the result?
 
@@ -38,7 +42,9 @@ Compare paired upstream and downstream measurements while keeping repeated proce
 cycles distinct. A descriptive fit helps examine the relationship; engineering judgment
 still determines what to investigate or change. [Read the process analytics case study](GRATING_PROCESS_ANALYTICS.md).
 
-![Fictional process-cycle measurements with an upstream-versus-response plot and fit diagnostics](../assets/platform-process-response.jpg)
+[![Fictional process-cycle measurements with an upstream-versus-response plot and fit diagnostics](../assets/platform-process-response.jpg)](https://engineering-workspace-demo.holykungfu.chatgpt.site/#process)
+
+[Explore fictional process response](https://engineering-workspace-demo.holykungfu.chatgpt.site/#process)
 
 ## Measured use
 

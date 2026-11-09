@@ -23,6 +23,11 @@ examples. The preview does not reproduce the reports' underlying evidence tables
 | `assets/platform-wafer-maps.jpg` | Runnable public `demos/engineering-workspace/dist`, `#maps` | Fictional circular grid, inspection findings, and electrical values | Shows linked chip selection and explicit missing measurements | Browser-captured; shared selection and missing-data behavior checked |
 | `assets/platform-process-response.jpg` | Runnable public `demos/engineering-workspace/dist`, `#process` | Fictional upstream/downstream measurements and repeated wafer cycles | Shows process-response exploration and descriptive fit diagnostics, not causal inference or approved settings | Browser-captured; cycle selection, exclusion, and restoration checked |
 
+The three platform previews link to the corresponding views of the
+[hosted Engineering Workspace demo](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats).
+It uses the same independent interface and bundled fictional data as the local captures,
+with no connection to the private applications or their backend.
+
 ## Reproduce the illustrations
 
 Use Node.js with the `sharp` package available in its module search path, then run

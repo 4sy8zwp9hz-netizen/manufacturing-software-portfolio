@@ -1,5 +1,7 @@
 # Engineering Workspace Demo
 
+[Try Stat Tools](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats) · [Explore wafer maps](https://engineering-workspace-demo.holykungfu.chatgpt.site/#maps) · [Explore process response](https://engineering-workspace-demo.holykungfu.chatgpt.site/#process)
+
 Three small, runnable examples behind the Manufacturing Application Platform previews:
 
 - **Stat Tools:** choose a process step, equipment, and dates; compare wafer measurements and their date context. Measured and missing counts remain explicit.
@@ -9,8 +11,12 @@ Three small, runnable examples behind the Manufacturing Application Platform pre
 These workflows illustrate verified engineering capabilities using a new public interface
 and independently invented data. They do not reproduce a private interface or source code.
 This is a browser-only demonstration, not the production Python applications, database
-query layer, or hosted platform. It has no database, accounts, uploads, telemetry, external
-assets, or network calls. Filters select from bundled fictional records.
+query layer, or hosted platform. Its code has no database access, accounts, uploads,
+telemetry, external assets, or backend requests. Filters select from bundled fictional
+records; selections and exclusions stay in the current browser tab and are not sent to a server.
+
+The hosted demo serves the same four static files in `dist/`. Hosting is deployed
+separately; a GitHub push alone does not update the live demo.
 
 ## Run and test
 
