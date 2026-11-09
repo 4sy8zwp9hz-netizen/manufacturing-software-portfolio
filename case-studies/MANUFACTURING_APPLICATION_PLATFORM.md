@@ -1,8 +1,8 @@
 # Manufacturing Application Platform
 
-**What I built:** A shared browser portal and hosting platform that gives engineers, technicians, and operations teams access to custom tools for yield investigation, production visibility, and daily manufacturing workflows.
+**What I built:** A shared manufacturing software platform giving teams browser access to data queries, statistical comparisons, wafer investigation, and manufacturing workflows. I operate its centralized hosting, updates, health monitoring, and recovery.
 
-**What it demonstrates:** Application integration and delivery, Windows hosting, WSGI composition, deployment design, health and recovery tooling, and cross-functional troubleshooting with IT and database teams.
+**What it demonstrates:** Shared access to engineering capabilities, application integration, dual-host operation, Windows hosting, WSGI composition, health and recovery tooling, and cross-functional troubleshooting with IT and database teams.
 
 ## Problem
 
@@ -12,9 +12,9 @@ My early tools ran as individual scripts, desktop applications, or local dashboa
 
 ## Engineering tools in practice
 
-The shared platform connects engineering questions to focused tools. These screenshots
-come from an [independent runnable demo](../demos/engineering-workspace) with fictional
-data and a new interface, not the private applications or their backend.
+Engineers use the platform to select evidence, compare results, and investigate specific
+questions. These screenshots come from an [independent runnable demo](../demos/engineering-workspace)
+with fictional data and a new interface, not the private applications or their backend.
 
 ### Stat Tools: how do results compare across equipment?
 
@@ -77,7 +77,8 @@ flowchart LR
     V0[Apps on one engineering workstation] -->|others need access| V1[Versioned application bundles]
     V1 -->|update and discovery friction| V2[Common application portal]
     V2 -->|separate listeners| V3[Mounted WSGI applications]
-    V3 -->|supportability| V4[Central host, health, logs, restart, watchdog]
+    V3 -->|supportability| V4[Shared hosting, health, logs, restart, watchdog]
+    V4 -->|workload distribution| V5[Two hosts and manual failover]
 ```
 
 The main steps were:
@@ -88,7 +89,7 @@ The main steps were:
 4. Expose each application's WSGI server and mount applications under stable portal paths.
 5. Use Waitress as the shared Windows WSGI host.
 6. Add a health endpoint, logging, deterministic launch/restart commands, status checks, and watchdog behavior.
-7. Isolate application import failures so one broken mount did not prevent every healthy application from starting.
+7. Isolate application import failures, then distribute applications across two hosts with a manual full-portal failover mode.
 
 ## Relationship to the yield evolution
 
@@ -105,6 +106,8 @@ preload, targeted retrieval, and refresh. This separation let the investigation 
 remain familiar as both data preparation and application delivery changed underneath it.
 
 ## Architecture
+
+Each host mounts its assigned applications; requests for other tools redirect to the owning host. The diagram shows the common hosting pattern.
 
 ```mermaid
 flowchart TB
@@ -173,28 +176,26 @@ Centralizing applications simplifies discovery and support, but shared process s
 
 I responded by making application creation and background startup explicit, bounding caches, isolating import errors, and pushing runtime configuration into defined interfaces. These constraints make application integration more predictable and reduce the chance that one tool's startup behavior silently affects another.
 
-### Separating data preparation from interactive service
+### Sharing workloads and providing a recovery path
 
-The platform has progressed to a two-host operating model for selected workloads. One host
-prepares historical tester and WIP snapshots; the serving host consumes completed local copies.
-Tester snapshot installation verifies checksums and counts before switching the active local
-generation. A failed transfer preserves the previous usable generation.
+Two hosts run different groups of engineering applications. A manual failover mode mounts
+the full portal on a surviving host; recovery also depends on its capacity and access to the
+required data. This is not automatic host failover.
 
-Tester history uses local SQLite snapshot files. This is a workload-specific implementation;
-the yield platform's prepared facts remain Parquet. Neither host opens the tester database
-as a shared writable network file.
+Selected data workloads also separate preparation from serving. Historical tester and WIP
+snapshots are prepared on one host and copied for local use. Tester snapshot installation
+verifies checksums and counts; a failed transfer preserves the previous usable version.
+Tester history uses local SQLite snapshots, while prepared yield facts remain Parquet.
 
-WIP preparation defines one active producer, bounded historical backfill, scheduled snapshot
-copying, and a documented manual failover procedure that changes producer ownership.
-Failover requires an operator; this design does not provide automatic host failover or
-guaranteed continuous availability.
+WIP preparation has one active producer, bounded historical backfill, scheduled copying,
+and a manual procedure to transfer producer ownership. Neither host treats the tester
+snapshot as a shared writable network database.
 
 ## Result
 
-Engineers, technicians, and operations teams have a common browser entry point for
-yield investigation, production visibility, and shared workflows. Updates and support
-for hosted applications are managed centrally, with defined ways to check health,
-diagnose failures, restart services, and recover usable data.
+Engineers, technicians, and operations teams can reach analytical tools and shared
+workflows through a common browser portal without managing individual application installs.
+Updates, health checks, and recovery are managed as part of the shared service.
 
 The platform gives new engineering tools an established path into shared use. Integration
 now includes startup behavior, background refresh, route configuration, and recovery from
@@ -209,7 +210,7 @@ Enterprise network administration, domain policy, firewall policy, underlying Wi
 
 ## Tradeoffs
 
-- **Single WSGI process:** lowers operational overhead and creates one entry point, but a faulty or memory-heavy application can affect sibling applications.
+- **One WSGI process per host:** lowers operational overhead, but a faulty or memory-heavy application can affect sibling applications on that host.
 - **Incremental migration:** preserves working tools and reduces change risk, but mixed delivery models remain during the transition.
 - **Scripted Windows operations:** are transparent and fit the environment, while a formal service manager or orchestrator would provide stronger lifecycle control.
 - **Import isolation:** keeps healthy applications available when one integration fails, but partial readiness must be observable.

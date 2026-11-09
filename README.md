@@ -4,7 +4,7 @@
 
 I am a semiconductor quality and manufacturing engineer who uses data to investigate yield losses, evaluate reliability, and guide engineering follow-up. I also build the software that makes this work repeatable and usable by engineers, technicians, and operations teams.
 
-Two flagship systems support this work. The **Manufacturing Yield Platform** connects process, wafer, and chip yield with the manufacturing history behind each result. The **Manufacturing Application Platform** puts custom engineering tools into shared daily use.
+Two flagship systems support this work. The **Manufacturing Yield Platform** connects process, wafer, and chip yield with the manufacturing history behind each result. The **Manufacturing Application Platform** delivers engineering tools through shared browser access and centrally managed operation.
 
 Start with the investigations to see how I turn manufacturing questions into evidence. Then explore the two flagships to see how I prepare that evidence and deliver tools that support further investigation and daily operations.
 
@@ -57,15 +57,15 @@ The pipeline refreshes yield summaries automatically on a schedule, including co
 
 ### 2. Manufacturing Application Platform — shared tools in daily use
 
-The yield platform organizes the analytical evidence; the application platform makes engineering tools available where people work. I built a common browser portal for investigating quality signals, reviewing production status, and completing shared workflows such as shift handoff and maintenance.
+I built and operate a shared manufacturing software platform that brings engineering applications into one browser portal, with centralized hosting, updates, health monitoring, and recovery. Engineers can query manufacturing data, compare equipment statistically, investigate wafer patterns, and complete workflows such as shift handoff and maintenance.
 
-I moved tools from individual desktops and versioned releases into a shared browser environment, with common navigation, health checks, logs, restart procedures, and recovery. This made updates and day-to-day support part of the product, rather than something each user had to manage independently.
+Browser access replaces individual application installs and local version management. Two hosts share application workloads, with a manual failover mode for running the portal on a surviving host.
 
 From October 16 through November 6, 2026, the platform recorded **339 distinct client IPs** across both hosts. That counts observed network addresses, not individual people.
 
 [![Stat Tools synthetic demo: select a process, equipment, and dates to compare wafer measurements](assets/platform-stat-tools.jpg)](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats)
 
-*Select the data needed for an engineering question, then compare results. Screenshot of an independent fictional-data demo.*
+*Explore an engineering tool delivered through the shared platform: select a population and compare measurements. Independent fictional-data demo.*
 
 **[Try the fictional demo](https://engineering-workspace-demo.holykungfu.chatgpt.site/#stats)**
 
