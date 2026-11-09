@@ -11,7 +11,7 @@ Start with the investigations to see how I turn manufacturing questions into evi
 ## At a glance
 
 - **Yield investigations:** Engineers can trace yield shifts across 17,000+ wafers using 430,000+ prepared process-yield records, **34 months of inspection history**, and **600M+ stored test-parameter values** (November 4, 2026 snapshot).
-- **Shared use:** **6,136 app opens and reloads in about eight weeks**, including **3,270 in October 2026**. This measures activity, not unique users.
+- **Shared use:** **6,136 app opens and reloads in about eight weeks**, including **3,270 in October 2026**. The logs recorded **339 distinct client IPs** from October 16 through November 6.
 - **End-to-end ownership:** manufacturing problem definition, data analysis, software development, validation, rollout, and ongoing support.
 
 [Data scale and scope](case-studies/YIELD.md#data-scale) · [Usage measurement](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md#measured-use)
