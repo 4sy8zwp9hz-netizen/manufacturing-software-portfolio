@@ -20,7 +20,11 @@ nav a[aria-current=page] { background:#2a4958; color:#fff; box-shadow:inset 3px 
 .sidebar-note small { display:block; margin:10px 0 0 12px; color:#adc3cf; line-height:1.7; }
 .status-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#7cd3c4; margin-right:6px; }
 .page { margin-left:205px; }
-.topbar { background:white; border-bottom:1px solid var(--line); min-height:58px; padding:15px 32px; display:flex; justify-content:space-between; gap:16px; align-items:center; color:var(--muted); font-size:12px; }
+.topbar { background:white; border-bottom:1px solid var(--line); min-height:58px; padding:7px 32px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 16px; align-items:center; color:var(--muted); font-size:12px; }
+.portfolio-nav { display:flex; flex-wrap:wrap; gap:4px 24px; }
+.portfolio-nav a { min-height:44px; align-items:center; padding:4px 0; gap:7px; color:var(--teal); font-size:13px; font-weight:600; }
+.portfolio-nav a span { color:inherit; font-size:15px; }
+.portfolio-nav a:hover { text-decoration:underline; text-underline-offset:4px; }
 .badge { white-space:nowrap; font-size:10px; font-weight:700; letter-spacing:1px; background:#e7f4ef; color:#1f6157; padding:5px 10px; border:1px solid #c6e4d9; border-radius:4px; }
 main { max-width:1440px; margin:auto; padding:28px 32px 20px; }
 .eyebrow { color:var(--teal); font-weight:700; font-size:11px; letter-spacing:1.7px; margin:0 0 6px; }

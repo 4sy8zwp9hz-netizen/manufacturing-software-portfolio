@@ -8,9 +8,20 @@ const dist = path.resolve(fileURLToPath(new URL('../dist/', import.meta.url)));
 const files = ['index.html', 'styles.css', 'app.mjs', 'model.mjs'];
 const source = Object.fromEntries(await Promise.all(files.map(async (name) =>
   [name, await readFile(path.join(dist, name), 'utf8')])));
+const publicNavigation = new Map([
+  ['https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio', 'Back to portfolio'],
+  ['https://github.com/4sy8zwp9hz-netizen/manufacturing-software-portfolio/blob/main/case-studies/MANUFACTURING_APPLICATION_PLATFORM.md', 'Platform case study'],
+]);
+
+// Only these exact anchor destinations are navigation exceptions. The same URLs
+// remain forbidden in script, image, stylesheet, or other resource attributes.
+function withoutPublicNavigationHrefs(html) {
+  return html.replace(/<a\b[^>]*>/gi, (tag) => tag.replace(/(\s)href="([^"]+)"/i,
+    (attribute, space, destination) => publicNavigation.has(destination) ? `${space}href="#public-navigation"` : attribute));
+}
 
 test('the entry page loads only existing local files', async () => {
-  const references = [...source['index.html'].matchAll(/\b(?:src|href)="([^"]+)"/g)].map((match) => match[1]);
+  const references = [...withoutPublicNavigationHrefs(source['index.html']).matchAll(/\b(?:src|href)="([^"]+)"/g)].map((match) => match[1]);
   assert.ok(references.includes('styles.css'));
   assert.ok(references.includes('app.mjs'));
   for (const reference of references) {
@@ -48,11 +59,41 @@ test('demo code contains no network calls, durable browser storage, or remote as
   assert.doesNotMatch(code, /\b(?:localStorage|sessionStorage|indexedDB)\b|\bdocument\.cookie\b/);
   assert.doesNotMatch(code, /\bimport\s*\(/, 'No dynamic backend/module loading');
   for (const [name, text] of Object.entries(source)) {
-    assert.doesNotMatch(text, /https?:\/\//i, `${name}: no remote endpoint or asset`);
+    const resourceText = name === 'index.html' ? withoutPublicNavigationHrefs(text) : text;
+    assert.doesNotMatch(resourceText, /https?:\/\//i, `${name}: no remote endpoint or asset`);
     assert.doesNotMatch(text, /\b(?:\d{1,3}\.){3}\d{1,3}\b/, `${name}: no network addresses`);
   }
   assert.doesNotMatch(source['styles.css'], /@import\b|url\(\s*['"]?\/\//i);
   assert.doesNotMatch(source['index.html'], /<(?:iframe|object|embed|form)\b/i);
+});
+
+test('header provides exactly two clearly labeled public return links in the same tab', () => {
+  const html = source['index.html'];
+  const navigation = html.match(/<nav\b(?=[^>]*class="portfolio-nav")(?=[^>]*aria-label="Portfolio navigation")[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
+  assert.ok(navigation, 'Public return links have a distinct labeled navigation landmark');
+  const anchors = [...navigation.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)];
+  assert.equal(anchors.length, publicNavigation.size);
+  for (const [destination, label] of publicNavigation) {
+    const matching = anchors.filter(([, attributes]) => attributes.match(/(?:^|\s)href="([^"]+)"/i)?.[1] === destination);
+    assert.equal(matching.length, 1, `${label} is present exactly once in the header`);
+    assert.equal(html.split(`href="${destination}"`).length - 1, 1, `${label} has no duplicate link`);
+    const [, attributes, body] = matching[0];
+    assert.doesNotMatch(attributes, /\b(?:target|download|ping)\b|\bon[a-z]+\s*=/i, 'Ordinary same-tab navigation only');
+    const text = body.replace(/<span\b[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/span>/gi, '')
+      .replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    assert.equal(text, label);
+  }
+});
+
+test('navigation exceptions cannot permit remote resources or unapproved destinations', () => {
+  for (const destination of publicNavigation.keys()) {
+    assert.doesNotMatch(withoutPublicNavigationHrefs(`<a href="${destination}">Return</a>`), /https?:\/\//);
+    for (const resource of [`<script src="${destination}"></script>`, `<link href="${destination}">`, `<img src="${destination}">`]) {
+      assert.match(withoutPublicNavigationHrefs(resource), /https?:\/\//);
+    }
+    assert.match(withoutPublicNavigationHrefs(`<a data-href="${destination}">Not a navigation href</a>`), /https?:\/\//);
+  }
+  assert.match(withoutPublicNavigationHrefs('<a href="https://example.invalid/">Unapproved</a>'), /https?:\/\//);
 });
 
 test('fictional data and independent-interface boundaries remain visible', () => {
