@@ -33,3 +33,5 @@ jobs:
         run: node demos/qualification-studio/tests/data.mjs
       - name: Test small-group demo behavior and isolation
         run: node --test demos/small-group-demo/tests/*.test.mjs
+      - name: Test engineering workspace data and public isolation
+        run: node --test demos/engineering-workspace/tests/*.test.mjs

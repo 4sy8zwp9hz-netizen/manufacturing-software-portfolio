@@ -63,6 +63,10 @@ I moved tools from individual desktops and versioned releases into a shared brow
 
 From October 16 through November 6, 2026, the platform recorded **339 distinct client IPs** across both hosts. That counts observed network addresses, not individual people.
 
+[![Stat Tools synthetic demo: select a process, equipment, and dates to compare wafer measurements](assets/platform-stat-tools.jpg)](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md#engineering-tools-in-practice)
+
+*Select the data needed for an engineering question, then compare results. Screenshot of an independent fictional-data demo.*
+
 **[Read the platform case study](case-studies/MANUFACTURING_APPLICATION_PLATFORM.md)** · [See operational workflows](case-studies/LEAN_DIGITAL_OPERATIONS.md)
 
 ## Follow the work further

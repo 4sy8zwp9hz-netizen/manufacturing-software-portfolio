@@ -19,6 +19,9 @@ examples. The preview does not reproduce the reports' underlying evidence tables
 | `assets/qualification-investigation.png` / `.svg` | `tools/render_qualification_visual.cjs` | Independently invented cohort counts and within-run position summaries | Explains completion context, endpoint choice, and shared-run comparison without reconstructing a private interface | Illustrative, visually reviewed |
 | `assets/qualification-studio-demo.png` | Runnable public `demos/qualification-studio/dist` application | Deterministic fictional wafers, process intervals, device readings, and outcomes | Shows the working demo visitors can open from the portfolio | Browser-verified, visually reviewed |
 | `assets/small-group-demo.png` | Runnable public `demos/small-group-demo/dist` application | Fictional households, meetings, assignments, and attendance | Previews a supporting personal project; this browser-only demo is separate from the live Flask/Sheets/Cloud Run app | Browser-captured from the published demo; desktop and phone workflows checked |
+| `assets/platform-stat-tools.jpg` | Runnable public `demos/engineering-workspace/dist`, `#stats` | Deterministic fictional wafers, process dates, equipment, and measurements | Shows scoped data selection and equipment comparison in an independently designed interface | Browser-captured; filters, empty selections, and invalid-date handling checked |
+| `assets/platform-wafer-maps.jpg` | Runnable public `demos/engineering-workspace/dist`, `#maps` | Fictional circular grid, inspection findings, and electrical values | Shows linked chip selection and explicit missing measurements | Browser-captured; shared selection and missing-data behavior checked |
+| `assets/platform-process-response.jpg` | Runnable public `demos/engineering-workspace/dist`, `#process` | Fictional upstream/downstream measurements and repeated wafer cycles | Shows process-response exploration and descriptive fit diagnostics, not causal inference or approved settings | Browser-captured; cycle selection, exclusion, and restoration checked |
 
 ## Reproduce the illustrations
 
@@ -30,10 +33,11 @@ For the qualification illustration, run `node tools/render_qualification_visual.
 
 ## Intentionally diagram-only stories
 
-Grating Process Analytics, Lean Digital Operations, and the Manufacturing
-Application Platform currently use Mermaid diagrams rather than screenshots. This
-keeps the evidence boundary clear: the diagrams explain architecture and workflow
-without implying that a public clone duplicates a private interface.
+The Grating Process Analytics and Lean Digital Operations case studies use Mermaid
+diagrams rather than private application screenshots. The Manufacturing Application
+Platform case study now includes independent synthetic demo views alongside its
+architecture diagrams. Its process-response preview illustrates a general workflow;
+it does not reproduce the private grating interface or its recommendation rules.
 
 If a future public synthetic analogue is implemented, its screenshot can be added
 only after the app is run locally and the image is checked for fictional data,
@@ -44,3 +48,9 @@ generic labels, and correspondence with the documented public code.
 Serve `demos/qualification-studio/dist` with a static HTTP server and capture the initial Conclusions view after it loads. The demo has no build dependencies or production connections. Enable reduced motion when capturing a switched view so the image does not freeze partway through a transition.
 
 For the small-group preview, serve `demos/small-group-demo/dist`, choose **Reset demo**, and capture the initial Schedule view. Its fixed sample date and fictional fixtures keep the preview reproducible.
+
+For the platform previews, serve `demos/engineering-workspace/dist` with a static HTTP
+server. Open `#stats`, `#maps`, and `#process` in turn and capture each view with its
+default selections after it loads. Keep the fictional-data label visible. The three
+views share deterministic fixtures and have no production connections; see the
+[demo setup](../demos/engineering-workspace) for local run and test instructions.

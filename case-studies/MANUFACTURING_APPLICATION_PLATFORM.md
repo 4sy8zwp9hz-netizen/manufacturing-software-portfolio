@@ -10,6 +10,36 @@ Manufacturing teams need consistent access to the tools they use to investigate 
 
 My early tools ran as individual scripts, desktop applications, or local dashboards. As use expanded, separate ports, local copies, inconsistent launch instructions, duplicated hosting logic, and manual recovery became part of the engineering problem.
 
+## Engineering tools in practice
+
+The shared platform connects engineering questions to focused tools. These screenshots
+come from an [independent runnable demo](../demos/engineering-workspace) with fictional
+data and a new interface, not the private applications or their backend.
+
+### Stat Tools: how do results compare across equipment?
+
+Select a process step, equipment, and dates to retrieve a defined wafer population,
+then compare measurements by tool. The workflow brings data selection and statistical
+review together instead of leaving engineers to assemble each comparison manually.
+
+![Stat Tools fictional-data demo showing population selection and equipment comparisons](../assets/platform-stat-tools.jpg)
+
+### Wafer maps: where do the patterns overlap?
+
+Inspect electrical measurements and inspection findings at the same chip positions.
+Linked selection preserves spatial context; missing measurements remain visible as
+missing, not passing. [Explore the investigation workflow](WAFER_QUALITY_INVESTIGATION.md).
+
+![Fictional inspection and electrical wafer maps linked by a selected chip position](../assets/platform-wafer-maps.jpg)
+
+### Process response: how do upstream conditions relate to the result?
+
+Compare paired upstream and downstream measurements while keeping repeated process
+cycles distinct. A descriptive fit helps examine the relationship; engineering judgment
+still determines what to investigate or change. [Read the process analytics case study](GRATING_PROCESS_ANALYTICS.md).
+
+![Fictional process-cycle measurements with an upstream-versus-response plot and fit diagnostics](../assets/platform-process-response.jpg)
+
 ## Measured use
 
 The two hosts recorded **6,136 application page opens and reloads in about eight
