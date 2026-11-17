@@ -1,5 +1,7 @@
 # Matthew Chung
 
+<img src="assets/matthew-chung-headshot.jpg" alt="Matthew Chung — AI-generated headshot" width="128" height="128" align="right">
+
 **[View the portfolio website](https://4sy8zwp9hz-netizen.github.io/matthew-chung-portfolio/)**
 
 ## Quality Engineering, Manufacturing Analytics & Digital Operations
